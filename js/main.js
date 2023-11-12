@@ -14,6 +14,7 @@ function createUser(parent, values, baseIndex, userIndex) {
    const features = parent.parentElement.parentElement.querySelectorAll(".feature");
    let isHold = false;
    let holdTimerId;
+   let lastEle = null;
    let posY = 0;
    let eleY = 0;
    let last = {
@@ -69,6 +70,8 @@ function createUser(parent, values, baseIndex, userIndex) {
          resetStyle();
       }
 
+      lastEle = ele;
+
       const dy = e.clientY - posY;
       const scrollDistance = 30;
       const scrollOffset =
@@ -121,18 +124,11 @@ function createUser(parent, values, baseIndex, userIndex) {
       });
    }
 
-   function holdingEnd(E) {
+   function holdingEnd() {
       if (!isHold) return;
 
-      let e = E, ele = E.target;
-      if (e.type == "touchmove") {
-         e = e.changedTouches[0];
-         ele = document.elementFromPoint(e.clientX, e.clientY);
-      }
-
-
       [...features].some((feature) => {
-         if (feature == ele){
+         if (feature == lastEle){
             switch (feature) {
                case features[0]:
                   call(values.number);
@@ -158,7 +154,6 @@ function createUser(parent, values, baseIndex, userIndex) {
             return true;
          }
       })
-
 
       isHold = false;
       parent.parentElement.parentElement.classList.remove("current");
