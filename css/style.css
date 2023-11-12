@@ -104,7 +104,7 @@ main .sec {
    border-radius: 3px;
    background: #00000022;
 }
-.basic .menu-options .option:hover {
+.basic .menu-options .option.hover {
    background: #00a2ff;
 }
 .basic .menu-options .option i {
@@ -416,7 +416,7 @@ main .sec {
 
 
 
-@media (hover:hover) {
+@media (hover: hover) {
    .floting-window .buttons button {
      cursor: pointer;
    }
@@ -434,13 +434,15 @@ main .sec {
       border: solid 1px #000;
    }
 }
-.floting-window .buttons button:active {
-   background-position: right center; 
-   color: #fff;
-   text-decoration: none;
-}
-.floting-window .close:active {
-   color: #f00;
-   background: #fff;
-   border: solid 1px #000;
+@media (hover: none) {
+   .floting-window .buttons button:active {
+      background-position: right center; 
+      color: #fff;
+      text-decoration: none;
+   }
+   .floting-window .close:active {
+      color: #f00;
+      background: #fff;
+      border: solid 1px #000;
+   }
 }

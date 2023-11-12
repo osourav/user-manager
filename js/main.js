@@ -27,12 +27,21 @@ function createUser(parent, values, baseIndex, userIndex) {
       mi: 0,
    };
 
-   function start(ele, e) {
+   function start(e) {
       posY = e.clientY;
+      if (e.type == "touchstart") (posY = e.touches[0].clientY);
       eleY = 0;
    }
 
-   function move(ele, e) {
+   function move(E) {
+      if (!isHold) return;
+
+      let e = E, ele = E.target;
+      if (e.type == "touchmove") {
+         e = e.touches[0];
+         ele = document.elementFromPoint(e.clientX, e.clientY);
+      }
+
       const dy = e.clientY - posY;
       const scrollDistance = 30;
       const scrollOffset =
@@ -49,7 +58,7 @@ function createUser(parent, values, baseIndex, userIndex) {
          window.scrollBy(0, _d);
          eleY += _d;
       }
-
+      
       eleY += dy;
       userEle.style.top = `${eleY}px`;
       userOuter.classList.add("active");
@@ -68,6 +77,13 @@ function createUser(parent, values, baseIndex, userIndex) {
          }
       });
       posY = e.clientY;
+   }
+
+   function holdingStart() {
+      isHold = true;
+      holdTimerId = setTimeout(() => {
+         if (isHold) holdingContinue();
+      }, holdDelay);
    }
 
    function holdingContinue() {
@@ -100,22 +116,15 @@ function createUser(parent, values, baseIndex, userIndex) {
       console.log("-----");
    }
 
-   userOuter.addEventListener("mousedown", () => {
-      isHold = true;
-      holdTimerId = setTimeout(() => {
-         if (isHold) holdingContinue();
-      }, holdDelay);
-   });
-
-   document.body.addEventListener("mousedown", (e) => {
-      start(e.target, e);
-   });
-
-   document.body.addEventListener("mousemove", (e) => {
-      if (isHold) move(e.target, e);
-   });
-
+   userOuter.addEventListener("mousedown", holdingStart);
+   window.addEventListener("mousedown", start);
+   window.addEventListener("mousemove", move);
    window.addEventListener("mouseup", holdingEnd);
+
+   userOuter.addEventListener("touchstart", holdingStart);
+   window.addEventListener("touchstart", start);
+   window.addEventListener("touchmove", move);
+   window.addEventListener("touchend", holdingEnd);
 }
 
 function createInputsForUser(parent, value, title = "Add User", btnName = "Create") {
@@ -379,7 +388,12 @@ function createSection(name, active, index, users = []) {
       if (!isHold) return;
       isHold = false;
       clearTimeout(holdTimerId);
-      const ele = e.target;
+      let ele = e.target;
+
+      if (e.type == "touchend") {
+         const { clientY, clientX } = e.changedTouches[0];
+         ele = document.elementFromPoint(clientX, clientY);
+      }
 
       [rename, duplicate, remove].some((e) => {
          if (e == ele) {
@@ -414,14 +428,32 @@ function createSection(name, active, index, users = []) {
       console.log("-----");
    }
 
-   menuBtn.addEventListener("mousedown", () => {
+   function holdingStart() {
       isHold = true;
       holdTimerId = setTimeout(() => {
          if (isHold) holdingContinue();
       }, holdDelay * 2);
-   });
+   }
+   
+   function tocuhMove(e) {
+      if (!isHold) return;
+      const { clientY, clientX } = e.touches[0];
+      const ele = document.elementFromPoint(clientX, clientY);
 
+      [rename, duplicate, remove].some((e) => {
+         if (e == ele) {
+            e.classList.add("hover");
+         } else {
+            e.classList.remove("hover");
+         }
+      });
+   }
+
+   menuBtn.addEventListener("mousedown", holdingStart);
+   menuBtn.addEventListener("touchstart", holdingStart);
+   window.addEventListener("touchmove", tocuhMove);
    window.addEventListener("mouseup", holdingEnd);
+   window.addEventListener("touchend", holdingEnd);
 }
 
 createSectionBtn.addEventListener("click", (e) => {
