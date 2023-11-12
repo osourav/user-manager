@@ -96,6 +96,7 @@ function createUser(parent, values, baseIndex, userIndex) {
       allSec.forEach((sec) => {
          sec.classList.remove("focus");
       });
+      window.open("tel:8250032643");
       clearTimeout(holdTimerId);
       userOuter.classList.remove("active");
 
