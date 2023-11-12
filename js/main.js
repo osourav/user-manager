@@ -23,6 +23,13 @@ function createUser(parent, values, baseIndex, userIndex) {
       mi: 0,
    };
 
+   function resetStyle() {
+      userEle.classList.remove("inFeature");
+      const computedStyle = window.getComputedStyle(userEle);
+      const bgColor = computedStyle.getPropertyValue('--color0');
+      userEle.style.setProperty("--color", bgColor);
+   }
+
    function start(e) {
       posY = e.clientY;
       if (e.type == "touchstart") (posY = e.touches[0].clientY);
@@ -41,13 +48,26 @@ function createUser(parent, values, baseIndex, userIndex) {
       features.forEach((feature) => {
          if (feature == ele){
             feature.classList.add("hover");
-            const bg = window.getComputedStyle(feature).backgroundColor;
-            userEle.setAttribute("style", `--color: ${bg}`);
+            const computedStyle = window.getComputedStyle(feature);
+            const bgColor = computedStyle.getPropertyValue('--color');
+            userEle.style.setProperty("--color", bgColor);
          } else {
-            userEle.setAttribute("style", ``);
             feature.classList.remove("hover");
          }
       })
+
+      const is = [...features].some((feature) => {
+         if (feature == ele){
+            userEle.classList.add("inFeature");
+            const computedStyle = window.getComputedStyle(feature);
+            const bgColor = computedStyle.getPropertyValue('--color');
+            userEle.style.setProperty("--color", bgColor);
+            return true;
+         }
+      })
+      if (!is) {
+         resetStyle();
+      }
 
       const dy = e.clientY - posY;
       const scrollDistance = 30;
@@ -101,8 +121,41 @@ function createUser(parent, values, baseIndex, userIndex) {
       });
    }
 
-   function holdingEnd() {
+   function holdingEnd(E) {
       if (!isHold) return;
+
+      let e = E, ele = E.target;
+      if (e.type == "touchmove") {
+         e = e.changedTouches[0];
+         ele = document.elementFromPoint(e.clientX, e.clientY);
+      }
+
+
+      [...features].some((feature) => {
+         if (feature == ele){
+            switch (feature) {
+               case features[0]:
+                  call(values.number);
+                  resetStyle()
+                  break;
+               case features[1]:
+                  openInWhatsapp(values.number);
+                  resetStyle()
+                  break;
+               case features[2]:
+
+                  resetSection();
+                  break;
+               case features[3]:
+
+                  resetSection();
+                  break;
+            }
+            return true;
+         }
+      })
+
+
       isHold = false;
       parent.parentElement.parentElement.classList.remove("current");
       allSec.forEach((sec) => {

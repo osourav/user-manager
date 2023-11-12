@@ -181,9 +181,10 @@ function CIN(parent, classes = "", id = "", innerHTML = "") {
    return ele;
 }
 
-/**/
-/*    */
-/*        */
-/*            */
-/*                */
+function call(number) {
+   window.location.href = `tel:${number}`;
+}
+function openInWhatsapp(number) {
+   window.location.href = `whatsapp://send?phone=${number}&text=Hi`;
+}
 
