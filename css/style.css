@@ -62,8 +62,8 @@ header #title {
    font-size: 1.3rem;
    font-family: Righteous;
 }
-header i {
-   font-size: 1.3rem;
+header .header-btn {
+   scale: 1.3;
 }
 main {
    position: relative;
@@ -231,7 +231,7 @@ main .sec {
    color: #fff;
 }
 
-.basic .s-btn {
+.s-btn {
    position: relative;
    width: calc(var(--cs) - 0.4rem);
    height: calc(var(--cs) - 0.4rem);
@@ -557,7 +557,7 @@ main .sec {
    .cursor {
       cursor: pointer;
    }
-   .basic .s-btn:hover {
+   .s-btn:hover {
       background: #fff7;
       color: #000000;
       text-shadow: 0 0 1px #fff7;
@@ -579,7 +579,7 @@ main .sec {
       border: solid 1px #000;
    }
 }
-.basic .s-btn:active {
+.s-btn:active {
    background: #fff7;
    color: #000000;
    text-shadow: 0 0 1px #fff7;
