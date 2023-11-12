@@ -592,7 +592,7 @@ main .sec {
    background-size: 200% auto;
 }
 
-@media (hover:hover) {
+@media screen and (min-width: 490px) {
    .cursor {
       cursor: pointer;
    }
