@@ -553,7 +553,7 @@ main .sec {
    background-size: 200% auto;
 }
 
-@media (hover: hover) {
+@media (hover:hover) {
    .cursor {
       cursor: pointer;
    }
@@ -579,20 +579,19 @@ main .sec {
       border: solid 1px #000;
    }
 }
-@media (hover: none) {
-   .basic .s-btn:active {
-      background: #fff7;
-      color: #000000;
-      text-shadow: 0 0 1px #fff7;
-   }
-   .floting-window .buttons button:active {
-      background-position: right center;
-      color: #fff;
-      text-decoration: none;
-   }
-   .floting-window .close:active {
-      color: #f00;
-      background: #fff;
-      border: solid 1px #000;
-   }
+.basic .s-btn:active {
+   background: #fff7;
+   color: #000000;
+   text-shadow: 0 0 1px #fff7;
 }
+.floting-window .buttons button:active {
+   background-position: right center;
+   color: #fff;
+   text-decoration: none;
+}
+.floting-window .close:active {
+   color: #f00;
+   background: #fff;
+   border: solid 1px #000;
+}
+
