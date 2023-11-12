@@ -11,6 +11,7 @@ function createUser(parent, values, baseIndex, userIndex) {
    /**/CP(userEle, "center small", "", `${_ag[0]}${_ag[1]}+`)
    /**/CP(userEle, "center small", "", values.location)
 
+   const features = parent.parentElement.parentElement.querySelectorAll(".feature");
    let isHold = false;
    let holdTimerId;
    let posY = 0;
@@ -36,6 +37,17 @@ function createUser(parent, values, baseIndex, userIndex) {
          e = e.touches[0];
          ele = document.elementFromPoint(e.clientX, e.clientY);
       }
+
+      features.forEach((feature) => {
+         if (feature == ele){
+            feature.classList.add("hover");
+            const bg = window.getComputedStyle(feature).backgroundColor;
+            userEle.setAttribute("style", `--color: ${bg}`);
+         } else {
+            userEle.setAttribute("style", ``);
+            feature.classList.remove("hover");
+         }
+      })
 
       const dy = e.clientY - posY;
       const scrollDistance = 30;
@@ -96,7 +108,7 @@ function createUser(parent, values, baseIndex, userIndex) {
       allSec.forEach((sec) => {
          sec.classList.remove("focus");
       });
-      window.open("tel:8250032643");
+      
       clearTimeout(holdTimerId);
       userOuter.classList.remove("active");
 
@@ -343,16 +355,27 @@ function createSection(name, active, index, users = []) {
    /**/ const top = CD(sec, "top");
    /*    */ const basic = CD(top, "basic");
    /*        */ const menu = CD(basic, "menu-options");
-   /*            */ const rename = CD(menu, "option");
+   /*            */ const rename = CD(menu, "option cursor");
    /*                */ const renameI = CI(rename, `sbi-pencil1`);
-   /*            */ const duplicate = CD(menu, "option");
-   /*                */ const duplicateI = CI(duplicate, `sbi-clone`);
-   /*            */ const remove = CD(menu, "option");
-   /*                */ const removeI = CI(remove, `sbi-delete_sweep`);
-   /*        */ const menuBtn = CI(basic, "icon sbi-dots-three-vertical");
+   /*            */ const duplicate = CD(menu, "option cursor");
+   /*                */ const duplicateI = CI(duplicate, `sbi-documents`);
+   /*            */ const remove = CD(menu, "option cursor");
+   /*                */ const removeI = CI(remove, `sbi-delete_forever`);
+   /*        */ const menuBtn = CD(basic, "s-btn cursor");
+   /*            */const menuBtnI = CI(menuBtn, "icon sbi-scatter_plot");
    /*        */ const nm = CD(basic, "name", "", name);
-   /*        */ const cUsrBtn = CI(basic, "icon add mid sbi-person_add");
-   /*        */ const tglBtn = CD(basic, "toggle-btn");
+   /*    */ const features = CD(top, "features");
+   /*        */ const fCall = CD(features, "feature call cursor");
+   /*            */ const fCallI = CI(fCall, "sbi-phone");
+   /*        */ const fWP = CD(features, "feature whatsapp cursor");
+   /*            */ const fWPI = CI(fWP, "sbi-whatsapp");
+   /*        */ const fEdit = CD(features, "feature edit cursor");
+   /*            */ const fEditI = CI(fEdit, "sbi-pencil1");
+   /*        */ const fDelete = CD(features, "feature delete cursor");
+   /*            */ const fDeleteI = CI(fDelete, "sbi-delete");
+   /*        */ const cUsrBtn = CD(basic, "s-btn cursor");
+   /*            */ const cUsrBtnI = CI(cUsrBtn, "icon add mid sbi-person_add");
+   /*        */ const tglBtn = CD(basic, "toggle-btn s-btn cursor");
    /*            */ const hid = CI(tglBtn, "icon big sbi-remove1");
    /*            */ const sow = CI(tglBtn, "icon big sbi-keyboard_arrow_down");
    /**/ const inner = CD(sec, "inner-sec");
@@ -446,10 +469,14 @@ function createSection(name, active, index, users = []) {
       }, holdDelay * 2);
    }
    
-   function tocuhMove(e) {
+   function holdingMove(E) {
       if (!isHold) return;
-      const { clientY, clientX } = e.touches[0];
-      const ele = document.elementFromPoint(clientX, clientY);
+      let e = E, ele = e.target;
+
+      if (e.type == "touchmove") {
+         e = e.touches[0];
+         ele = document.elementFromPoint(e.clientX, e.clientY);
+      }
 
       [rename, duplicate, remove].some((e) => {
          if (e == ele) {
@@ -462,7 +489,8 @@ function createSection(name, active, index, users = []) {
 
    menuBtn.addEventListener("mousedown", holdingStart);
    menuBtn.addEventListener("touchstart", holdingStart);
-   window.addEventListener("touchmove", tocuhMove);
+   window.addEventListener("mousemove", holdingMove);
+   window.addEventListener("touchmove", holdingMove);
    window.addEventListener("mouseup", holdingEnd);
    window.addEventListener("touchend", holdingEnd);
 }
