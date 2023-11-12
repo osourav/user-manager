@@ -98,6 +98,7 @@ function getFormatInput(text) {
 function CD(parent, classes = "", id = "", innerHTML = "") {
    const ele = document.createElement("div");
    const cless = classes.split(" ");
+   if (classes)
    cless.forEach((cls) => {
       ele.classList.add(cls);
    });
@@ -111,6 +112,7 @@ function CD(parent, classes = "", id = "", innerHTML = "") {
 function CS(parent, classes = "", id = "", innerHTML = "") {
    const ele = document.createElement("section");
    const cless = classes.split(" ");
+   if (classes)
    cless.forEach((cls) => {
       ele.classList.add(cls);
    });
@@ -124,6 +126,7 @@ function CS(parent, classes = "", id = "", innerHTML = "") {
 function CI(parent, classes = "", id = "") {
    const ele = document.createElement("i");
    const cless = classes.split(" ");
+   if (classes)
    cless.forEach((cls) => {
       ele.classList.add(cls);
    });
@@ -134,14 +137,15 @@ function CI(parent, classes = "", id = "") {
 }
 
 // create p
-function CP(parent, classes = "", id = "") {
+function CP(parent, classes = "", id = "", innerHTML = "") {
    const ele = document.createElement("p");
    const cless = classes.split(" ");
-   cless.forEach((cls) => {
-      ele.classList.add(cls);
-   });
-
+   if (classes)
+      cless.forEach((cls) => {
+         ele.classList.add(cls);
+      });
    if (id) ele.setAttribute("id", id);
+   ele.innerHTML = innerHTML;
    parent.appendChild(ele);
    return ele;
 }
@@ -150,6 +154,7 @@ function CP(parent, classes = "", id = "") {
 function CB(parent, classes = "", id = "", innerHTML = "") {
    const ele = document.createElement("button");
    const cless = classes.split(" ");
+   if (classes)
    cless.forEach((cls) => {
       ele.classList.add(cls);
    });
@@ -165,6 +170,7 @@ function CIN(parent, classes = "", id = "", innerHTML = "") {
    const ele = document.createElement("input");
    ele.type = "text";
    const cless = classes.split(" ");
+   if (classes)
    cless.forEach((cls) => {
       ele.classList.add(cls);
    });

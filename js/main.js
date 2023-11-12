@@ -1,20 +1,15 @@
 const allSec = [];
 
 function createUser(parent, values, baseIndex, userIndex) {
+   const _ag = values.age + " ";
    const userOuter = CD(parent, "user-outer");
-   const userEle = CD(
-      userOuter,
-      "user",
-      "",
-      `
-      <p class="small-right">${values.name}</p>
-      <p>${values.number}</p>
-      <p class="center">${values.gender}</p>
-      <p class="center small">${values.work}</p>
-      <p class="center small">${values.age}</p>
-      <p class="center small">${values.location}</p>
-   `
-   );
+   const userEle = CD(userOuter, "user", "");
+   /**/CP(userEle, "small-right name", "", values.name)
+   /**/const number = CP(userEle, "number", "", values.number)
+   /**/CP(userEle, "center", "", values.gender)
+   /**/CP(userEle, "center small", "", values.work)
+   /**/CP(userEle, "center small", "", `${_ag[0]}${_ag[1]}+`)
+   /**/CP(userEle, "center small", "", values.location)
 
    let isHold = false;
    let holdTimerId;
@@ -58,7 +53,7 @@ function createUser(parent, values, baseIndex, userIndex) {
          window.scrollBy(0, _d);
          eleY += _d;
       }
-      
+
       eleY += dy;
       userEle.style.top = `${eleY}px`;
       userOuter.classList.add("active");
@@ -115,6 +110,21 @@ function createUser(parent, values, baseIndex, userIndex) {
       }
       console.log("-----");
    }
+
+   function copyNumber() {
+      const num = number.innerText;
+      if (!navigator.clipboard) {
+         fallbackCopyTextToClipboard(num);
+         return;
+      }
+      navigator.clipboard.writeText(num).then(function() {
+         console.log("Copying to clipboard was successful!");
+      }, function(err) {
+         console.error("Could not copy text: ", err);
+      });
+   }
+
+   number.addEventListener("click", copyNumber);
 
    userOuter.addEventListener("mousedown", holdingStart);
    window.addEventListener("mousedown", start);

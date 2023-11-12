@@ -256,25 +256,24 @@ main .sec {
    background: #a9ffa9;
 }
 
-
-
-
-
-
-
-
-
-
-.sec .user * {
+.sec .user-outer.active .user * {
    pointer-events: none;
 }
 .sec .user:nth-child(even) {
    background: #eee;
 }
-.sec .user p {
-   font-family: Roboto;
+.sec .user > p {
+   font-family: Oswald;
    font-weight: 600;
-   font-size: 0.9rem;
+   font-size: 0.8rem;
+}
+.sec .user > p.name {
+   font-family: Google;
+}
+.sec .user > p.number {
+   color: #5cb8ff;
+   font-weight: 900;
+   text-shadow: 0 0 1px #0004;
 }
 .sec .user p.small-right {
    padding-left: 4px;
@@ -283,7 +282,7 @@ main .sec {
    text-align: center;
 }
 .sec .user .small {
-   font-size: 0.8rem;
+   font-size: 0.7rem;
 }
 
 /* ------- add section window -------- */
