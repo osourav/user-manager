@@ -65,7 +65,12 @@ header #title {
 header .header-btn {
    scale: 1.3;
 }
-#main-manu {
+
+
+
+
+#mainMenu {
+   --mm-w: 250px;
    position: fixed;
    width: 100vw;
    height: 100vh;
@@ -73,34 +78,101 @@ header .header-btn {
    backdrop-filter: blur(3px);
    inset: 0;
    z-index: 5;
-   display: none;
+   opacity: 0;
+   pointer-events: none;
+   transition: linear 300ms opacity;
 }
-#main-manu #menuInner {
+#mainMenu.active {
+   opacity: 1;
+   pointer-events: all;
+}
+#mainMenu #menuInner {
    position: absolute;
-   right: 0;
+   right: calc(var(--mm-w) * -1);
    top: 0;
-   width: 250px;
+   width: var(--mm-w);
    height: 100%;
-   background: linear-gradient(95.2deg, rgba(173,252,234,1) 26.8%, rgba(192,229,246,1) 64%);
+   border-left: 2px solid #0007;
+   background: linear-gradient(95.2deg, #adfcea 26.8%, #c0e5f6 64%);
    display: flex;
    flex-direction: column;
+   transition: linear 300ms right;
 }
-#main-manu #welcome {
+#mainMenu.active #menuInner {
+   right: 0;
+}
+#mainMenu #welcome {
    position: relative;
    width: 100%;
-   height: 3rem;
-   font-size: 1.6rem;
+   height: 5rem;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+}
+#welcome p {
    font-family: Righteous;
+   font-weight: 900;
+   font-size: 2rem;
+   color: #ff6600;
+   text-shadow: 0 0 1px #000;
+}
+#welcome span {
+   font-family: Righteous;
+   font-size: 1rem;
+}
+#mainMenu #menuOptions {
+   position: relative;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: var(--gap);
+}
+#menuOptions .option {
+   position: relative;
+   width: 100%;
+   padding: calc(var(--margin) / 1.5) var(--margin);
+   gap: calc(var(--gap) * 2);
+   display: flex;
+   padding-left: calc(var(--margin) * 2);
+   border-style: solid;
+   background-image: linear-gradient(260deg, #70fff8 11.2%, #9cfcf8 91.1%);;
+   background-image: linear-gradient(
+      to right,
+      #70fff8 0%,
+      #26d0ce 51%,
+      #9cfcf8 100%
+   );
+   border-width: 2px;
+   border-color: #26d0ce #70fff8 #70fff8 #26d0ce;
+   text-transform: uppercase;
+   transition: 0.5s;
+   background-size: 200% auto;
+}
+#menuOptions .option > p,
+#menuOptions .option > i {
+   position: relative;
+   height: 100%;
    display: grid;
    place-items: center;
+   font-size: 0.9rem;
+   font-family: Roboto;
+   color: #fff;
+   text-shadow: 0 0 2px #000;
+   font-weight: 900;
 }
-#main-manu .m-options {
-
+#menuOptions .option > i {
+   font-size: 1.3rem;
 }
-
-
-
-
+#copyright {
+   position: absolute;
+   bottom: 10px;
+   right: 10px;
+   font-family: Roboto;
+   font-weight: 900;
+   font-size: 0.7rem;
+   color: #0006;
+}
 
 
 
@@ -601,6 +673,10 @@ main .sec {
       color: #000000;
       text-shadow: 0 0 1px #fff7;
    }
+
+   #menuOptions .option:hover {
+      background-position: right center;
+   }
    .floting-window .buttons button {
       cursor: pointer;
    }
@@ -622,6 +698,9 @@ main .sec {
    background: #fff7;
    color: #000000;
    text-shadow: 0 0 1px #fff7;
+}
+#menuOptions .option:active {
+   background-position: right center;
 }
 .floting-window .buttons button:active {
    background-position: right center;
