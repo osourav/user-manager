@@ -143,11 +143,15 @@ function createUser(parent, values, baseIndex, userIndex) {
                   resetStyle()
                   break;
                case features[2]:
-
+                  createInputsForUser(multiInput, values, title = "Modify User", btnName = "Continue").then((newValue) => {
+                     if (newValue !== null) {
+                        dataBase[baseIndex].users[userIndex] = newValue;
+                     }
+                  })
                   resetSection();
                   break;
                case features[3]:
-
+                  dataBase[baseIndex].users.splice(userIndex, 1);
                   resetSection();
                   break;
             }
