@@ -141,10 +141,11 @@ function createUser(parent, values, baseIndex, userIndex) {
                case features[2]:
                   createInputsForUser(multiInput, values, title = "Modify User", btnName = "Continue").then((newValue) => {
                      if (newValue !== null) {
+                        console.log(newValue);
                         dataBase[baseIndex].users[userIndex] = newValue;
+                        resetSection();
                      }
                   })
-                  resetSection();
                   break;
                case features[3]:
                   dataBase[baseIndex].users.splice(userIndex, 1);
