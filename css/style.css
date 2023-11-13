@@ -224,11 +224,12 @@ main .sec {
    width: min-content;
    height: calc(100% - 0.4rem);
    margin: 0.2rem;
-   gap: calc(var(--margin) / 2);
+   gap: calc(var(--gap) / 2);
    padding: calc(var(--gap) / 2);
    display: none;
    grid-template-columns: repeat(4, 1fr);
-   background: #0006;
+   background: #0009;
+   backdrop-filter: blur(3px);
    border-radius: 4px;
    margin-right: calc(var(--cs) / 2);
    box-shadow: 0 0 0.2rem #fff;
@@ -241,8 +242,9 @@ main .sec {
 .features .feature {
    --color: #04bc8c;
    position: relative;
-   width: var(--cs);
+   width: calc(var(--cs) + var(--gap) * 2);
    height: 100%;
+   padding: calc(var(--gap)) calc(var(--gap) * 2);
    border-radius: 5px;
    background: #fff3;
    display: grid;
@@ -270,20 +272,20 @@ main .sec {
 .features .feature.hover i {
    color: #fff;
 }
-
 .basic .menu-options {
    position: absolute;
    width: min-content;
    height: calc(100% - 0.4rem);
    margin: 0.2rem;
-   gap: calc(var(--margin) / 2);
+   gap: calc(var(--gap) / 2);
    padding: calc(var(--gap) / 2);
    inset: 0;
    display: none;
-   background: #000;
+   background: #0009;
+   backdrop-filter: blur(3px);
    border-radius: 5px;
    box-shadow: 0 0 0.2rem #fff;
-   z-index: 1;
+   z-index: 1;  
 }
 .basic .menu-options.active {
    display: flex;
@@ -291,9 +293,10 @@ main .sec {
 .basic .menu-options .option {
    --color: #ffbf00;
    position: relative;
-   width: var(--cs);
+   width: calc(var(--cs) + var(--gap) * 2);
    height: 100%;
    display: grid;
+   padding: calc(var(--gap)) calc(var(--gap) * 2);
    place-items: center;
    border-radius: 3px;
    background: #fff3;
@@ -468,8 +471,8 @@ main .sec {
    z-index: 2;
    transform: scale(1);
    opacity: 1;
-   transition: linear 200ms background, linear 200ms transform,
-      linear 200ms opacity;
+   transition: linear 200ms background, linear 300ms transform,
+      linear 300ms opacity;
 }
 .sec .user-outer .user::before {
    content: "";
@@ -488,7 +491,7 @@ main .sec {
    outline: solid 0.2rem #00000077;
 }
 .sec .user-outer .user.inFeature {
-   opacity: 0.5;
+   opacity: 0.2;
    transform: scale(0.4);
 }
 .sec .user-outer.placed .user {

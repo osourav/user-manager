@@ -1,14 +1,4 @@
 const allSec = [];
-let clickInnerMenu = false;
-
-openMainMenu.addEventListener("click", () => {
-   mainMenu.classList.add("active");
-});
-menuInner.addEventListener("click", () => (clickInnerMenu = true), true);
-mainMenu.addEventListener("click", () => {
-   if (!clickInnerMenu) mainMenu.classList.remove("active");
-   clickInnerMenu = false;
-});
 
 function createUser(parent, values, baseIndex, userIndex) {
    const _ag = values.age + " ";
