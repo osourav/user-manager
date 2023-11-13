@@ -407,13 +407,13 @@ function createSection(name, active, index, users = []) {
    const sec = CS(itsMain, `sec${active ? " active" : ""}`);
    /**/ const top = CD(sec, "top");
    /*    */ const basic = CD(top, "basic");
-   /*        */ const menu = CD(basic, "menu-options");
-   /*            */ const rename = CD(menu, "option cursor");
-   /*                */ const renameI = CI(rename, `sbi-pencil1`);
-   /*            */ const duplicate = CD(menu, "option cursor");
-   /*                */ const duplicateI = CI(duplicate, `sbi-documents`);
-   /*            */ const remove = CD(menu, "option cursor");
-   /*                */ const removeI = CI(remove, `sbi-delete_forever`);
+   /*    */ const menu = CD(top, "menu-options");
+   /*        */ const rename = CD(menu, "option cursor");
+   /*            */ const renameI = CI(rename, `sbi-pencil1`);
+   /*        */ const duplicate = CD(menu, "option cursor");
+   /*            */ const duplicateI = CI(duplicate, `sbi-documents`);
+   /*        */ const remove = CD(menu, "option cursor");
+   /*            */ const removeI = CI(remove, `sbi-delete_forever`);
    /*        */ const menuBtn = CD(basic, "s-btn cursor");
    /*            */const menuBtnI = CI(menuBtn, "icon sbi-scatter_plot");
    /*        */ const nm = CD(basic, "name", "", name);
@@ -498,7 +498,7 @@ function createSection(name, active, index, users = []) {
                   dataBase.insert(index, {
                      name: `${copy.name} copy`,
                      active: false,
-                     users: copy.users,
+                     users: [...copy.users].map(user => structuredClone(user)),
                   });
                   resetSection();
                   break;

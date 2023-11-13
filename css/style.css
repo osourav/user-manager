@@ -270,7 +270,7 @@ main .sec {
 .features .feature.hover i {
    color: #fff;
 }
-.basic .menu-options {
+.top .menu-options {
    position: absolute;
    width: min-content;
    height: calc(100% - 0.4rem);
@@ -283,12 +283,12 @@ main .sec {
    backdrop-filter: blur(3px);
    border-radius: 5px;
    box-shadow: 0 0 1px #000;
-   z-index: 1;
+   z-index: 4;
 }
-.basic .menu-options.active {
+.top .menu-options.active {
    display: flex;
 }
-.basic .menu-options .option {
+.top .menu-options .option {
    --color: #ffbf00;
    position: relative;
    width: calc(var(--cs) + var(--gap) * 2);
@@ -300,25 +300,25 @@ main .sec {
    background: #fff3;
    transition: linear 200ms background, linear 200ms color;
 }
-.basic .menu-options .option:nth-child(2) {
+.top .menu-options .option:nth-child(2) {
    --color: #00cbfe;
 }
-.basic .menu-options .option:nth-child(3) {
+.top .menu-options .option:nth-child(3) {
    --color: #ff0000;
 }
-.basic .menu-options .option i {
+.top .menu-options .option i {
    color: var(--color);
    pointer-events: none;
    font-size: 1.2rem;
    text-shadow: 1px 1px 1px #000000;
 }
-.basic .menu-options .option i.sbi-pencil1 {
+.top .menu-options .option i.sbi-pencil1 {
    font-size: 1rem;
 }
-.basic .menu-options .option.hover {
+.top .menu-options .option.hover {
    background: var(--color);
 }
-.basic .menu-options .option.hover i {
+.top .menu-options .option.hover i {
    color: #fff;
 }
 
@@ -695,7 +695,7 @@ main .sec {
       -webkit-box-reflect: below 1rem;
       transform: rotate(180deg);
    }
-   .basic .menu-options .option.hover {
+   .top .menu-options .option.hover {
       -webkit-box-reflect: below 1rem;
       transform: rotate(180deg);
    }
