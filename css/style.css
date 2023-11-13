@@ -2,9 +2,6 @@
    margin: 0;
    padding: 0;
    box-sizing: border-box;
-   touch-action: none;
-   -ms-touch-action: none;
-   -webkit-touch-callout: none;
    user-select: none;
    -ms-user-select: none;
    -webkit-user-select: none;
@@ -13,6 +10,11 @@
    scrollbar-width: none;
 
    /* outline: solid 1px #f00; */
+}
+body * {
+   touch-action: none;
+   -ms-touch-action: none;
+   -webkit-touch-callout: none;
 }
 *::-webkit-scrollbar {
    display: none;
@@ -47,7 +49,7 @@ body {
 }
 header {
    position: relative;
-   width: 100%;
+   width: calc(100% - 8px);
    height: 3rem;
    background-image: radial-gradient(
       circle farthest-corner at 22.4% 21.7%,
@@ -57,17 +59,18 @@ header {
    display: grid;
    place-items: center;
    grid-template-columns: 4fr 1fr 1fr;
+   border-left: solid 4px #0003;
+   border-right: solid 4px #0003;
 }
 header #title {
-   font-size: 1.3rem;
+   font-size: 1.4rem;
    font-family: Righteous;
+   color: #fff;
+   text-shadow: 0 0 2px #000;
 }
 header .header-btn {
    scale: 1.3;
 }
-
-
-
 
 #mainMenu {
    --mm-w: 250px;
@@ -136,7 +139,7 @@ header .header-btn {
    display: flex;
    padding-left: calc(var(--margin) * 2);
    border-style: solid;
-   background-image: linear-gradient(260deg, #70fff8 11.2%, #9cfcf8 91.1%);;
+   background-image: linear-gradient(260deg, #70fff8 11.2%, #9cfcf8 91.1%);
    background-image: linear-gradient(
       to right,
       #70fff8 0%,
@@ -174,8 +177,6 @@ header .header-btn {
    color: #0006;
 }
 
-
-
 main {
    position: relative;
    width: 100%;
@@ -208,6 +209,7 @@ main .sec {
    width: 100%;
    height: 2.5rem;
    display: grid;
+   padding: var(--gap);
    grid-template-columns: var(--cs) auto var(--cs) var(--cs);
    gap: var(--gap);
    place-items: center;
@@ -216,20 +218,6 @@ main .sec {
    box-shadow: 0 0 2px #000;
    z-index: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .top .features {
    position: absolute;
@@ -283,15 +271,6 @@ main .sec {
    color: #fff;
 }
 
-
-
-
-
-
-
-
-
-
 .basic .menu-options {
    position: absolute;
    width: min-content;
@@ -344,8 +323,8 @@ main .sec {
 
 .s-btn {
    position: relative;
-   width: calc(var(--cs) - 0.4rem);
-   height: calc(var(--cs) - 0.4rem);
+   width: calc(var(--cs) - 0.2rem);
+   height: calc(var(--cs) - 0.2rem);
    display: grid;
    place-items: center;
    border-radius: 8px;
@@ -353,9 +332,11 @@ main .sec {
    color: #fff;
    transition: linear 300ms background, linear 300ms color,
       linear 300ms text-shadow;
-   background: #0005;
+   background: #0003;
+   box-shadow: 1px 1px 3px #0007;
+}
+.s-btn > i {
    text-shadow: 0 0 1px #0007;
-   box-shadow: inset 0 0 2px #fff7;
 }
 .basic > .name {
    width: 100%;
@@ -487,7 +468,8 @@ main .sec {
    z-index: 2;
    transform: scale(1);
    opacity: 1;
-   transition: linear 200ms background, linear 200ms transform, linear 200ms opacity;
+   transition: linear 200ms background, linear 200ms transform,
+      linear 200ms opacity;
 }
 .sec .user-outer .user::before {
    content: "";
@@ -694,22 +676,31 @@ main .sec {
       border: solid 1px #000;
    }
 }
-.s-btn:active {
-   background: #fff7;
-   color: #000000;
-   text-shadow: 0 0 1px #fff7;
+@media screen and (max-width: 490px) {
+   .s-btn:active {
+      background: #fff7;
+      color: #000000;
+      text-shadow: 0 0 1px #fff7;
+   }
+   .features .feature.hover {
+      -webkit-box-reflect: below 1rem;
+      transform: rotate(180deg);
+   }
+   .basic .menu-options .option.hover {
+      -webkit-box-reflect: below 1rem;
+      transform: rotate(180deg);
+   }
+   #menuOptions .option:active {
+      background-position: right center;
+   }
+   .floting-window .buttons button:active {
+      background-position: right center;
+      color: #fff;
+      text-decoration: none;
+   }
+   .floting-window .close:active {
+      color: #f00;
+      background: #fff;
+      border: solid 1px #000;
+   }
 }
-#menuOptions .option:active {
-   background-position: right center;
-}
-.floting-window .buttons button:active {
-   background-position: right center;
-   color: #fff;
-   text-decoration: none;
-}
-.floting-window .close:active {
-   color: #f00;
-   background: #fff;
-   border: solid 1px #000;
-}
-

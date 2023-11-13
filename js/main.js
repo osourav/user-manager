@@ -153,8 +153,8 @@ function createUser(parent, values, baseIndex, userIndex) {
                      if (newValue !== null) {
                         console.log(newValue);
                         dataBase[baseIndex].users[userIndex] = newValue;
-                        resetSection();
                      }
+                     resetSection();
                   })
                   break;
                case features[3]:
@@ -529,7 +529,7 @@ function createSection(name, active, index, users = []) {
       isHold = true;
       holdTimerId = setTimeout(() => {
          if (isHold) holdingContinue();
-      }, holdDelay * 2);
+      }, holdDelay);
    }
    
    function holdingMove(E) {
