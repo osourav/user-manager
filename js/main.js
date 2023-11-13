@@ -104,8 +104,9 @@ function createUser(parent, values, baseIndex, userIndex) {
       userOuter.classList.add("active");
 
 
-      allSec.forEach((sec, moveIndex) => {
+      allSec.forEach((sec) => {
          const nodeIndex = getElementIndex(ele);
+         
          if (sec.classList.contains("current") && nodeIndex !== -1) {
             // ascending
             if (userIndex < nodeIndex) {
@@ -113,16 +114,21 @@ function createUser(parent, values, baseIndex, userIndex) {
             } else { // descending
                setUserClassUpDown(nodeIndex, userIndex - 1, "down");
             }
-         } else if (!sec.classList.contains("current") && sec == ele) {
-            userOuter.classList.add("placed");
-         } else {
-            userOuter.classList.remove("placed");
-         }
-
-         if (sec.classList.contains("current") && nodeIndex === -1) {
+         } else if (sec.classList.contains("current") && nodeIndex === -1) {
             removeUserClassUpDown();
          }
       });
+
+      allSec.some((sec) => {
+         if (!sec.classList.contains("current") && sec == ele) {
+            userOuter.classList.add("placed");
+            return true;
+         } else {
+            userOuter.classList.remove("placed");
+         }
+      });
+
+      
       posY = e.clientY;
    }
 
@@ -145,7 +151,7 @@ function createUser(parent, values, baseIndex, userIndex) {
       if (!isHold) return;
 
       let e = E, ele = E.target;
-      if (e.type == "touchmove") {
+      if (e.type == "touchend") {
          e = e.changedTouches[0];
          ele = document.elementFromPoint(e.clientX, e.clientY);
       }

@@ -26,7 +26,7 @@ const dataBase = [
             number: "7478103293",
             gender: "F",
             work: "Student",
-            age: "18-22",
+            age: "13-22",
             location: "Kolkata",
          },
          {
@@ -34,7 +34,7 @@ const dataBase = [
             number: "8250032643",
             gender: "M",
             work: "Student",
-            age: "18-22",
+            age: "10-22",
             location: "Kolkata",
          },
          {
@@ -42,7 +42,7 @@ const dataBase = [
             number: "7478103293",
             gender: "F",
             work: "Student",
-            age: "18-22",
+            age: "14-22",
             location: "Kolkata",
          },
          {

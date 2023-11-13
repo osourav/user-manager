@@ -701,6 +701,7 @@ main .sec {
       color: #000000;
       text-shadow: 0 0 1px #fff7;
    }
+
    .features .feature.hover {
       -webkit-box-reflect: below 1rem;
       transform: rotate(180deg);
