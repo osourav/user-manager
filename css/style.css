@@ -160,6 +160,7 @@ header .header-btn {
    color: #353535;
    text-shadow: 0 0 2px #fff;
    font-weight: 900;
+   transition: all 300ms linear;
 }
 #menuOptions .option > i {
    font-size: 1.3rem;
