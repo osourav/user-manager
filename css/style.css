@@ -23,6 +23,7 @@ body * {
    --margin: 1rem;
    --gap: 0.3rem;
    --cs: 2rem;
+   --mm-w: 250px;
 }
 body {
    position: relative;
@@ -71,9 +72,7 @@ header #title {
 header .header-btn {
    scale: 1.3;
 }
-
 #mainMenu {
-   --mm-w: 250px;
    position: fixed;
    width: 100vw;
    height: 100vh;
@@ -96,7 +95,7 @@ header .header-btn {
    width: var(--mm-w);
    height: 100%;
    border-left: 2px solid #0007;
-   background: linear-gradient(95.2deg, #adfcea 26.8%, #c0e5f6 64%);
+   background: #fff;
    display: flex;
    flex-direction: column;
    transition: linear 300ms right;
@@ -112,6 +111,7 @@ header .header-btn {
    justify-content: center;
    align-items: center;
    flex-direction: column;
+   margin-bottom: 0.5rem;
 }
 #welcome p {
    font-family: Righteous;
@@ -134,20 +134,17 @@ header .header-btn {
 #menuOptions .option {
    position: relative;
    width: 100%;
-   padding: calc(var(--margin) / 1.5) var(--margin);
+   height: 50px;
    gap: calc(var(--gap) * 2);
    display: flex;
+   justify-content: start;
    padding-left: calc(var(--margin) * 2);
-   border-style: solid;
-   background-image: linear-gradient(260deg, #70fff8 11.2%, #9cfcf8 91.1%);
    background-image: linear-gradient(
       to right,
-      #70fff8 0%,
-      #26d0ce 51%,
-      #9cfcf8 100%
+      #a2fffa 0%,
+      #009b98 50%,
+      #d2fffd 100%
    );
-   border-width: 2px;
-   border-color: #26d0ce #70fff8 #70fff8 #26d0ce;
    text-transform: uppercase;
    transition: 0.5s;
    background-size: 200% auto;
@@ -160,8 +157,8 @@ header .header-btn {
    place-items: center;
    font-size: 0.9rem;
    font-family: Roboto;
-   color: #fff;
-   text-shadow: 0 0 2px #000;
+   color: #353535;
+   text-shadow: 0 0 2px #fff;
    font-weight: 900;
 }
 #menuOptions .option > i {
@@ -285,7 +282,7 @@ main .sec {
    backdrop-filter: blur(3px);
    border-radius: 5px;
    box-shadow: 0 0 1px #000;
-   z-index: 1;  
+   z-index: 1;
 }
 .basic .menu-options.active {
    display: flex;
@@ -662,6 +659,14 @@ main .sec {
    #menuOptions .option:hover {
       background-position: right center;
    }
+   #menuOptions .option:hover {
+      background-position: right center;
+   }
+   #menuOptions .option:hover > p,
+   #menuOptions .option:hover > i {
+      color: #fff;
+      text-shadow: 0 0 2px #000;
+   }
    .floting-window .buttons button {
       cursor: pointer;
    }
@@ -695,6 +700,11 @@ main .sec {
    }
    #menuOptions .option:active {
       background-position: right center;
+   }
+   #menuOptions .option:active > p,
+   #menuOptions .option:active > i {
+      color: #fff;
+      text-shadow: 0 0 2px #000;
    }
    .floting-window .buttons button:active {
       background-position: right center;
