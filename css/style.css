@@ -232,7 +232,7 @@ main .sec {
    backdrop-filter: blur(3px);
    border-radius: 4px;
    margin-right: calc(var(--cs) / 2);
-   box-shadow: 0 0 0.2rem #fff;
+   box-shadow: 0 0 1px #000;
    place-items: center;
    z-index: 2;
 }
@@ -284,7 +284,7 @@ main .sec {
    background: #0009;
    backdrop-filter: blur(3px);
    border-radius: 5px;
-   box-shadow: 0 0 0.2rem #fff;
+   box-shadow: 0 0 1px #000;
    z-index: 1;  
 }
 .basic .menu-options.active {
