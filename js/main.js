@@ -4,73 +4,83 @@ function createUser(parent, values, baseIndex, userIndex) {
    const _ag = values.age + " ";
    const userOuter = CD(parent, "user-outer");
    const userEle = CD(userOuter, "user", "");
-   /**/CP(userEle, "small-right name", "", values.name)
-   /**/const number = CP(userEle, "number", "", values.number)
-   /**/CP(userEle, "center", "", values.gender)
-   /**/CP(userEle, "center small", "", values.work)
-   /**/CP(userEle, "center small", "", `${_ag[0]}${_ag[1]}+`)
-   /**/CP(userEle, "center small", "", values.location)
+   /**/ CP(userEle, "small-right name", "", values.name);
+   /**/ const number = CP(userEle, "number", "", values.number);
+   /**/ CP(userEle, "center", "", values.gender);
+   /**/ CP(userEle, "center small", "", values.work);
+   /**/ CP(userEle, "center small", "", `${_ag[0]}${_ag[1]}+`);
+   /**/ CP(userEle, "center small", "", values.location);
 
    const features = parent.parentElement.parentElement.querySelectorAll(".feature");
    let isHold = false;
-   let holdTimerId;
-   let lastEle = null;
-   let posY = 0;
-   let eleY = 0;
-   let last = {
-      is: false,
-      bi: 0,
-      ui: 0,
-      mi: 0,
-   };
+   let holdTimerId, posY = 0, eleY = 0;
 
    function resetStyle() {
       userEle.classList.remove("inFeature");
       const computedStyle = window.getComputedStyle(userEle);
-      const bgColor = computedStyle.getPropertyValue('--color0');
+      const bgColor = computedStyle.getPropertyValue("--color0");
       userEle.style.setProperty("--color", bgColor);
+   }
+
+   function getElementIndex(ele) {
+      const eles = parent.childNodes;
+      for (let i = 0; i < eles.length; i++) {
+         if (ele == eles[i]) return i;
+      }
+      return -1;
+   }
+
+   function setUserClassUpDown(start, end, cls) {
+      const eles = parent.childNodes;
+      for (let i = start; i <= end; i++) {
+         eles[i].classList.add(cls);
+      }
+   }
+   function removeUserClassUpDown() {
+      parent.childNodes.forEach(ele => {
+         ele.classList.remove("up");
+         ele.classList.remove("down");
+      });
    }
 
    function start(e) {
       posY = e.clientY;
-      if (e.type == "touchstart") (posY = e.touches[0].clientY);
+      if (e.type == "touchstart") posY = e.touches[0].clientY;
       eleY = 0;
    }
 
    function move(E) {
       if (!isHold) return;
 
-      let e = E, ele = E.target;
+      let e = E,
+         ele = E.target;
       if (e.type == "touchmove") {
          e = e.touches[0];
          ele = document.elementFromPoint(e.clientX, e.clientY);
       }
 
       features.forEach((feature) => {
-         if (feature == ele){
+         if (feature == ele) {
             feature.classList.add("hover");
             const computedStyle = window.getComputedStyle(feature);
-            const bgColor = computedStyle.getPropertyValue('--color');
+            const bgColor = computedStyle.getPropertyValue("--color");
             userEle.style.setProperty("--color", bgColor);
          } else {
             feature.classList.remove("hover");
          }
-      })
+      });
 
       const is = [...features].some((feature) => {
-         if (feature == ele){
+         if (feature == ele) {
             userEle.classList.add("inFeature");
             const computedStyle = window.getComputedStyle(feature);
-            const bgColor = computedStyle.getPropertyValue('--color');
+            const bgColor = computedStyle.getPropertyValue("--color");
             userEle.style.setProperty("--color", bgColor);
             return true;
          }
-      })
-      if (!is) {
-         resetStyle();
-      }
+      });
+      if (!is) resetStyle();
 
-      lastEle = ele;
 
       const dy = e.clientY - posY;
       const scrollDistance = 30;
@@ -93,17 +103,24 @@ function createUser(parent, values, baseIndex, userIndex) {
       userEle.style.top = `${eleY}px`;
       userOuter.classList.add("active");
 
-      allSec.some((sec, moveIndex) => {
-         if (!sec.classList.contains("current") && sec == ele) {
-            last.is = true;
-            last.bi = baseIndex;
-            last.ui = userIndex;
-            last.mi = moveIndex;
+
+      allSec.forEach((sec, moveIndex) => {
+         const nodeIndex = getElementIndex(ele);
+         if (sec.classList.contains("current") && nodeIndex !== -1) {
+            // ascending
+            if (userIndex < nodeIndex) {
+               setUserClassUpDown(userIndex + 1, nodeIndex, "up");
+            } else { // descending
+               setUserClassUpDown(nodeIndex, userIndex - 1, "down");
+            }
+         } else if (!sec.classList.contains("current") && sec == ele) {
             userOuter.classList.add("placed");
-            return true;
          } else {
             userOuter.classList.remove("placed");
-            last.is = false;
+         }
+
+         if (sec.classList.contains("current") && nodeIndex === -1) {
+            removeUserClassUpDown();
          }
       });
       posY = e.clientY;
@@ -113,7 +130,7 @@ function createUser(parent, values, baseIndex, userIndex) {
       isHold = true;
       holdTimerId = setTimeout(() => {
          if (isHold) holdingContinue();
-      }, holdDelay);
+      }, holdDelay / 2);
    }
 
    function holdingContinue() {
@@ -124,28 +141,38 @@ function createUser(parent, values, baseIndex, userIndex) {
       });
    }
 
-   function holdingEnd() {
+   function holdingEnd(E) {
       if (!isHold) return;
 
+      let e = E, ele = E.target;
+      if (e.type == "touchmove") {
+         e = e.changedTouches[0];
+         ele = document.elementFromPoint(e.clientX, e.clientY);
+      }
+
       [...features].some((feature) => {
-         if (feature == lastEle){
+         if (feature == ele) {
             switch (feature) {
                case features[0]:
                   call(values.number);
-                  resetStyle()
+                  resetStyle();
                   break;
                case features[1]:
                   openInWhatsapp(values.number);
-                  resetStyle()
+                  resetStyle();
                   break;
                case features[2]:
-                  createInputsForUser(multiInput, values, title = "Modify User", btnName = "Continue").then((newValue) => {
+                  createInputsForUser(
+                     multiInput,
+                     values,
+                     (title = "Modify User"),
+                     (btnName = "Continue")
+                  ).then((newValue) => {
                      if (newValue !== null) {
-                        console.log(newValue);
                         dataBase[baseIndex].users[userIndex] = newValue;
                      }
                      resetSection();
-                  })
+                  });
                   break;
                case features[3]:
                   dataBase[baseIndex].users.splice(userIndex, 1);
@@ -154,27 +181,30 @@ function createUser(parent, values, baseIndex, userIndex) {
             }
             return true;
          }
-      })
+      });
 
-      isHold = false;
-      parent.parentElement.parentElement.classList.remove("current");
-      allSec.forEach((sec) => {
+      allSec.forEach((sec, moveIndex) => {
+         const nodeIndex = getElementIndex(ele);
+
+         if (sec.classList.contains("current") && nodeIndex !== -1) {
+            const user = dataBase[baseIndex].users.splice(userIndex, 1);
+            dataBase[baseIndex].users.insert(nodeIndex, user[0]);
+            resetSection();
+         } else if (!sec.classList.contains("current") && sec == ele) {
+            const user = dataBase[baseIndex].users.splice(userIndex, 1);
+            dataBase[moveIndex].users.unshift(user[0]);
+            resetSection();
+         } else {
+            eleY = 0;
+            userEle.style.top = `${eleY}px`;
+         }
          sec.classList.remove("focus");
       });
-      
+
+      isHold = false;
       clearTimeout(holdTimerId);
       userOuter.classList.remove("active");
-
-      if (last.is) {
-         const { bi, ui, mi } = last;
-         const user = dataBase[bi].users.splice(ui, 1);
-         dataBase[mi].users.unshift(user[0]);
-         resetSection();
-      } else {
-         eleY = 0;
-         userEle.style.top = `${eleY}px`;
-      }
-      console.log("-----");
+      parent.parentElement.parentElement.classList.remove("current");
    }
 
    function copyNumber() {
@@ -183,11 +213,14 @@ function createUser(parent, values, baseIndex, userIndex) {
          fallbackCopyTextToClipboard(num);
          return;
       }
-      navigator.clipboard.writeText(num).then(function() {
-         console.log("Copying to clipboard was successful!");
-      }, function(err) {
-         console.error("Could not copy text: ", err);
-      });
+      navigator.clipboard.writeText(num).then(
+         function () {
+            console.log("Copying to clipboard was successful!");
+         },
+         function (err) {
+            console.error("Could not copy text: ", err);
+         }
+      );
    }
 
    number.addEventListener("click", copyNumber);
@@ -203,7 +236,12 @@ function createUser(parent, values, baseIndex, userIndex) {
    window.addEventListener("touchend", holdingEnd);
 }
 
-function createInputsForUser(parent, value, title = "Add User", btnName = "Create") {
+function createInputsForUser(
+   parent,
+   value,
+   title = "Add User",
+   btnName = "Create"
+) {
    return new Promise((resolve) => {
       parent.classList.add("active");
 
@@ -415,7 +453,7 @@ function createSection(name, active, index, users = []) {
    /*        */ const remove = CD(menu, "option cursor");
    /*            */ const removeI = CI(remove, `sbi-delete_forever`);
    /*        */ const menuBtn = CD(basic, "s-btn cursor");
-   /*            */const menuBtnI = CI(menuBtn, "icon sbi-scatter_plot");
+   /*            */ const menuBtnI = CI(menuBtn, "icon sbi-scatter_plot");
    /*        */ const nm = CD(basic, "name", "", name);
    /*    */ const features = CD(top, "features");
    /*        */ const fCall = CD(features, "feature call cursor");
@@ -486,7 +524,11 @@ function createSection(name, active, index, users = []) {
          if (e == ele) {
             switch (ele) {
                case rename:
-                  createSingleInputWindow("Rename Section", "New Name", "Rename").then((val) => {
+                  createSingleInputWindow(
+                     "Rename Section",
+                     "New Name",
+                     "Rename"
+                  ).then((val) => {
                      if (val !== null) {
                         dataBase[index].name = val;
                         nm.innerHTML = val;
@@ -498,7 +540,9 @@ function createSection(name, active, index, users = []) {
                   dataBase.insert(index, {
                      name: `${copy.name} copy`,
                      active: false,
-                     users: [...copy.users].map(user => structuredClone(user)),
+                     users: [...copy.users].map((user) =>
+                        structuredClone(user)
+                     ),
                   });
                   resetSection();
                   break;
@@ -521,10 +565,11 @@ function createSection(name, active, index, users = []) {
          if (isHold) holdingContinue();
       }, holdDelay);
    }
-   
+
    function holdingMove(E) {
       if (!isHold) return;
-      let e = E, ele = e.target;
+      let e = E,
+         ele = e.target;
 
       if (e.type == "touchmove") {
          e = e.touches[0];

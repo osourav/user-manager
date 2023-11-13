@@ -1,6 +1,6 @@
 // Pubali Maity 7478103293 F Student 19 Kolkata
 
-const holdDelay = 800; 
+const holdDelay = 500; 
 
 const dataBase = [
    {
@@ -21,6 +21,22 @@ const dataBase = [
       name: "Section 2",
       active: true,
       users: [
+         {
+            name: "Subrata Barui",
+            number: "7478103293",
+            gender: "F",
+            work: "Student",
+            age: "18-22",
+            location: "Kolkata",
+         },
+         {
+            name: "Sukumar Barui",
+            number: "8250032643",
+            gender: "M",
+            work: "Student",
+            age: "18-22",
+            location: "Kolkata",
+         },
          {
             name: "Subrata Barui",
             number: "7478103293",
