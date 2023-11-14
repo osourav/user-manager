@@ -1,21 +1,11 @@
-/* ----  local storage set and get ---- */
-function setDataFromLocalStorage(key, object) {
-   let data = JSON.stringify(object);
-   localStorage.setItem(key, data);
-}
-function getDataFromLocalStorage(key) {
-   return JSON.parse(localStorage.getItem(key))
-}
-function deleteDataFromLocalStorage(key) {
-   return localStorage.removeItem(key);
-}
 
 // array insert function add in array prototype
 Array.prototype.insert = function(index, ...items ) {
    this.splice(index, 0, ...items );
 };
 
-
+const b64toString = b64 => btoa(b64);
+const stringToB64 = b64 => atob(b64);
 
 function getFormatInput(text) {
    const values = text.split(" ");

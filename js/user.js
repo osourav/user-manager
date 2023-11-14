@@ -1,124 +1,111 @@
-let DATABASE = {
-   username: "----",
-   datas: [
-      {
-         name: "Section 1",
-         active: true,
-         users: [
-            {
-               name: "Shikha Barui",
-               number: "7478103293",
-               gender: "F",
-               work: "Student",
-               age: "18-22",
-               location: "Kolkata",
-            },
-         ],
-      },
-      {
-         name: "Section 2",
-         active: true,
-         users: [
-            {
-               name: "Subrata Barui",
-               number: "7478103293",
-               gender: "F",
-               work: "Student",
-               age: "13-22",
-               location: "Kolkata",
-            },
-            {
-               name: "Sheikh Sabir Ali Sheikh",
-               number: "8250032643",
-               gender: "M",
-               work: "Student",
-               age: "10-22",
-               location: "Navrangpura ahemedabad/gujrat",
-            },
-            {
-               name: "Subrata Barui",
-               number: "7478103293",
-               gender: "F",
-               work: "Student",
-               age: "14-22",
-               location: "Kolkata",
-            },
-            {
-               name: "Sukumar Barui",
-               number: "8250032643",
-               gender: "M",
-               work: "Student",
-               age: "18-22",
-               location: "Kolkata",
-            },
-         ],
-      },
-      {
-         name: "Section 3",
-         active: true,
-         users: [
-            {
-               name: "Pubali Maity",
-               number: "7478103293",
-               gender: "F",
-               work: "Student",
-               age: "18-22",
-               location: "Kolkata",
-            },
-            {
-               name: "Sourav Barui",
-               number: "8250032643",
-               gender: "M",
-               work: "Student",
-               age: "18-22",
-               location: "Kolkata",
-            },
-         ],
-      },
-   ]
-}
-let DATA = DATABASE.datas;
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+import {
+   set,
+   get,
+   getDatabase,
+   ref,
+} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
-const localStorageKey = "sb_user_manager";
-const localData = getDataFromLocalStorage(localStorageKey);
-if (localData !== null) {
-   DATABASE = localData;
-}
-resetSection();
+window.onload = async () => {
+   // Initialize Firebase
+   const app = initializeApp(firebaseConfig);
+   const analytics = getAnalytics(app);
+   const db = getDatabase();
 
-uploadData.addEventListener("click", () => {
-   createImportExportInput(flotingInput, "Export").then(val => {
-      if (val !== null) {
-         console.log(val);
+   const localData = await getDataFromLocalStorage(localStorageKey);
+   console.log(DATABASE);
+   console.log(localData);
 
-      }
-   })
-})
+   if (localData !== null) {
+      DATABASE = localData;
+      DATA = localData.datas;
+      userName.innerText = DATABASE.username;
+   }
+   resetSection();
 
-downloadData.addEventListener("click", () => {
-   createImportExportInput(flotingInput, "Import").then(val => {
-      if (val !== null) {
-         console.log(val);
+   uploadData.addEventListener("click", () => {
+      createImportExportInput(flotingInput, "Export").then(async (val) => {
+         if (val !== null) {
+            try {
+               const usersRef = ref(db, val.username);
+               const result = await get(usersRef);
+               
+               if (result.exists()) {
+                  const value = result.val();
+                  
+                  if (value.password == stringToB64(val.password)) {
+                     await set(usersRef, {
+                        username: val.username,
+                        data: Date.now(),
+                        datas: DATABASE.datas,
+                        password: value.password,
+                     });
+                     DATABASE.username = val.username;
+                     userName.innerText = value.username;
+                     saveLocal();
+                     console.log("success");
+                  } else {
+                     console.log("rong Password");
+                  }
+               } else {
+                  await set(usersRef, {
+                     username: val.username,
+                     data: Date.now(),
+                     datas: DATABASE.datas,
+                     password: stringToB64(val.password),
+                  });
+                  DATABASE.username = val.username;
+                  userName.innerText = val.username;
+                  saveLocal();
+                  console.log("new user success");
+               }
+               // console.log(result.val());
+            } catch (error) {
+               console.log(error);
+            }
+         }
+      });
+   });
 
-      }
-   })
-})
+   downloadData.addEventListener("click", () => {
+      createImportExportInput(flotingInput, "Import").then(async (val) => {
+         if (val !== null) {
+            try {
+               const usersRef = ref(db, val.username);
+               const result = await get(usersRef);
 
-changePassword.addEventListener("click", () => {
-   createChangePasswordInput(flotingInput).then(val => {
-      if (val !== null) {
-         console.log(val);
-   
-      }
-   })
-})
+               if (result.exists()) {
+                  const value = result.val();
 
+                  if (value.password == stringToB64(val.password)) {
+                     DATABASE.datas = value.datas;
+                     DATA = value.datas;
+                     DATABASE.username = value.username;
+                     userName.innerText = value.username;
+                     console.log("success");
+                     saveLocal();
+                     resetSection();
+                  } else {
+                     console.log("rong Password");
+                  }
+               }
+               // console.log(result.val());
+            } catch (error) {
+               console.log(error);
+            }
+         }
+      });
+   });
 
-
-
-
-
-
+   changePassword.addEventListener("click", () => {
+      createChangePasswordInput(flotingInput).then((val) => {
+         if (val !== null) {
+            console.log(val);
+         }
+      });
+   });
+};
 
 let clickInnerMenu = false;
 
@@ -139,6 +126,7 @@ createSectionBtn.addEventListener("click", (e) => {
             active: false,
             users: [],
          });
+         saveLocal();
          resetSection();
       }
    });

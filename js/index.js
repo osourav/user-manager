@@ -169,12 +169,14 @@ function createUser(parent, values, baseIndex, userIndex) {
                   ).then((newValue) => {
                      if (newValue !== null) {
                         DATA[baseIndex].users[userIndex] = newValue;
+                        saveLocal();
                      }
                      resetSection();
                   });
                   break;
                case features[3]:
                   DATA[baseIndex].users.splice(userIndex, 1);
+                  saveLocal();
                   resetSection();
                   break;
             }
@@ -188,10 +190,12 @@ function createUser(parent, values, baseIndex, userIndex) {
          if (sec.classList.contains("current") && nodeIndex !== -1) {
             const user = DATA[baseIndex].users.splice(userIndex, 1);
             DATA[baseIndex].users.insert(nodeIndex, user[0]);
+            saveLocal();
             resetSection();
          } else if (!sec.classList.contains("current") && sec == ele) {
             const user = DATA[baseIndex].users.splice(userIndex, 1);
             DATA[moveIndex].users.unshift(user[0]);
+            saveLocal();
             resetSection();
          } else {
             userEle.style.top = `${0}px`;
@@ -283,6 +287,7 @@ function createSection(name, active, index, users = []) {
    tglBtn.addEventListener("click", () => {
       DATA[index].active = !DATA[index].active;
       sec.classList.toggle("active", DATA[index].active);
+      saveLocal();
    });
 
    cUsrBtn.addEventListener("click", async () => {
@@ -290,6 +295,7 @@ function createSection(name, active, index, users = []) {
          if (obj !== null) {
             DATA[index].users.push(obj);
             DATA[index].active = true;
+            saveLocal();
             resetSection();
          }
       });
@@ -322,6 +328,7 @@ function createSection(name, active, index, users = []) {
                      const temp = DATA[index - 1];
                      DATA[index - 1] = DATA[index];
                      DATA[index] = temp;
+                     saveLocal();
                      resetSection();
                   }
                   break;
@@ -330,6 +337,7 @@ function createSection(name, active, index, users = []) {
                      const temp = DATA[index + 1];
                      DATA[index + 1] = DATA[index];
                      DATA[index] = temp;
+                     saveLocal();
                      resetSection();
                   }
                   break;
@@ -343,6 +351,7 @@ function createSection(name, active, index, users = []) {
                      if (val !== null) {
                         DATA[index].name = val;
                         nm.innerHTML = val;
+                        saveLocal();
                      }
                   });
                   break;
@@ -355,10 +364,12 @@ function createSection(name, active, index, users = []) {
                         structuredClone(user)
                      ),
                   });
+                  saveLocal();
                   resetSection();
                   break;
                case remove:
                   DATA.splice(index, 1);
+                  saveLocal();
                   resetSection();
                   break;
             }

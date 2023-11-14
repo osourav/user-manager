@@ -79,7 +79,7 @@ function createChangePasswordInput(parent) {
             closeSingle(false);
             removeEventListener();
             resolve({
-               username: inputs[0].value,
+               username: inputs[0].value.toLowerCase(),
                oldPassword: inputs[1].value,
                newPassword: inputs[2].value,
             });
@@ -183,7 +183,7 @@ function createImportExportInput(parent, operationName = "Export") {
             closeSingle(false);
             removeEventListener();
             resolve({
-               username: inputs[0].value,
+               username: inputs[0].value.toLowerCase(),
                password: inputs[1].value,
             });
          } else {
