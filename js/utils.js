@@ -1,91 +1,25 @@
-// Pubali Maity 7478103293 F Student 19 Kolkata
-
-const holdDelay = 500; 
-
-const DATABASE = [
-   {
-      name: "Section 1",
-      active: true,
-      users: [
-         {
-            name: "Shikha Barui",
-            number: "7478103293",
-            gender: "F",
-            work: "Student",
-            age: "18-22",
-            location: "Kolkata",
-         },
-      ],
-   },
-   {
-      name: "Section 2",
-      active: true,
-      users: [
-         {
-            name: "Subrata Barui",
-            number: "7478103293",
-            gender: "F",
-            work: "Student",
-            age: "13-22",
-            location: "Kolkata",
-         },
-         {
-            name: "Sukumar Barui",
-            number: "8250032643",
-            gender: "M",
-            work: "Student",
-            age: "10-22",
-            location: "Kolkata",
-         },
-         {
-            name: "Subrata Barui",
-            number: "7478103293",
-            gender: "F",
-            work: "Student",
-            age: "14-22",
-            location: "Kolkata",
-         },
-         {
-            name: "Sukumar Barui",
-            number: "8250032643",
-            gender: "M",
-            work: "Student",
-            age: "18-22",
-            location: "Kolkata",
-         },
-      ],
-   },
-   {
-      name: "Section 3",
-      active: true,
-      users: [
-         {
-            name: "Pubali Maity",
-            number: "7478103293",
-            gender: "F",
-            work: "Student",
-            age: "18-22",
-            location: "Kolkata",
-         },
-         {
-            name: "Sourav Barui",
-            number: "8250032643",
-            gender: "M",
-            work: "Student",
-            age: "18-22",
-            location: "Kolkata",
-         },
-      ],
-   },
-];
+/* ----  local storage set and get ---- */
+function setDataFromLocalStorage(key, object) {
+   let data = JSON.stringify(object);
+   localStorage.setItem(key, data);
+}
+function getDataFromLocalStorage(key) {
+   return JSON.parse(localStorage.getItem(key))
+}
+function deleteDataFromLocalStorage(key) {
+   return localStorage.removeItem(key);
+}
 
 // array insert function add in array prototype
 Array.prototype.insert = function(index, ...items ) {
    this.splice(index, 0, ...items );
 };
 
+
+
 function getFormatInput(text) {
    const values = text.split(" ");
+   if (values.length < 6) return null;
 
    const name = `${values.shift()} ${
       isNaN(values[0][0]) ? values.shift() : ""
@@ -106,6 +40,13 @@ function getFormatInput(text) {
       age: age.length > 1 ? age.slice(0, 5) : age,
       location: location,
    };
+}
+
+function getFormatText(text, len = Infinity, end = false) {
+   let str = "";
+   const length = text.length < len ? text.length : len;
+   for (let i = 0; i < length; i++) str += text[i];
+   return text.length > len && end ? str + ".." : str;
 }
 
 // create element
@@ -201,6 +142,6 @@ function call(number) {
    window.location.href = `tel:${number}`;
 }
 function openInWhatsapp(number) {
-   window.location.href = `whatsapp://send?phone=${number}&text=Hi`;
+   window.location.href = `whatsapp://send?phone=${number}&text=`;
 }
 

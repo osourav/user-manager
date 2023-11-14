@@ -1,17 +1,18 @@
+const holdDelay = 500;
 const allSec = [];
 
 function createUser(parent, values, baseIndex, userIndex) {
-   const _ag = values.age + " ";
    const userOuter = CD(parent, "user-outer");
    const userEle = CD(userOuter, "user", "");
-   /**/ CP(userEle, "small-right name", "", values.name);
+   /**/ CP(userEle, "small-right name", "", getFormatText(values.name, 18, true));
    /**/ const number = CP(userEle, "number", "", values.number);
    /**/ CP(userEle, "center", "", values.gender);
-   /**/ CP(userEle, "center small", "", values.work);
-   /**/ CP(userEle, "center small", "", `${_ag[0]}${_ag[1]}+`);
-   /**/ CP(userEle, "center small", "", values.location);
+   /**/ CP(userEle, "center small", "", getFormatText(values.work, 8, true));
+   /**/ CP(userEle, "center small", "", `${getFormatText(values.age, 2)}+`);
+   /**/ CP(userEle, "center small", "", getFormatText(values.location, 9, true));
 
-   const features = parent.parentElement.parentElement.querySelectorAll(".feature");
+   const features =
+      parent.parentElement.parentElement.querySelectorAll(".feature");
    let isHold = false;
    let holdTimerId;
 
@@ -38,7 +39,7 @@ function createUser(parent, values, baseIndex, userIndex) {
       eles[posIndex].classList.add("preview");
    }
    function removeUserClassUpDown() {
-      parent.childNodes.forEach(ele => {
+      parent.childNodes.forEach((ele) => {
          ele.classList.remove("up");
          ele.classList.remove("down");
          ele.classList.remove("preview");
@@ -80,7 +81,6 @@ function createUser(parent, values, baseIndex, userIndex) {
       });
       if (!is) resetStyle();
 
-
       const scrollDistance = 50;
       const scrollOffset =
          document.documentElement.scrollHeight - window.innerHeight;
@@ -98,15 +98,15 @@ function createUser(parent, values, baseIndex, userIndex) {
       userEle.style.top = `${userTop - eInfo.height / 2}px`;
       userOuter.classList.add("active");
 
-
       allSec.forEach((sec) => {
          const nodeIndex = getElementIndex(ele);
-         
+
          if (sec.classList.contains("current") && nodeIndex !== -1) {
             // ascending
             if (userIndex < nodeIndex) {
                setUserClassUpDown(userIndex + 1, nodeIndex, "up", nodeIndex);
-            } else { // descending
+            } else {
+               // descending
                setUserClassUpDown(nodeIndex, userIndex - 1, "down", nodeIndex);
             }
          } else if (sec.classList.contains("current") && nodeIndex === -1) {
@@ -122,7 +122,6 @@ function createUser(parent, values, baseIndex, userIndex) {
             sec.classList.remove("preview");
          }
       });
-
    }
 
    function holdingStart() {
@@ -143,7 +142,8 @@ function createUser(parent, values, baseIndex, userIndex) {
    function holdingEnd(E) {
       if (!isHold) return;
 
-      let e = E, ele = E.target;
+      let e = E,
+         ele = E.target;
       if (e.type == "touchend") {
          e = e.changedTouches[0];
          ele = document.elementFromPoint(e.clientX, e.clientY);
@@ -161,20 +161,20 @@ function createUser(parent, values, baseIndex, userIndex) {
                   resetStyle();
                   break;
                case features[2]:
-                  createInputsForUser(
-                     multiInput,
+                  createUserInput(
+                     flotingInput,
                      values,
                      (title = "Modify User"),
                      (btnName = "Continue")
                   ).then((newValue) => {
                      if (newValue !== null) {
-                        DATABASE[baseIndex].users[userIndex] = newValue;
+                        DATA[baseIndex].users[userIndex] = newValue;
                      }
                      resetSection();
                   });
                   break;
                case features[3]:
-                  DATABASE[baseIndex].users.splice(userIndex, 1);
+                  DATA[baseIndex].users.splice(userIndex, 1);
                   resetSection();
                   break;
             }
@@ -186,12 +186,12 @@ function createUser(parent, values, baseIndex, userIndex) {
          const nodeIndex = getElementIndex(ele);
 
          if (sec.classList.contains("current") && nodeIndex !== -1) {
-            const user = DATABASE[baseIndex].users.splice(userIndex, 1);
-            DATABASE[baseIndex].users.insert(nodeIndex, user[0]);
+            const user = DATA[baseIndex].users.splice(userIndex, 1);
+            DATA[baseIndex].users.insert(nodeIndex, user[0]);
             resetSection();
          } else if (!sec.classList.contains("current") && sec == ele) {
-            const user = DATABASE[baseIndex].users.splice(userIndex, 1);
-            DATABASE[moveIndex].users.unshift(user[0]);
+            const user = DATA[baseIndex].users.splice(userIndex, 1);
+            DATA[moveIndex].users.unshift(user[0]);
             resetSection();
          } else {
             userEle.style.top = `${0}px`;
@@ -230,211 +230,6 @@ function createUser(parent, values, baseIndex, userIndex) {
    userOuter.addEventListener("touchstart", holdingStart);
    window.addEventListener("touchmove", move);
    window.addEventListener("touchend", holdingEnd);
-}
-
-function createInputsForUser(
-   parent,
-   value,
-   title = "Add User",
-   btnName = "Create"
-) {
-   return new Promise((resolve) => {
-      parent.classList.add("active");
-
-      const id = Date.now();
-
-      const fWindow = `
-      <div class="floting-window" id="fw${id}">
-         <p>${title}</p>
-         <button id="c${id}" class="close"><i class="sbi-close"></i></button>
-         <div id="user-input-name">
-            <i class="sbi-user1"></i>
-            <input class="w${id}" type="text" placeholder="Name">
-         </div>
-         <div id="input-mobile">
-            <i class="sbi-phone1"></i>
-            <input class="w${id}" type="text" placeholder="Mobile No">
-         </div>
-         <div id="input-gender">
-            <i class="sbi-transgender-alt"></i>
-            <select class="w${id}">
-               <option value="M">Male</option>
-               <option value="F">Female</option>
-               <option value="O">Others</option>
-            </select>
-         </div>
-         <div id="input-work">
-            <i class="sbi-work"></i>
-            <input class="w${id}" type="text" placeholder="Work">
-         </div>
-         <div id="input-age">
-            <i class="sbi-height"></i>
-            <input class="w${id}" type="text" placeholder="Age">
-         </div>
-         <div id="input-location">
-            <i class="sbi-location1"></i>
-            <input class="w${id}" type="text" placeholder="Location">
-         </div>
-         <div class="buttons">
-            <button id="p${id}"><i class="sbi-content_paste"></i>Paste</button>
-            <button id="n${id}"><i class="sbi-check2"></i>${btnName}</button>
-         </div>
-      </div>
-   `;
-
-      parent.innerHTML = fWindow;
-      const inputs = document.querySelectorAll(`.w${id}`);
-      const cancle = document.getElementById(`c${id}`);
-      const create = document.getElementById(`n${id}`);
-      const fw = document.getElementById(`fw${id}`);
-      const paste = document.getElementById(`p${id}`);
-
-      if (value) {
-         const { name, number, gender, work, age, location } = value;
-         inputs[0].value = name;
-         inputs[1].value = number;
-         inputs[2].selectedIndex = gender == "M" ? 0 : gender == "F" ? 1 : 2;
-         inputs[3].value = work;
-         inputs[4].value = age;
-         inputs[5].value = location;
-      }
-
-      let isSectionOuter = false;
-
-      const setIsSectionTrue = () => (isSectionOuter = true);
-      const resetBorder = (input) => (input.style.border = "none");
-      const closeSingle = (is = true) => {
-         parent.classList.remove("active");
-         parent.innerHTML = "";
-         removeEventListener();
-         if (is) resolve(null);
-      };
-      const closeAll = () => {
-         if (!isSectionOuter) closeSingle();
-         isSectionOuter = false;
-      };
-      const pestInputs = async () => {
-         const text = await navigator.clipboard.readText();
-         const { name, number, genIndx, work, age, location } =
-            getFormatInput(text);
-
-         inputs[0].value = name;
-         inputs[1].value = number;
-         inputs[2].selectedIndex = genIndx;
-         inputs[3].value = work;
-         inputs[4].value = age;
-         inputs[5].value = location;
-      };
-      const sendValue = () => {
-         const nInputs = [...inputs].map((input) => input.value);
-         if (nInputs.every((input) => input.length > 0)) {
-            const obj = {
-               name: nInputs[0],
-               number: nInputs[1],
-               gender: nInputs[2],
-               work: nInputs[3],
-               age: nInputs[4],
-               location: nInputs[5],
-            };
-            removeEventListener();
-            closeSingle(false);
-            resolve(obj);
-         } else {
-            inputs.forEach((input) => {
-               if (input.value.length <= 0)
-                  input.style.border = "1px solid #f00";
-            });
-         }
-      };
-      const removeEventListener = () => {
-         inputs.forEach((input) => {
-            input.removeEventListener("input", () => resetBorder(input));
-         });
-         parent.removeEventListener("click", closeAll);
-         fw.removeEventListener("click", setIsSectionTrue, true);
-         paste.removeEventListener("click", pestInputs);
-         cancle.removeEventListener("click", closeSingle);
-         create.removeEventListener("click", sendValue);
-      };
-
-      inputs.forEach((input) => {
-         input.addEventListener("input", () => resetBorder(input));
-      });
-      parent.addEventListener("click", closeAll);
-      fw.addEventListener("click", setIsSectionTrue, true);
-      paste.addEventListener("click", pestInputs);
-      cancle.addEventListener("click", closeSingle);
-      create.addEventListener("click", sendValue);
-   });
-}
-
-function createSingleInputWindow(
-   title = "Add Section",
-   placeholder = "Enter Name",
-   buttonName = "Create"
-) {
-   singleInput.classList.add("active");
-   const id = Date.now();
-
-   singleInput.innerHTML = `
-   <div class="floting-window" id="fw${id}">
-      <p>${title}</p>
-      <button class="close cnacle-for-all" id="c${id}"><i class="sbi-close"></i></button>
-      <div id="input-name">
-         <i class="sbi-text_fields"></i>
-         <input type="text" id="in${id}" placeholder="${placeholder}" >
-      </div>
-      <div class="buttons">
-         <button id="con${id}"><i class="sbi-check2"></i>${buttonName}</button>
-      </div>
-   </div>
-   `;
-
-   return new Promise((resolve) => {
-      const closeButton = document.getElementById(`c${id}`);
-      const inputValue = document.getElementById(`in${id}`);
-      const singleInputElement = document.getElementById(`con${id}`);
-      const flotingWindow = document.getElementById(`fw${id}`);
-      inputValue.select();
-
-      let isSectionOuter = false;
-      const setIsSectionTrue = () => (isSectionOuter = true);
-      const resetBorder = () => (inputValue.style.border = "none");
-      const closeSingle = (is = true) => {
-         singleInput.classList.remove("active");
-         singleInput.innerHTML = "";
-         removeEventListener();
-         if (is) resolve(null);
-      };
-      const closeAll = () => {
-         if (!isSectionOuter) closeSingle();
-         isSectionOuter = false;
-      };
-      const sendValue = () => {
-         const name = inputValue.value;
-         if (!name) {
-            inputValue.style.border = "1px solid #f00";
-            return;
-         }
-         closeSingle(false);
-         removeEventListener();
-         resolve(name);
-      };
-
-      const removeEventListener = () => {
-         singleInput.removeEventListener("click", closeAll);
-         flotingWindow.removeEventListener("click", setIsSectionTrue, true);
-         closeButton.removeEventListener("click", closeSingle);
-         inputValue.removeEventListener("input", resetBorder);
-         singleInputElement.removeEventListener("click", sendValue);
-      };
-
-      singleInput.addEventListener("click", closeAll);
-      flotingWindow.addEventListener("click", setIsSectionTrue, true);
-      closeButton.addEventListener("click", closeSingle);
-      inputValue.addEventListener("input", resetBorder);
-      singleInputElement.addEventListener("click", sendValue);
-   });
 }
 
 function createSection(name, active, index, users = []) {
@@ -486,15 +281,15 @@ function createSection(name, active, index, users = []) {
    });
 
    tglBtn.addEventListener("click", () => {
-      DATABASE[index].active = !DATABASE[index].active;
-      sec.classList.toggle("active", DATABASE[index].active);
+      DATA[index].active = !DATA[index].active;
+      sec.classList.toggle("active", DATA[index].active);
    });
 
-   cUsrBtn.addEventListener("click", () => {
-      createInputsForUser(multiInput).then((obj) => {
+   cUsrBtn.addEventListener("click", async () => {
+      createUserInput(flotingInput).then((obj) => {
          if (obj !== null) {
-            DATABASE[index].users.push(obj);
-            DATABASE[index].active = true;
+            DATA[index].users.push(obj);
+            DATA[index].active = true;
             resetSection();
          }
       });
@@ -504,7 +299,9 @@ function createSection(name, active, index, users = []) {
    let isHold = false;
    let holdTimerId;
 
-   function holdingContinue() {menu.classList.add("active")};
+   function holdingContinue() {
+      menu.classList.add("active");
+   }
 
    function holdingEnd(e) {
       if (!isHold) return;
@@ -522,35 +319,36 @@ function createSection(name, active, index, users = []) {
             switch (ele) {
                case goUp:
                   if (index > 0) {
-                     const temp = DATABASE[index - 1];
-                     DATABASE[index - 1] = DATABASE[index];
-                     DATABASE[index] = temp;
+                     const temp = DATA[index - 1];
+                     DATA[index - 1] = DATA[index];
+                     DATA[index] = temp;
                      resetSection();
                   }
                   break;
                case goDown:
-                  if (index < DATABASE.length - 1) {
-                     const temp = DATABASE[index + 1];
-                     DATABASE[index + 1] = DATABASE[index];
-                     DATABASE[index] = temp;
+                  if (index < DATA.length - 1) {
+                     const temp = DATA[index + 1];
+                     DATA[index + 1] = DATA[index];
+                     DATA[index] = temp;
                      resetSection();
                   }
                   break;
                case rename:
-                  createSingleInputWindow(
+                  createSectionInput(
+                     flotingInput,
                      "Rename Section",
                      "New Name",
                      "Rename"
                   ).then((val) => {
                      if (val !== null) {
-                        DATABASE[index].name = val;
+                        DATA[index].name = val;
                         nm.innerHTML = val;
                      }
                   });
                   break;
                case duplicate:
-                  const copy = DATABASE[index];
-                  DATABASE.insert(index, {
+                  const copy = DATA[index];
+                  DATA.insert(index, {
                      name: `${copy.name} copy`,
                      active: false,
                      users: [...copy.users].map((user) =>
@@ -560,7 +358,7 @@ function createSection(name, active, index, users = []) {
                   resetSection();
                   break;
                case remove:
-                  DATABASE.splice(index, 1);
+                  DATA.splice(index, 1);
                   resetSection();
                   break;
             }
@@ -606,24 +404,10 @@ function createSection(name, active, index, users = []) {
    window.addEventListener("touchend", holdingEnd);
 }
 
-createSectionBtn.addEventListener("click", (e) => {
-   createSingleInputWindow().then((val) => {
-      if (val !== null) {
-         DATABASE.push({
-            name: val,
-            active: false,
-            users: [],
-         });
-         resetSection();
-      }
-   });
-});
-
 function resetSection() {
    allSec.length = 0;
    itsMain.innerHTML = "";
-   DATABASE.forEach((section, i) => {
+   DATA.forEach((section, i) => {
       createSection(section.name, section.active, i, section.users);
    });
 }
-resetSection();

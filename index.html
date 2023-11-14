@@ -13,8 +13,9 @@
 
    <!-- scripts -->
    <script src="./js/utils.js" defer></script>
+   <script src="./js/forms.js" defer></script>
+   <script src="./js/index.js" defer></script>
    <script src="./js/user.js" defer></script>
-   <script src="./js/main.js" defer></script>
 
 </head>
 <body>
@@ -37,15 +38,15 @@
                <span id="userName">_____</span>
             </div>
             <div id="menuOptions">
-               <div class="option cursor">
+               <div class="option cursor" id="uploadData">
                   <i class="sbi-upload4"></i>
                   <p>EXPORT</p>
                </div>
-               <div class="option cursor">
+               <div class="option cursor" id="downloadData">
                   <i class="sbi-download4"></i>
                   <p>IMPORT</p>
                </div>
-               <div class="option cursor">
+               <div class="option cursor" id="changePassword">
                   <i class="sbi-key2"></i>
                   <p>Change</p>
                </div>
@@ -58,8 +59,7 @@
       <main id="itsMain"></main>
       
       <!-- floting windows -->
-      <div id="singleInput" class="floting-window-outer"></div>
-      <div id="multiInput" class="floting-window-outer"></div>
+      <div id="flotingInput" class="floting-window-outer"></div>
    </div>
 
 </body>

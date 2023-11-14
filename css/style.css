@@ -94,8 +94,7 @@ header .header-btn {
    top: 0;
    width: var(--mm-w);
    height: 100%;
-   border-left: 2px solid #0007;
-   background: #fff;
+   background: #ffffff;
    display: flex;
    flex-direction: column;
    transition: linear 300ms right;
@@ -105,13 +104,17 @@ header .header-btn {
 }
 #mainMenu #welcome {
    position: relative;
-   width: 100%;
+   width: calc(100% - 0.2rem);
    height: 5rem;
    display: flex;
    justify-content: center;
    align-items: center;
    flex-direction: column;
    margin-bottom: 0.5rem;
+   background: #dddddd;
+   border-style: solid;
+   border-width: 0.2rem;
+   border-color: #0002 #fff5 #fff5 #0002;
 }
 #welcome p {
    font-family: Righteous;
@@ -139,10 +142,11 @@ header .header-btn {
    display: flex;
    justify-content: start;
    padding-left: calc(var(--margin) * 2);
+   border-left: solid calc(var(--gap) * 2) #fff7;
    background-image: linear-gradient(
       to right,
-      #a2fffa 0%,
-      #009b98 50%,
+      #bffffc 0%,
+      #00fffb 50%,
       #d2fffd 100%
    );
    text-transform: uppercase;
@@ -417,7 +421,7 @@ main .sec {
    width: 100%;
    display: grid;
    padding: 0 calc(var(--margin) / 2);
-   grid-template-columns: 20fr 14fr 3fr 10fr 6fr 12fr;
+   grid-template-columns: 22fr 12fr 3fr 10fr 6fr 12fr;
    background: transparent;
 }
 .tags * {
@@ -483,7 +487,7 @@ main .sec {
    padding: 2px;
    pointer-events: none;
    outline: none;
-   grid-template-columns: 20fr 14fr 3fr 10fr 6fr 12fr;
+   grid-template-columns: 22fr 12fr 3fr 10fr 6fr 12fr;
    z-index: 2;
    transform: scale(1) translateY(0px);
    opacity: 1;
@@ -529,6 +533,7 @@ main .sec {
 .sec .user > p.number {
    color: #0033ff;
    font-weight: 900;
+   font-size: 0.7rem;
    text-shadow: 0 0 1px #0004;
 }
 .sec .user p.small-right {
@@ -541,11 +546,11 @@ main .sec {
    font-size: 0.7rem;
 }
 
-.sec.current .user-outer.up .user {
+.sec .user-outer.up .user {
    --y: calc(2rem + var(--gap));
    transform: translateY(calc(var(--y) * -1));
 }
-.sec.current .user-outer.down .user {
+.sec .user-outer.down .user {
    --y: calc(2rem + var(--gap));
    transform: translateY(var(--y));
 }
@@ -598,7 +603,7 @@ main .sec {
    transition: 0.2s linear;
    background: #f00;
 }
-.floting-window [id*="input-"] {
+.floting-window [class*="input-"] {
    position: relative;
    width: 100%;
    height: 1.8rem;
@@ -607,8 +612,8 @@ main .sec {
    place-items: center;
    background: #fff;
 }
-.floting-window [id*="input-"] input,
-.floting-window [id*="input-"] select {
+.floting-window [class*="input-"] input,
+.floting-window [class*="input-"] select {
    position: relative;
    width: 100%;
    height: 100%;
@@ -621,7 +626,7 @@ main .sec {
    border-bottom-right-radius: calc(var(--margin) / 4);
    box-shadow: inset 0px 0px 0.2rem #0005;
 }
-.floting-window [id*="input-"] i {
+.floting-window [class*="input-"] > i {
    position: relative;
    width: 100%;
    height: 100%;
@@ -637,13 +642,42 @@ main .sec {
       #ff512f 100%
    );
 }
+.floting-window .input-password .pass-show-hide-btn {
+   position: absolute;
+   width: 2rem;
+   height: 100%;
+   display: grid;
+   right: 0;
+   place-items: center;
+   background: #00ffe577;
+   border-top-right-radius: 5px;
+   border-bottom-right-radius: 5px;
+   box-shadow: 1px 1px 3px #0007;
+   transition: linear 300ms background;
+}
+.floting-window .input-password .pass-show-hide-btn i {
+   position: absolute;
+   color: #000;
+   transition: linear 300ms color, linear 300ms opacity;
+   opacity: 0;
+}
+.floting-window .input-password .pass-show-hide-btn:not(.active) i:first-child,
+.floting-window .input-password .pass-show-hide-btn.active i:last-child {
+   opacity: 0;
+}
+.floting-window .input-password .pass-show-hide-btn.active i:first-child,
+.floting-window .input-password .pass-show-hide-btn:not(.active) i:last-child {
+   opacity: 1;
+}
+
+
 .floting-window .buttons {
    position: relative;
    display: grid;
    grid-template-columns: 1fr 1fr;
    gap: calc(var(--margin) / 2);
 }
-#singleInput .floting-window .buttons {
+.floting-window.one .buttons {
    grid-template-columns: 1fr;
 }
 .floting-window .buttons button {
