@@ -247,13 +247,14 @@ main .sec {
    background: #fff3;
    display: grid;
    place-items: center;
-   transition: linear 200ms background, linear 200ms color;
+   outline: solid 1px transparent;
+   transition: linear 200ms background, linear 200ms outline;
 }
 .features .feature:nth-child(2) {
    --color: #00ff00;
 }
 .features .feature:nth-child(3) {
-   --color: #ff8c00;
+   --color: #ff6f00;
 }
 .features .feature:nth-child(4) {
    --color: #ff0000;
@@ -262,10 +263,12 @@ main .sec {
    color: var(--color);
    pointer-events: none;
    font-size: 1rem;
-   text-shadow: 1px 1px 1px #000000;
+   text-shadow: 0 0 1px #000000;
+   transition: linear 200ms color;
 }
 .features .feature.hover {
    background: var(--color);
+   outline: solid 1px #000;
 }
 .features .feature.hover i {
    color: #fff;
@@ -289,7 +292,7 @@ main .sec {
    display: flex;
 }
 .top .menu-options .option {
-   --color: #ffbf00;
+   --color: #00fff2;
    position: relative;
    width: calc(var(--cs) + var(--gap) * 2);
    height: 100%;
@@ -298,28 +301,37 @@ main .sec {
    place-items: center;
    border-radius: 3px;
    background: #fff3;
-   transition: linear 200ms background, linear 200ms color;
-}
-.top .menu-options .option:nth-child(2) {
-   --color: #00cbfe;
+   outline: solid 1px transparent;
+   transition: linear 200ms background, linear 200ms outline;
 }
 .top .menu-options .option:nth-child(3) {
+   --color: #ff6600;
+}
+.top .menu-options .option:nth-child(4) {
+   --color: #ffffff;
+}
+.top .menu-options .option:nth-child(5) {
    --color: #ff0000;
 }
 .top .menu-options .option i {
    color: var(--color);
    pointer-events: none;
    font-size: 1.2rem;
-   text-shadow: 1px 1px 1px #000000;
+   text-shadow: 0 0 1px #000000;
+   transition: linear 200ms color;
 }
 .top .menu-options .option i.sbi-pencil1 {
    font-size: 1rem;
 }
 .top .menu-options .option.hover {
    background: var(--color);
+   outline: solid 1px #000;
 }
 .top .menu-options .option.hover i {
    color: #fff;
+}
+.top .menu-options .option:nth-child(4).hover i {
+   color: #0000;
 }
 
 .s-btn {
@@ -331,10 +343,10 @@ main .sec {
    border-radius: 8px;
    font-size: 1rem;
    color: #fff;
-   transition: linear 300ms background, linear 300ms color,
-      linear 300ms text-shadow;
    background: #0003;
    box-shadow: 1px 1px 3px #0007;
+   transition: linear 300ms background, linear 300ms color,
+      linear 300ms text-shadow;
 }
 .s-btn > i {
    text-shadow: 0 0 1px #0007;
@@ -377,10 +389,12 @@ main .sec {
    content: "";
    width: calc(100% - 0.32rem);
    height: calc(100% - 0.32rem);
+   border: solid 0.16rem #0f0;
    border-radius: 0.5rem;
-   background: #99ff99;
-   border: solid 0.16rem #fff;
    box-shadow: inset 0 0 0.2rem #000;
+}
+.sec.preview:not(.current) .basic::before {
+   background: #99ff99;
 }
 .sec:not(.focus) .basic *:not(.name) {
    opacity: 1;
@@ -446,10 +460,14 @@ main .sec {
    align-items: center;
    border-radius: 4px;
    outline: solid 1px #777;
+   background: transparent;
    box-shadow: none;
 }
 .sec .user-outer.active {
    box-shadow: inset 0 0 0.2rem #000;
+}
+.sec .user-outer:not(.active).preview {
+   background: #00ff0055;
 }
 .sec .user-outer .user {
    --color0: #ddd;
@@ -492,10 +510,6 @@ main .sec {
 .sec .user-outer .user.inFeature {
    opacity: 0.2;
    transform: scale(0.4);
-}
-.sec .user-outer.placed .user {
-   --color0: #a9ffa9;
-   --color: #a9ffa9;
 }
 .sec .user-outer.active .user * {
    pointer-events: none;

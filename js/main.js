@@ -13,7 +13,7 @@ function createUser(parent, values, baseIndex, userIndex) {
 
    const features = parent.parentElement.parentElement.querySelectorAll(".feature");
    let isHold = false;
-   let holdTimerId, posY = 0, eleY = 0;
+   let holdTimerId;
 
    function resetStyle() {
       userEle.classList.remove("inFeature");
@@ -30,23 +30,19 @@ function createUser(parent, values, baseIndex, userIndex) {
       return -1;
    }
 
-   function setUserClassUpDown(start, end, cls) {
+   function setUserClassUpDown(start, end, cls, posIndex) {
       const eles = parent.childNodes;
       for (let i = start; i <= end; i++) {
          eles[i].classList.add(cls);
       }
+      eles[posIndex].classList.add("preview");
    }
    function removeUserClassUpDown() {
       parent.childNodes.forEach(ele => {
          ele.classList.remove("up");
          ele.classList.remove("down");
+         ele.classList.remove("preview");
       });
-   }
-
-   function start(e) {
-      posY = e.clientY;
-      if (e.type == "touchstart") posY = e.touches[0].clientY;
-      eleY = 0;
    }
 
    function move(E) {
@@ -58,6 +54,9 @@ function createUser(parent, values, baseIndex, userIndex) {
          e = e.touches[0];
          ele = document.elementFromPoint(e.clientX, e.clientY);
       }
+
+      const eInfo = userEle.parentElement.getBoundingClientRect();
+      const userTop = e.clientY - eInfo.top;
 
       features.forEach((feature) => {
          if (feature == ele) {
@@ -82,25 +81,21 @@ function createUser(parent, values, baseIndex, userIndex) {
       if (!is) resetStyle();
 
 
-      const dy = e.clientY - posY;
-      const scrollDistance = 30;
+      const scrollDistance = 50;
       const scrollOffset =
          document.documentElement.scrollHeight - window.innerHeight;
       const _d = 5;
 
       if (window.scrollY > 0 && e.clientY < scrollDistance) {
          window.scrollBy(0, -_d);
-         eleY -= _d;
       } else if (
          scrollOffset > window.scrollY &&
          e.clientY > window.innerHeight - scrollDistance
       ) {
          window.scrollBy(0, _d);
-         eleY += _d;
       }
 
-      eleY += dy;
-      userEle.style.top = `${eleY}px`;
+      userEle.style.top = `${userTop - eInfo.height / 2}px`;
       userOuter.classList.add("active");
 
 
@@ -110,9 +105,9 @@ function createUser(parent, values, baseIndex, userIndex) {
          if (sec.classList.contains("current") && nodeIndex !== -1) {
             // ascending
             if (userIndex < nodeIndex) {
-               setUserClassUpDown(userIndex + 1, nodeIndex, "up");
+               setUserClassUpDown(userIndex + 1, nodeIndex, "up", nodeIndex);
             } else { // descending
-               setUserClassUpDown(nodeIndex, userIndex - 1, "down");
+               setUserClassUpDown(nodeIndex, userIndex - 1, "down", nodeIndex);
             }
          } else if (sec.classList.contains("current") && nodeIndex === -1) {
             removeUserClassUpDown();
@@ -121,15 +116,13 @@ function createUser(parent, values, baseIndex, userIndex) {
 
       allSec.some((sec) => {
          if (!sec.classList.contains("current") && sec == ele) {
-            userOuter.classList.add("placed");
+            sec.classList.add("preview");
             return true;
          } else {
-            userOuter.classList.remove("placed");
+            sec.classList.remove("preview");
          }
       });
 
-      
-      posY = e.clientY;
    }
 
    function holdingStart() {
@@ -175,13 +168,13 @@ function createUser(parent, values, baseIndex, userIndex) {
                      (btnName = "Continue")
                   ).then((newValue) => {
                      if (newValue !== null) {
-                        dataBase[baseIndex].users[userIndex] = newValue;
+                        DATABASE[baseIndex].users[userIndex] = newValue;
                      }
                      resetSection();
                   });
                   break;
                case features[3]:
-                  dataBase[baseIndex].users.splice(userIndex, 1);
+                  DATABASE[baseIndex].users.splice(userIndex, 1);
                   resetSection();
                   break;
             }
@@ -193,16 +186,15 @@ function createUser(parent, values, baseIndex, userIndex) {
          const nodeIndex = getElementIndex(ele);
 
          if (sec.classList.contains("current") && nodeIndex !== -1) {
-            const user = dataBase[baseIndex].users.splice(userIndex, 1);
-            dataBase[baseIndex].users.insert(nodeIndex, user[0]);
+            const user = DATABASE[baseIndex].users.splice(userIndex, 1);
+            DATABASE[baseIndex].users.insert(nodeIndex, user[0]);
             resetSection();
          } else if (!sec.classList.contains("current") && sec == ele) {
-            const user = dataBase[baseIndex].users.splice(userIndex, 1);
-            dataBase[moveIndex].users.unshift(user[0]);
+            const user = DATABASE[baseIndex].users.splice(userIndex, 1);
+            DATABASE[moveIndex].users.unshift(user[0]);
             resetSection();
          } else {
-            eleY = 0;
-            userEle.style.top = `${eleY}px`;
+            userEle.style.top = `${0}px`;
          }
          sec.classList.remove("focus");
       });
@@ -232,12 +224,10 @@ function createUser(parent, values, baseIndex, userIndex) {
    number.addEventListener("click", copyNumber);
 
    userOuter.addEventListener("mousedown", holdingStart);
-   window.addEventListener("mousedown", start);
    window.addEventListener("mousemove", move);
    window.addEventListener("mouseup", holdingEnd);
 
    userOuter.addEventListener("touchstart", holdingStart);
-   window.addEventListener("touchstart", start);
    window.addEventListener("touchmove", move);
    window.addEventListener("touchend", holdingEnd);
 }
@@ -452,6 +442,10 @@ function createSection(name, active, index, users = []) {
    /**/ const top = CD(sec, "top");
    /*    */ const basic = CD(top, "basic");
    /*    */ const menu = CD(top, "menu-options");
+   /*        */ const goUp = CD(menu, "option cursor");
+   /*            */ const goUpI = CI(goUp, `sbi-arrow-up1`);
+   /*        */ const goDown = CD(menu, "option cursor");
+   /*            */ const goDownI = CI(goDown, `sbi-arrow-down1`);
    /*        */ const rename = CD(menu, "option cursor");
    /*            */ const renameI = CI(rename, `sbi-pencil1`);
    /*        */ const duplicate = CD(menu, "option cursor");
@@ -492,15 +486,15 @@ function createSection(name, active, index, users = []) {
    });
 
    tglBtn.addEventListener("click", () => {
-      dataBase[index].active = !dataBase[index].active;
-      sec.classList.toggle("active", dataBase[index].active);
+      DATABASE[index].active = !DATABASE[index].active;
+      sec.classList.toggle("active", DATABASE[index].active);
    });
 
    cUsrBtn.addEventListener("click", () => {
       createInputsForUser(multiInput).then((obj) => {
          if (obj !== null) {
-            dataBase[index].users.push(obj);
-            dataBase[index].active = true;
+            DATABASE[index].users.push(obj);
+            DATABASE[index].active = true;
             resetSection();
          }
       });
@@ -510,10 +504,7 @@ function createSection(name, active, index, users = []) {
    let isHold = false;
    let holdTimerId;
 
-   function holdingContinue() {
-      console.log("continue");
-      menu.classList.add("active");
-   }
+   function holdingContinue() {menu.classList.add("active")};
 
    function holdingEnd(e) {
       if (!isHold) return;
@@ -526,9 +517,25 @@ function createSection(name, active, index, users = []) {
          ele = document.elementFromPoint(clientX, clientY);
       }
 
-      [rename, duplicate, remove].some((e) => {
+      [goUp, goDown, rename, duplicate, remove].some((e) => {
          if (e == ele) {
             switch (ele) {
+               case goUp:
+                  if (index > 0) {
+                     const temp = DATABASE[index - 1];
+                     DATABASE[index - 1] = DATABASE[index];
+                     DATABASE[index] = temp;
+                     resetSection();
+                  }
+                  break;
+               case goDown:
+                  if (index < DATABASE.length - 1) {
+                     const temp = DATABASE[index + 1];
+                     DATABASE[index + 1] = DATABASE[index];
+                     DATABASE[index] = temp;
+                     resetSection();
+                  }
+                  break;
                case rename:
                   createSingleInputWindow(
                      "Rename Section",
@@ -536,14 +543,14 @@ function createSection(name, active, index, users = []) {
                      "Rename"
                   ).then((val) => {
                      if (val !== null) {
-                        dataBase[index].name = val;
+                        DATABASE[index].name = val;
                         nm.innerHTML = val;
                      }
                   });
                   break;
                case duplicate:
-                  const copy = dataBase[index];
-                  dataBase.insert(index, {
+                  const copy = DATABASE[index];
+                  DATABASE.insert(index, {
                      name: `${copy.name} copy`,
                      active: false,
                      users: [...copy.users].map((user) =>
@@ -553,7 +560,7 @@ function createSection(name, active, index, users = []) {
                   resetSection();
                   break;
                case remove:
-                  dataBase.splice(index, 1);
+                  DATABASE.splice(index, 1);
                   resetSection();
                   break;
             }
@@ -582,7 +589,7 @@ function createSection(name, active, index, users = []) {
          ele = document.elementFromPoint(e.clientX, e.clientY);
       }
 
-      [rename, duplicate, remove].some((e) => {
+      [goUp, goDown, rename, duplicate, remove].some((e) => {
          if (e == ele) {
             e.classList.add("hover");
          } else {
@@ -602,7 +609,7 @@ function createSection(name, active, index, users = []) {
 createSectionBtn.addEventListener("click", (e) => {
    createSingleInputWindow().then((val) => {
       if (val !== null) {
-         dataBase.push({
+         DATABASE.push({
             name: val,
             active: false,
             users: [],
@@ -615,7 +622,7 @@ createSectionBtn.addEventListener("click", (e) => {
 function resetSection() {
    allSec.length = 0;
    itsMain.innerHTML = "";
-   dataBase.forEach((section, i) => {
+   DATABASE.forEach((section, i) => {
       createSection(section.name, section.active, i, section.users);
    });
 }

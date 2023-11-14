@@ -2,7 +2,7 @@
 
 const holdDelay = 500; 
 
-const dataBase = [
+const DATABASE = [
    {
       name: "Section 1",
       active: true,
