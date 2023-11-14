@@ -671,7 +671,6 @@ main .sec {
    opacity: 1;
 }
 
-
 .floting-window .buttons {
    position: relative;
    display: grid;
@@ -702,9 +701,110 @@ main .sec {
    color: #fff;
    text-transform: uppercase;
    font-size: 0.7rem;
-   transition: 0.5s;
+   transition: 0.3s linear background;
    background-size: 200% auto;
 }
+
+
+/*  -------- lodaing window ---------- */
+#lodingWindow {
+   position: fixed;
+   inset: 0;
+   width: 100%;
+   height: 100%;
+   background: #fff8;
+   display: none;
+   justify-content: center;
+   align-items: center;
+   backdrop-filter: blur(5px);
+   z-index: 5;
+}
+#lodingWindow.active {
+   display: flex;
+}
+#lodingWindow .center {
+   position: absolute;
+   height: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.wave {
+   width: 8px;
+   height: 150px;
+   background: linear-gradient(45deg, #12100E, #2B4162);
+   margin: 10px;
+   border-radius: 20px;
+   transform: scale(0);
+   animation-delay: calc(var(--delay) * 1s);
+}
+#lodingWindow.active:not(.complete) .wave {
+   animation: wave 1s linear infinite;
+   animation-delay: calc(var(--delay) * 1s);
+}
+@keyframes wave {
+   0% {
+      transform: scale(0);
+   }
+   50% {
+      transform: scale(1);
+   }
+   100% {
+      transform: scale(0);
+   }
+}
+#lodingWindow #dbInfo {
+   position: absolute;
+   width: 100%;
+   padding: 2rem;
+   height: auto;
+   display: none;
+   flex-direction: column;
+   gap: calc(var(--margin) * 2);
+   align-items: center;
+}
+#lodingWindow.complete #dbInfo {
+   display: flex;
+}
+#lodingWindow #dbInfo #dbMessage {
+   color: #000;
+   text-align: center;
+   font-weight: 400;
+   padding: 1rem 0;
+   border-radius: 8px;
+   text-shadow: 0 0 3px #000;
+   font-size: 2rem;
+}
+#lodingWindow #dbInfo #dbOkBtn {
+   position: relative;
+   width: 6rem;
+   height: 3rem;
+   border: none;
+   outline: none;
+   text-decoration: none;
+   padding: calc(var(--margin) / 2);
+   border-radius: 5px;
+   font-weight: 900;
+   text-shadow: 0 0 1px #000;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   appearance: none;
+   background-image: linear-gradient(
+      to right,
+      #1a2980 0%,
+      #26d0ce 51%,
+      #1a2980 100%
+   );
+   color: #fff;
+   text-transform: uppercase;
+   font-size: 1.2rem;
+   transition: 250ms linear background;
+   background-size: 200% auto;
+}
+
+
 
 @media screen and (min-width: 490px) {
    .cursor {
@@ -743,6 +843,9 @@ main .sec {
       background: #fff;
       border: solid 1px #000;
    }
+   #lodingWindow #dbInfo #dbOkBtn:hover {
+      background-position: right center;
+   }
 }
 @media screen and (max-width: 490px) {
    .s-btn:active {
@@ -776,5 +879,8 @@ main .sec {
       color: #f00;
       background: #fff;
       border: solid 1px #000;
+   }
+   #lodingWindow #dbInfo #dbOkBtn:active {
+      background-position: right center;
    }
 }

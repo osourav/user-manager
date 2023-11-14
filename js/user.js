@@ -4,6 +4,7 @@ import {
    set,
    get,
    getDatabase,
+   update,
    ref,
 } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
 
@@ -14,8 +15,6 @@ window.onload = async () => {
    const db = getDatabase();
 
    const localData = await getDataFromLocalStorage(localStorageKey);
-   console.log(DATABASE);
-   console.log(localData);
 
    if (localData !== null) {
       DATABASE = localData;
@@ -27,6 +26,7 @@ window.onload = async () => {
    uploadData.addEventListener("click", () => {
       createImportExportInput(flotingInput, "Export").then(async (val) => {
          if (val !== null) {
+            lodingWindow.classList.add("active");
             try {
                const usersRef = ref(db, val.username);
                const result = await get(usersRef);
@@ -35,34 +35,32 @@ window.onload = async () => {
                   const value = result.val();
                   
                   if (value.password == stringToB64(val.password)) {
-                     await set(usersRef, {
-                        username: val.username,
-                        data: Date.now(),
+                     await update(usersRef, {
                         datas: DATABASE.datas,
-                        password: value.password,
                      });
-                     DATABASE.username = val.username;
-                     userName.innerText = value.username;
-                     saveLocal();
                      console.log("success");
+                     dbMessage.innerHTML = `Hello '<b>${val.username}</b>' your data successfully updated`;
+                     lodingWindow.classList.add("complete");
                   } else {
-                     console.log("rong Password");
+                     dbMessage.innerHTML = `Password not Match!`;
+                     lodingWindow.classList.add("complete");
                   }
                } else {
                   await set(usersRef, {
                      username: val.username,
-                     data: Date.now(),
+                     date: Date.now(),
                      datas: DATABASE.datas,
                      password: stringToB64(val.password),
                   });
                   DATABASE.username = val.username;
                   userName.innerText = val.username;
                   saveLocal();
-                  console.log("new user success");
+                  dbMessage.innerHTML = `Hello '<b>${val.username}</b>' now your data successfully exported`;
+                  lodingWindow.classList.add("complete");
                }
-               // console.log(result.val());
             } catch (error) {
-               console.log(error);
+               dbMessage.innerHTML = error;
+               lodingWindow.classList.add("complete");
             }
          }
       });
@@ -71,6 +69,7 @@ window.onload = async () => {
    downloadData.addEventListener("click", () => {
       createImportExportInput(flotingInput, "Import").then(async (val) => {
          if (val !== null) {
+            lodingWindow.classList.add("active");
             try {
                const usersRef = ref(db, val.username);
                const result = await get(usersRef);
@@ -83,25 +82,53 @@ window.onload = async () => {
                      DATA = value.datas;
                      DATABASE.username = value.username;
                      userName.innerText = value.username;
-                     console.log("success");
+                     dbMessage.innerHTML = `Welcome '<b>${val.username}</b>' now your data successfully imported`;
+                     lodingWindow.classList.add("complete");
                      saveLocal();
                      resetSection();
                   } else {
-                     console.log("rong Password");
+                     dbMessage.innerHTML = `Password not Match!`;
+                     lodingWindow.classList.add("complete");
                   }
                }
                // console.log(result.val());
             } catch (error) {
                console.log(error);
+               dbMessage.innerHTML = error;
+               lodingWindow.classList.add("complete");
             }
          }
       });
    });
 
    changePassword.addEventListener("click", () => {
-      createChangePasswordInput(flotingInput).then((val) => {
+      createChangePasswordInput(flotingInput).then(async (val) => {
          if (val !== null) {
-            console.log(val);
+            lodingWindow.classList.add("active");
+            try {
+               const usersRef = ref(db, val.username);
+               const result = await get(usersRef);
+
+               if (result.exists()) {
+                  const value = result.val();
+
+                  if (value.password == stringToB64(val.oldPassword)) {
+                     await update(usersRef, {
+                        password: stringToB64(val.newPassword),
+                     });
+                     saveLocal();
+                     dbMessage.innerHTML = `Hello '<b>${val.username}</b>' now your passowrd successfully updated`;
+                     lodingWindow.classList.add("complete");
+                  } else {
+                     dbMessage.innerHTML = `old password not match !`;
+                     lodingWindow.classList.add("complete");
+                  }
+               }
+               // console.log(result.val());
+            } catch (error) {
+               dbMessage.innerHTML = error;
+               lodingWindow.classList.add("complete");
+            }
          }
       });
    });
@@ -130,4 +157,8 @@ createSectionBtn.addEventListener("click", (e) => {
          resetSection();
       }
    });
+});
+
+dbOkBtn.addEventListener("click", () => {
+   lodingWindow.classList.value = "";
 });

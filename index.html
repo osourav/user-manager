@@ -1,68 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="shortcut icon" type="image/png" href="src/img/icon.png" />
-   <title>User Manager</title>
-   
-   <!-- css -->
-   <link rel="stylesheet" href="./icons/css/icon.css" />
-   <link rel="stylesheet" href="./css/font.css" />
-   <link rel="stylesheet" href="./css/style.css">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" type="image/png" href="src/img/icon.png" />
+      <title>User Manager</title>
 
-   <!-- scripts -->
-   <script src="./js/data.js" defer></script>
-   <script src="./js/utils.js" defer></script>
-   <script src="./js/config.js" defer></script>
-   <script src="./js/forms.js" defer></script>
-   <script src="./js/index.js" defer></script>
-   <script type="module" src="./js/user.js" defer></script>
+      <!-- css -->
+      <link rel="stylesheet" href="./icons/css/icon.css" />
+      <link rel="stylesheet" href="./css/font.css" />
+      <link rel="stylesheet" href="./css/style.css" />
 
-</head>
-<body>
-
-   <div id="responsive">
-      <header>
-         <div id="title">User Manager</div>
-         <div id="createSectionBtn" class="header-btn s-btn cursor">
-            <i class="sbi-post_add"></i>
-         </div>
-         <div id="openMainMenu" class="header-btn s-btn cursor">
-            <i class="sbi-menu1"></i>
-         </div>
-      </header>
-
-      <div id="mainMenu">
-         <div id="menuInner">
-            <div id="welcome">
-               <p>Welcome</p>
-               <span id="userName">_____</span>
+      <!-- scripts -->
+      <script src="./js/data.js" defer></script>
+      <script src="./js/utils.js" defer></script>
+      <script src="./js/config.js" defer></script>
+      <script src="./js/forms.js" defer></script>
+      <script src="./js/index.js" defer></script>
+      <script type="module" src="./js/user.js" defer></script>
+   </head>
+   <body>
+      <div id="responsive">
+         <header>
+            <div id="title">User Manager</div>
+            <div id="createSectionBtn" class="header-btn s-btn cursor">
+               <i class="sbi-post_add"></i>
             </div>
-            <div id="menuOptions">
-               <div class="option cursor" id="uploadData">
-                  <i class="sbi-upload4"></i>
-                  <p>EXPORT</p>
-               </div>
-               <div class="option cursor" id="downloadData">
-                  <i class="sbi-download4"></i>
-                  <p>IMPORT</p>
-               </div>
-               <div class="option cursor" id="changePassword">
-                  <i class="sbi-key2"></i>
-                  <p>Change</p>
-               </div>
+            <div id="openMainMenu" class="header-btn s-btn cursor">
+               <i class="sbi-menu1"></i>
             </div>
+         </header>
 
-            <div id="copyright">©SouravBarui2023</div>
+         <div id="mainMenu">
+            <div id="menuInner">
+               <div id="welcome">
+                  <p>Welcome</p>
+                  <span id="userName">_____</span>
+               </div>
+               <div id="menuOptions">
+                  <div class="option cursor" id="uploadData">
+                     <i class="sbi-upload4"></i>
+                     <p>EXPORT</p>
+                  </div>
+                  <div class="option cursor" id="downloadData">
+                     <i class="sbi-download4"></i>
+                     <p>IMPORT</p>
+                  </div>
+                  <div class="option cursor" id="changePassword">
+                     <i class="sbi-key2"></i>
+                     <p>Change</p>
+                  </div>
+               </div>
+
+               <div id="copyright">©SouravBarui2023</div>
+            </div>
          </div>
+
+         <main id="itsMain"></main>
+
+         <div id="lodingWindow" class="">
+            <div class="center">
+               <div class="wave" style="--delay: 0"></div>
+               <div class="wave" style="--delay: 0.1"></div>
+               <div class="wave" style="--delay: 0.2"></div>
+               <div class="wave" style="--delay: 0.3"></div>
+               <div class="wave" style="--delay: 0.4"></div>
+               <div class="wave" style="--delay: 0.5"></div>
+               <div class="wave" style="--delay: 0.6"></div>
+               <div class="wave" style="--delay: 0.7"></div>
+               <div class="wave" style="--delay: 0.8"></div>
+               <div class="wave" style="--delay: 0.9"></div>
+            </div>
+            <div id="dbInfo">
+               <div id="dbMessage">Message</div>
+               <button id="dbOkBtn" class="cursor">okay</button>
+            </div>
+         </div>
+
+         <!-- floting windows -->
+         <div id="flotingInput" class="floting-window-outer"></div>
       </div>
-      
-      <main id="itsMain"></main>
-      
-      <!-- floting windows -->
-      <div id="flotingInput" class="floting-window-outer"></div>
-   </div>
-
-</body>
+   </body>
 </html>
