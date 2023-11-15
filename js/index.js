@@ -428,8 +428,8 @@ function createSection(name, active, index, users = []) {
                   resetSection();
                   break;
                case remove:
-                  DATA.splice(index, 1);
-                  addHistoryForRemoveSession(DATA[index], "REMOVE USER");
+                  const old = DATA.splice(index, 1);
+                  addHistoryForRemoveSession(old[0], "REMOVE USER");
                   saveLocal();
                   resetSection();
                   break;

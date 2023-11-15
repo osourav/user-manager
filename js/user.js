@@ -1,18 +1,8 @@
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-analytics.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
-import {
-   set,
-   get,
-   getDatabase,
-   update,
-   ref,
-} from "https://www.gstatic.com/firebasejs/10.6.0/firebase-database.js";
-
 window.onload = async () => {
    // Initialize Firebase
-   const app = initializeApp(firebaseConfig);
-   const analytics = getAnalytics(app);
-   const db = getDatabase();
+
+   firebase.initializeApp(firebaseConfig);
+   const analytics = firebase.analytics();
 
    const localData = await getDataFromLocalStorage(localStorageKey);
 
@@ -25,7 +15,7 @@ window.onload = async () => {
 
    historyColose.addEventListener("click", () => {
       historyWindow.classList.remove("active");
-   })
+   });
 
    slideBack.addEventListener("click", () => {
       if (slideCount > 0) {
@@ -55,34 +45,24 @@ window.onload = async () => {
          if (val !== null) {
             lodingWindow.classList.add("active");
             try {
-               const usersRef = ref(db, val.username);
-               const result = await get(usersRef);
+               let usersRef = firebase.database().ref(val.username);
+               let dataRef = firebase.database().ref(val.username);
 
-               if (result.exists()) {
-                  const value = result.val();
+               let result = await dataRef.once("value");
+               let value = result.val();
 
-                  if (value.password == stringToB64(val.password)) {
-                     await update(usersRef, {
-                        datas: DATABASE.datas,
-                     });
-                     
-                     dbMessage.innerHTML = `Hi <b>${val.username}</b>! Your data has been successfully exported.`;
-                     lodingWindow.classList.add("complete");
-                  } else {
-                     dbMessage.innerHTML = `Incorrect password. Please try again.`;
-                     lodingWindow.classList.add("complete");
-                  }
-               } else {
-                  await set(usersRef, {
-                     username: val.username,
-                     date: Date.now(),
+               if (
+                  result.exists() &&
+                  value.password == stringToB64(val.password)
+               ) {
+                  await usersRef.update({
                      datas: DATABASE.datas,
-                     password: stringToB64(val.password),
                   });
-                  DATABASE.username = val.username;
-                  userName.innerText = val.username;
-                  saveLocal();
-                  dbMessage.innerHTML = `Congratulations, <b>${val.username}</b>! Your data has been successfully exported.`;
+
+                  dbMessage.innerHTML = `Hi <b>${val.username}</b>! Your data has been successfully exported.`;
+                  lodingWindow.classList.add("complete");
+               } else {
+                  dbMessage.innerHTML = `Incorrect password. Please try again.`;
                   lodingWindow.classList.add("complete");
                }
             } catch (error) {
@@ -99,11 +79,11 @@ window.onload = async () => {
          if (val !== null) {
             lodingWindow.classList.add("active");
             try {
-               const usersRef = ref(db, val.username);
-               const result = await get(usersRef);
+               let usersRef = firebase.database().ref(val.username);
+               let result = await usersRef.get();
 
                if (result.exists()) {
-                  const value = result.val();
+                  let value = result.val();
 
                   if (value.password == stringToB64(val.password)) {
                      DATABASE.datas = value.datas;
@@ -119,7 +99,7 @@ window.onload = async () => {
                      lodingWindow.classList.add("complete");
                   }
                } else {
-                  dbMessage.innerHTML = `The provided username <b>${val.username}</b>! does not exist. Please check and try again.`;
+                  dbMessage.innerHTML = `The provided username <b>${val.username}</b> does not exist. Please check and try again.`;
                   lodingWindow.classList.add("complete");
                }
             } catch (error) {
@@ -136,25 +116,25 @@ window.onload = async () => {
          if (val !== null) {
             lodingWindow.classList.add("active");
             try {
-               const usersRef = ref(db, val.username);
-               const result = await get(usersRef);
+               let usersRef = firebase.database().ref(val.username);
+               let result = await usersRef.get();
 
                if (result.exists()) {
-                  const value = result.val();
+                  let value = result.val();
 
                   if (value.password == stringToB64(val.oldPassword)) {
-                     await update(usersRef, {
+                     await usersRef.update({
                         password: stringToB64(val.newPassword),
                      });
                      saveLocal();
-                     dbMessage.innerHTML = `Hi <b>${val.username}</b> Your password has been changed successfully!`;
+                     dbMessage.innerHTML = `Hi <b>${val.username}</b>! Your password has been changed successfully!`;
                      lodingWindow.classList.add("complete");
                   } else {
                      dbMessage.innerHTML = `Incorrect current password. Please try again.`;
                      lodingWindow.classList.add("complete");
                   }
                } else {
-                  dbMessage.innerHTML = `The provided username <b>${val.username}</b>! does not exist. Please check and try again.`;
+                  dbMessage.innerHTML = `The provided username <b>${val.username}</b> does not exist. Please check and try again.`;
                   lodingWindow.classList.add("complete");
                }
             } catch (error) {
