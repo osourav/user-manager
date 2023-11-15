@@ -1,0 +1,148 @@
+#historyWindow {
+   position: fixed;
+   width: 100%;
+   height: 100%;
+   inset: 0;
+   padding: 0.5rem;
+   background: #000;
+   display: none;
+   grid-template-rows: 3rem 3rem auto;
+   z-index: 4;
+}
+#historyWindow.active {
+   display: grid;
+}
+#historyWindow #historyTitle {
+   position: relative;
+   width: 100%;
+   height: 100%;
+   background: #fff2;
+}
+#historyWindow #historyTitle p {
+   position: relative;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-size: 1.6rem;
+   font-family: Righteous;
+   color: #ff512f;
+}
+#historyWindow #historyTitle i {
+   position: absolute;
+   right: 0.5rem;
+   top: 0.5rem;
+   width: 3rem;
+   height: 2rem;
+   background: #fff2;
+   font-size: 1.6rem;
+   display: grid;
+   place-items: center;
+   border-radius: 6px;
+   color: #f00;
+   outline: solid 1px #f00;
+   transition: linear 200ms color, linear 200ms background, linear 200ms outline;
+}
+#historyWindow #backNext {
+   position: relative;
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background: #fff1;
+   color: #fff;
+   gap: 2rem;
+}
+#historyWindow #backNext div {
+   position: relative;
+   width: 3rem;
+   text-align: center;
+   font-size: 1.6rem;
+   font-family: Righteous;
+}
+#historyWindow #backNext i {
+   position: relative;
+   width: 3rem;
+   height: 2rem;
+   padding: calc(var(--margin) / 2);
+   border-radius: 5px;
+   text-shadow: 0 0 1px #000;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   background-image: linear-gradient(
+      to right,
+      #425df5 0%,
+      #26d0ce 51%,
+      #425df5 100%
+   );
+   color: #fff;
+   font-size: 1.3rem;
+   text-shadow: 0 0 1px #000;
+   transition: 250ms linear background;
+   background-size: 200% auto;
+}
+#historyWindow #backNext i:nth-child(2) {
+   background-position: right center;
+}
+
+#historyList {
+   position: relative;
+   width: 100%;
+   height: auto;
+   display: flex;
+   gap: var(--gap);
+   flex-direction: column;
+}
+#historyList * {
+   touch-action: auto;
+   -ms-touch-action: auto;
+   -webkit-touch-callout: auto;
+}
+#historyList .h-log {
+   position: relative;
+   width: 100%;
+   height: 2rem;
+   display: flex;
+   gap: calc(var(--gap) * 2);
+   align-items: center;
+   overflow-x: scroll;
+   overflow-y: hidden;
+}
+#historyList .h-log .h-span {
+   position: relative;
+   min-width: 2000px;
+   height: 100%;
+   display: flex;
+   align-items: center;
+   gap: calc(var(--gap) * 2);
+   color: #FFFFFF;
+   font-family: Google;
+   font-size: 0.7rem;
+   font-weight: 900;
+}
+#historyList .h-log .h-span [class*="c-"] {
+   position: relative;
+   width: max-content;
+   font-weight: 400;
+   font-size: 0.9rem;
+   font-family: Oswald;
+}
+.c-red {
+   color: #ff001e;
+   text-shadow: 0 0 1px #ff00ff;
+}
+.c-green {
+   color: #0f0;
+}
+.c-blue {
+   color: #00f;
+}
+.c-cor1 {
+   color: #0ff;
+}
+.c-feb {
+   color: #ff9000;
+}

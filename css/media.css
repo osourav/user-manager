@@ -1,0 +1,98 @@
+@media screen and (min-width: 490px) {
+   .cursor {
+      cursor: pointer;
+   }
+   .s-btn:hover {
+      background: #fff7;
+      color: #000000;
+      text-shadow: 0 0 1px #fff7;
+   }
+
+   #menuOptions .option:hover {
+      background-position: right center;
+   }
+   #menuOptions .option:hover {
+      background-position: right center;
+   }
+   #menuOptions .option:hover > p,
+   #menuOptions .option:hover > i {
+      color: #fff;
+      text-shadow: 0 0 2px #000;
+   }
+   .floting-window .buttons button {
+      cursor: pointer;
+   }
+   .floting-window .buttons button:hover {
+      background-position: right center;
+      color: #fff;
+      text-decoration: none;
+   }
+   .floting-window .close {
+      cursor: pointer;
+   }
+   .floting-window .close:hover {
+      color: #f00;
+      background: #fff;
+      border: solid 1px #000;
+   }
+   #lodingWindow #dbInfo #dbOkBtn:hover {
+      background-position: right center;
+   }
+   #historyWindow #historyTitle i:hover {
+      background: #f00;
+      color: #fff;
+   }
+   #historyWindow #backNext i:hover {
+      background-position: right center;
+   }
+   #historyWindow #backNext i:nth-child(2):hover {
+      background-position: left center;
+   }
+}
+@media screen and (max-width: 490px) {
+   .s-btn:active {
+      background: #fff7;
+      color: #000000;
+      text-shadow: 0 0 1px #fff7;
+   }
+
+   .features .feature.hover {
+      -webkit-box-reflect: below 2rem;
+      transform: scaleY(-1);
+   }
+   .top .menu-options .option.hover {
+      -webkit-box-reflect: below 2rem;
+      transform: scaleY(-1);
+   }
+   #menuOptions .option:active {
+      background-position: right center;
+   }
+   #menuOptions .option:active > p,
+   #menuOptions .option:active > i {
+      color: #fff;
+      text-shadow: 0 0 2px #000;
+   }
+   .floting-window .buttons button:active {
+      background-position: right center;
+      color: #fff;
+      text-decoration: none;
+   }
+   .floting-window .close:active {
+      color: #f00;
+      background: #fff;
+      border: solid 1px #000;
+   }
+   #lodingWindow #dbInfo #dbOkBtn:active {
+      background-position: right center;
+   }
+   #historyWindow #historyTitle i:active {
+      background: #f00;
+      color: #fff;
+   }
+   #historyWindow #backNext i:active {
+      background-position: right center;
+   }
+   #historyWindow #backNext i:nth-child(2):active {
+      background-position: left center;
+   }
+}

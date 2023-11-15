@@ -6,6 +6,10 @@ let DATABASE = {
 
 let DATA = DATABASE.datas;
 const localStorageKey = "sb_user_manager";
+const holdDelay = 500;
+const allSec = [];
+const slideSize = 20;
+let slideCount = 0;
 
 /* ----  local storage set and get ---- */
 function setDataFromLocalStorage(key, object) {
@@ -18,17 +22,14 @@ function getDataFromLocalStorage(key) {
 function deleteDataFromLocalStorage(key) {
    return localStorage.removeItem(key);
 }
-
 function saveLocal() {
    setDataFromLocalStorage(localStorageKey, DATABASE);
 }
-
 function addHistoryForRemoveSession(section, operation = "DELETE") {
    section.users.forEach((user) => {
       saveHistoryInDB(user, section.name, operation);
    });
 }
-
 function saveHistoryInDB(user, sectionName, operation) {
    const currentDate = new Date();
    const options = {

@@ -10,6 +10,12 @@
       <link rel="stylesheet" href="./icons/css/icon.css" />
       <link rel="stylesheet" href="./css/font.css" />
       <link rel="stylesheet" href="./css/style.css" />
+      <link rel="stylesheet" href="./css/section.css" />
+      <link rel="stylesheet" href="./css/mainMenu.css" />
+      <link rel="stylesheet" href="./css/flotingWindow.css" />
+      <link rel="stylesheet" href="./css/loding.css" />
+      <link rel="stylesheet" href="./css/history.css" />
+      <link rel="stylesheet" href="./css/media.css" />
 
       <!-- scripts -->
       <script src="./js/data.js" defer></script>
@@ -38,6 +44,10 @@
                   <span id="userName">_____</span>
                </div>
                <div id="menuOptions">
+                  <div class="option cursor" id="showHistory">
+                     <i class="sbi-auto_delete"></i>
+                     <p>History</p>
+                  </div>
                   <div class="option cursor" id="uploadData">
                      <i class="sbi-upload4"></i>
                      <p>EXPORT</p>
@@ -53,6 +63,23 @@
                </div>
 
                <div id="copyright">©SouravBarui2023</div>
+            </div>
+         </div>
+
+         <div id="historyWindow">
+            <div id="historyTitle">
+               <p>DELETE HISTORY</p>
+               <i class="sbi-close cursor" id="historyColose"></i>
+            </div>
+            <div id="backNext">
+               <i class="sbi-arrow-bold-left cursor" id="slideBack"></i>
+               <div id="slideNo">1</div>
+               <i class="sbi-arrow-bold-right cursor" id="slideNext"></i>
+            </div>
+            <div class="scroll-box">
+               <div id="historyList">
+   
+               </div>
             </div>
          </div>
 

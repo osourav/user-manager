@@ -1,6 +1,3 @@
-const holdDelay = 500;
-const allSec = [];
-
 function createUser(parent, values, baseIndex, userIndex) {
    const userOuter = CD(parent, "user-outer");
    const userEle = CD(userOuter, "user", "");
@@ -176,17 +173,37 @@ function createUser(parent, values, baseIndex, userIndex) {
                      (btnName = "Continue")
                   ).then((newValue) => {
                      if (newValue !== null) {
-                        const old = structuredClone(DATA[baseIndex].users[userIndex]);
+                        const old = structuredClone(
+                           DATA[baseIndex].users[userIndex]
+                        );
                         DATA[baseIndex].users[userIndex] = newValue;
 
                         if (!objectsAreEqual(old, newValue)) {
-                           const age = old.age != newValue.age ? `'${old.age}' TO '${newValue.age}'` : old.age;
-                           const gender = old.gender != newValue.gender ? `'${old.gender}' TO '${newValue.gender}'` : old.gender;
-                           const location = old.location != newValue.location ? `'${old.location}' TO '${newValue.location}'` : old.location;
-                           const name = old.name != newValue.name ? `'${old.name}' TO '${newValue.name}'` : old.name;
-                           const number = old.number != newValue.number ? `'${old.number}' TO '${newValue.number}'` : old.number;
-                           const work = old.work != newValue.work ? `'${old.work}' TO '${newValue.work}'` : old.age;
-   
+                           const age =
+                              old.age != newValue.age
+                                 ? `${old.age} ⇉ ${newValue.age}`
+                                 : old.age;
+                           const gender =
+                              old.gender != newValue.gender
+                                 ? `${old.gender} ⇉ ${newValue.gender}`
+                                 : old.gender;
+                           const location =
+                              old.location != newValue.location
+                                 ? `${old.location} ⇉ ${newValue.location}`
+                                 : old.location;
+                           const name =
+                              old.name != newValue.name
+                                 ? `${old.name} ⇉ ${newValue.name}`
+                                 : old.name;
+                           const number =
+                              old.number != newValue.number
+                                 ? `${old.number} ⇉ ${newValue.number}`
+                                 : old.number;
+                           const work =
+                              old.work != newValue.work
+                                 ? `${old.work} ⇉ ${newValue.work}`
+                                 : old.age;
+
                            const foramatedUser = {
                               age: age,
                               gender: gender,
@@ -194,8 +211,12 @@ function createUser(parent, values, baseIndex, userIndex) {
                               name: name,
                               number: number,
                               work: work,
-                           }
-                           saveHistoryInDB(foramatedUser, DATA[baseIndex].name, "UPDATE USER VALUE");
+                           };
+                           saveHistoryInDB(
+                              foramatedUser,
+                              DATA[baseIndex].name,
+                              "UPDATE USER"
+                           );
                            saveLocal();
                         } else {
                            console.log("same");
@@ -206,7 +227,7 @@ function createUser(parent, values, baseIndex, userIndex) {
                   break;
                case features[3]:
                   const USER = DATA[baseIndex].users.splice(userIndex, 1);
-                  saveHistoryInDB(USER[0], DATA[baseIndex].name, "DELETE");
+                  saveHistoryInDB(USER[0], DATA[baseIndex].name, "REMOVE USER");
                   saveLocal();
                   resetSection();
                   break;
@@ -227,7 +248,11 @@ function createUser(parent, values, baseIndex, userIndex) {
          } else if (!sec.classList.contains("current") && sec == ele) {
             const user = DATA[baseIndex].users.splice(userIndex, 1);
             DATA[moveIndex].users.unshift(user[0]);
-            saveHistoryInDB(user[0], `${DATA[baseIndex].name} to ${DATA[moveIndex].name}`, "UPDATE USER SECTION");
+            saveHistoryInDB(
+               user[0],
+               `${DATA[baseIndex].name} to ${DATA[moveIndex].name}`,
+               "UPDATE USER SECTION"
+            );
             saveLocal();
             resetSection();
          } else {
@@ -404,7 +429,7 @@ function createSection(name, active, index, users = []) {
                   break;
                case remove:
                   DATA.splice(index, 1);
-                  addHistoryForRemoveSession(DATA[index], "DELETE");
+                  addHistoryForRemoveSession(DATA[index], "REMOVE USER");
                   saveLocal();
                   resetSection();
                   break;
@@ -456,4 +481,49 @@ function resetSection() {
    DATA.forEach((section, i) => {
       createSection(section.name, section.active, i, section.users);
    });
+}
+
+function setHistory() {
+   let html = "";
+   const historyLen = DATABASE.history.length - 1;
+   const start = slideCount * slideSize;
+   const end =
+      (slideCount + 1) * slideSize < historyLen
+         ? (slideCount + 1) * slideSize
+         : historyLen;
+
+   for (let i = start; i <= end; i++) {
+      html += creatHistoryLog(DATABASE.history[i]);
+   }
+   historyList.innerHTML = html;
+}
+
+function creatHistoryLog(data) {
+   const {
+      age,
+      date,
+      gender,
+      location,
+      name,
+      number,
+      operation,
+      sessinonName,
+      work,
+   } = data;
+
+   return `
+   <div class="h-log">
+      <div class="h-span">
+         <div class="c-feb">${date}</div>
+         <div class="c-green">${operation}</div>
+         <div class="c-red">${sessinonName}</div>NAME ▶ 
+         <div class="c-cor1">${name}</div> NUMBER ▶
+         <div class="c-cor1">${number}</div>AGE ▶ 
+         <div class="c-cor1">${age}</div>GENDER ▶ 
+         <div class="c-cor1">${gender}</div>WORK ▶ 
+         <div class="c-cor1">${work}</div>LOCATION ▶ 
+         <div class="c-cor1">${location}</div>
+      </div>
+   </div>
+   `;
 }

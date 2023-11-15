@@ -1,0 +1,107 @@
+#mainMenu {
+   position: fixed;
+   width: 100vw;
+   height: 100vh;
+   background: #0007;
+   backdrop-filter: blur(3px);
+   inset: 0;
+   z-index: 5;
+   opacity: 0;
+   pointer-events: none;
+   transition: linear 300ms opacity;
+}
+#mainMenu.active {
+   opacity: 1;
+   pointer-events: all;
+}
+#mainMenu #menuInner {
+   position: absolute;
+   right: calc(var(--mm-w) * -1);
+   top: 0;
+   width: var(--mm-w);
+   height: 100%;
+   background: #ffffff;
+   display: flex;
+   flex-direction: column;
+   transition: linear 300ms right;
+}
+#mainMenu.active #menuInner {
+   right: 0;
+}
+#mainMenu #welcome {
+   position: relative;
+   width: calc(100% - 0.2rem);
+   height: 5rem;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   margin-bottom: 0.5rem;
+   background: #dddddd;
+   border-style: solid;
+   border-width: 0.2rem;
+   border-color: #0002 #fff5 #fff5 #0002;
+}
+#welcome p {
+   font-family: Righteous;
+   font-weight: 900;
+   font-size: 2rem;
+   color: #ff6600;
+   text-shadow: 0 0 1px #000;
+}
+#welcome span {
+   color: #0077ff;
+   font-family: Righteous;
+   font-size: 1rem;
+}
+#mainMenu #menuOptions {
+   position: relative;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: var(--gap);
+}
+#menuOptions .option {
+   position: relative;
+   width: 100%;
+   height: 50px;
+   gap: calc(var(--gap) * 2);
+   display: flex;
+   justify-content: start;
+   padding-left: calc(var(--margin) * 2);
+   border-left: solid calc(var(--gap) * 2) #fff7;
+   background-image: linear-gradient(
+      to right,
+      #bffffc 0%,
+      #00fffb 50%,
+      #d2fffd 100%
+   );
+   text-transform: uppercase;
+   transition: 0.5s;
+   background-size: 200% auto;
+}
+#menuOptions .option > p,
+#menuOptions .option > i {
+   position: relative;
+   height: 100%;
+   display: grid;
+   place-items: center;
+   font-size: 0.9rem;
+   font-family: Roboto;
+   color: #353535;
+   text-shadow: 0 0 2px #fff;
+   font-weight: 900;
+   transition: all 300ms linear;
+}
+#menuOptions .option > i {
+   font-size: 1.3rem;
+}
+#copyright {
+   position: absolute;
+   bottom: 10px;
+   right: 10px;
+   font-family: Roboto;
+   font-weight: 900;
+   font-size: 0.7rem;
+   color: #0006;
+}

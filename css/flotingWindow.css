@@ -1,0 +1,148 @@
+
+.floting-window-outer {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   display: none;
+   place-items: center;
+   background: #0009;
+   backdrop-filter: blur(3px);
+   z-index: 10;
+}
+.floting-window-outer.active {
+   display: grid;
+}
+.floting-window {
+   position: relative;
+   width: 18rem;
+   padding: calc(var(--margin) * 2);
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+   background: #fff;
+   border-radius: 12px;
+   text-align: center;
+   border: solid 2px #000;
+}
+
+.floting-window p {
+   font-size: large;
+   font-weight: 900;
+}
+.floting-window .close {
+   position: absolute;
+   top: calc(var(--margin) * 0.6);
+   right: calc(var(--margin) * 0.6);
+   text-decoration: none;
+   outline: none;
+   border: none;
+   width: calc(var(--margin) * 1.4);
+   height: calc(var(--margin) * 1.4);
+   border-radius: calc(var(--margin) * 0.4);
+   border: solid 1px transparent;
+   color: #fff;
+   transition: 0.2s linear;
+   background: #f00;
+}
+.floting-window [class*="input-"] {
+   position: relative;
+   width: 100%;
+   height: 1.8rem;
+   display: grid;
+   grid-template-columns: 1fr 7fr;
+   place-items: center;
+   background: #fff;
+}
+.floting-window [class*="input-"] input,
+.floting-window [class*="input-"] select {
+   position: relative;
+   width: 100%;
+   height: 100%;
+   background: transparent;
+   font-size: 1rem;
+   padding: 0 0.4rem;
+   border: none;
+   outline: none;
+   border-top-right-radius: calc(var(--margin) / 4);
+   border-bottom-right-radius: calc(var(--margin) / 4);
+   box-shadow: inset 0px 0px 0.2rem #0005;
+}
+.floting-window [class*="input-"] > i {
+   position: relative;
+   width: 100%;
+   height: 100%;
+   display: grid;
+   place-items: center;
+   color: #fff;
+   border-top-left-radius: 5px;
+   border-bottom-left-radius: 5px;
+   background-image: linear-gradient(
+      to top right,
+      #ff512f 0%,
+      #f09819 51%,
+      #ff512f 100%
+   );
+}
+.floting-window .input-password .pass-show-hide-btn {
+   position: absolute;
+   width: 2rem;
+   height: 100%;
+   display: grid;
+   right: 0;
+   place-items: center;
+   background: #00ffe577;
+   border-top-right-radius: 5px;
+   border-bottom-right-radius: 5px;
+   box-shadow: 1px 1px 3px #0007;
+   transition: linear 300ms background;
+}
+.floting-window .input-password .pass-show-hide-btn i {
+   position: absolute;
+   color: #000;
+   transition: linear 300ms color, linear 300ms opacity;
+   opacity: 0;
+}
+.floting-window .input-password .pass-show-hide-btn:not(.active) i:first-child,
+.floting-window .input-password .pass-show-hide-btn.active i:last-child {
+   opacity: 0;
+}
+.floting-window .input-password .pass-show-hide-btn.active i:first-child,
+.floting-window .input-password .pass-show-hide-btn:not(.active) i:last-child {
+   opacity: 1;
+}
+
+.floting-window .buttons {
+   position: relative;
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   gap: calc(var(--margin) / 2);
+}
+.floting-window.one .buttons {
+   grid-template-columns: 1fr;
+}
+.floting-window .buttons button {
+   position: relative;
+   border: none;
+   outline: none;
+   text-decoration: none;
+   padding: calc(var(--margin) / 2);
+   border-radius: 5px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 0.2rem;
+   appearance: none;
+   background-image: linear-gradient(
+      to right,
+      #1a2980 0%,
+      #26d0ce 51%,
+      #1a2980 100%
+   );
+   color: #fff;
+   text-transform: uppercase;
+   font-size: 0.7rem;
+   transition: 0.3s linear background;
+   background-size: 200% auto;
+}

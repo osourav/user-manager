@@ -23,6 +23,33 @@ window.onload = async () => {
    }
    resetSection();
 
+   historyColose.addEventListener("click", () => {
+      historyWindow.classList.remove("active");
+   })
+
+   slideBack.addEventListener("click", () => {
+      if (slideCount > 0) {
+         slideCount--;
+         slideNo.innerHTML = slideCount + 1;
+         setHistory();
+      }
+   });
+
+   slideNext.addEventListener("click", () => {
+      const historyLen = DATABASE.history.length - 1;
+      if ((slideCount + 1) * slideSize < historyLen) {
+         slideCount++;
+         slideNo.innerHTML = slideCount + 1;
+         setHistory();
+      }
+   });
+
+   showHistory.addEventListener("click", () => {
+      mainMenu.classList.remove("active");
+      historyWindow.classList.add("active");
+      setHistory();
+   });
+
    uploadData.addEventListener("click", () => {
       createImportExportInput(flotingInput, "Export").then(async (val) => {
          if (val !== null) {
