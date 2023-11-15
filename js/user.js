@@ -30,19 +30,19 @@ window.onload = async () => {
             try {
                const usersRef = ref(db, val.username);
                const result = await get(usersRef);
-               
+
                if (result.exists()) {
                   const value = result.val();
-                  
+
                   if (value.password == stringToB64(val.password)) {
                      await update(usersRef, {
                         datas: DATABASE.datas,
                      });
-                     console.log("success");
-                     dbMessage.innerHTML = `Hello '<b>${val.username}</b>' your data successfully updated`;
+                     
+                     dbMessage.innerHTML = `Hi <b>${val.username}</b>! Your data has been successfully exported.`;
                      lodingWindow.classList.add("complete");
                   } else {
-                     dbMessage.innerHTML = `Password not Match!`;
+                     dbMessage.innerHTML = `Incorrect password. Please try again.`;
                      lodingWindow.classList.add("complete");
                   }
                } else {
@@ -55,11 +55,12 @@ window.onload = async () => {
                   DATABASE.username = val.username;
                   userName.innerText = val.username;
                   saveLocal();
-                  dbMessage.innerHTML = `Hello '<b>${val.username}</b>' now your data successfully exported`;
+                  dbMessage.innerHTML = `Congratulations, <b>${val.username}</b>! Your data has been successfully exported.`;
                   lodingWindow.classList.add("complete");
                }
             } catch (error) {
-               dbMessage.innerHTML = error;
+               console.log(error);
+               dbMessage.innerHTML = `There was a problem with the connection. Please check your internet connection and try again.`;
                lodingWindow.classList.add("complete");
             }
          }
@@ -82,19 +83,21 @@ window.onload = async () => {
                      DATA = value.datas;
                      DATABASE.username = value.username;
                      userName.innerText = value.username;
-                     dbMessage.innerHTML = `Welcome '<b>${val.username}</b>' now your data successfully imported`;
+                     dbMessage.innerHTML = `Welcome, <b>${val.username}</b>! Your data has been successfully imported.`;
                      lodingWindow.classList.add("complete");
                      saveLocal();
                      resetSection();
                   } else {
-                     dbMessage.innerHTML = `Password not Match!`;
+                     dbMessage.innerHTML = `Incorrect password. Please try again.`;
                      lodingWindow.classList.add("complete");
                   }
+               } else {
+                  dbMessage.innerHTML = `The provided username <b>${val.username}</b>! does not exist. Please check and try again.`;
+                  lodingWindow.classList.add("complete");
                }
-               // console.log(result.val());
             } catch (error) {
                console.log(error);
-               dbMessage.innerHTML = error;
+               dbMessage.innerHTML = `There was a problem with the connection. Please check your internet connection and try again.`;
                lodingWindow.classList.add("complete");
             }
          }
@@ -117,16 +120,19 @@ window.onload = async () => {
                         password: stringToB64(val.newPassword),
                      });
                      saveLocal();
-                     dbMessage.innerHTML = `Hello '<b>${val.username}</b>' now your passowrd successfully updated`;
+                     dbMessage.innerHTML = `Hi <b>${val.username}</b> Your password has been changed successfully!`;
                      lodingWindow.classList.add("complete");
                   } else {
-                     dbMessage.innerHTML = `old password not match !`;
+                     dbMessage.innerHTML = `Incorrect current password. Please try again.`;
                      lodingWindow.classList.add("complete");
                   }
+               } else {
+                  dbMessage.innerHTML = `The provided username <b>${val.username}</b>! does not exist. Please check and try again.`;
+                  lodingWindow.classList.add("complete");
                }
-               // console.log(result.val());
             } catch (error) {
-               dbMessage.innerHTML = error;
+               console.log(error);
+               dbMessage.innerHTML = `There was a problem with the connection. Please check your internet connection and try again.`;
                lodingWindow.classList.add("complete");
             }
          }

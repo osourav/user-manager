@@ -302,7 +302,7 @@ function createUserInput(
 
          const { name, number, genIndx, work, age, location } = vals;
 
-         if (!isNaN(number) && number.length >= 10 && !isNaN(age[0])) {
+         if (!isNaN(number) && number.length >= 10 && isNaN(location)) {
             inputs[0].value = name;
             inputs[1].value = number;
             inputs[2].selectedIndex = genIndx;

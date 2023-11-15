@@ -1,83 +1,8 @@
 let DATABASE = {
+   datas: [],
+   history: [],
    username: "----",
-   datas: []
-   // [
-   //    {
-   //       name: "Section 1",
-   //       active: true,
-   //       users: [
-   //          {
-   //             name: "Shikha Barui",
-   //             number: "7478103293",
-   //             gender: "F",
-   //             work: "Student",
-   //             age: "18-22",
-   //             location: "Kolkata",
-   //          },
-   //       ],
-   //    },
-   //    {
-   //       name: "Section 2",
-   //       active: true,
-   //       users: [
-   //          {
-   //             name: "Subrata Barui",
-   //             number: "7478103293",
-   //             gender: "F",
-   //             work: "Student",
-   //             age: "13-22",
-   //             location: "Kolkata",
-   //          },
-   //          {
-   //             name: "Sheikh Sabir Ali Sheikh",
-   //             number: "8250032643",
-   //             gender: "M",
-   //             work: "Student",
-   //             age: "10-22",
-   //             location: "Navrangpura ahemedabad/gujrat",
-   //          },
-   //          {
-   //             name: "Subrata Barui",
-   //             number: "7478103293",
-   //             gender: "F",
-   //             work: "Student",
-   //             age: "14-22",
-   //             location: "Kolkata",
-   //          },
-   //          {
-   //             name: "Sukumar Barui",
-   //             number: "8250032643",
-   //             gender: "M",
-   //             work: "Student",
-   //             age: "18-22",
-   //             location: "Kolkata",
-   //          },
-   //       ],
-   //    },
-   //    {
-   //       name: "Section 3",
-   //       active: true,
-   //       users: [
-   //          {
-   //             name: "Pubali Maity",
-   //             number: "7478103293",
-   //             gender: "F",
-   //             work: "Student",
-   //             age: "18-22",
-   //             location: "Kolkata",
-   //          },
-   //          {
-   //             name: "Sourav Barui",
-   //             number: "8250032643",
-   //             gender: "M",
-   //             work: "Student",
-   //             age: "18-22",
-   //             location: "Kolkata",
-   //          },
-   //       ],
-   //    },
-   // ]
-}
+};
 
 let DATA = DATABASE.datas;
 const localStorageKey = "sb_user_manager";
@@ -88,7 +13,7 @@ function setDataFromLocalStorage(key, object) {
    localStorage.setItem(key, data);
 }
 function getDataFromLocalStorage(key) {
-   return JSON.parse(localStorage.getItem(key))
+   return JSON.parse(localStorage.getItem(key));
 }
 function deleteDataFromLocalStorage(key) {
    return localStorage.removeItem(key);
@@ -96,4 +21,35 @@ function deleteDataFromLocalStorage(key) {
 
 function saveLocal() {
    setDataFromLocalStorage(localStorageKey, DATABASE);
+}
+
+function addHistoryForRemoveSession(section, operation = "DELETE") {
+   section.users.forEach((user) => {
+      saveHistoryInDB(user, section.name, operation);
+   });
+}
+
+function saveHistoryInDB(user, sectionName, operation) {
+   const currentDate = new Date();
+   const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false, // Use 24-hour format
+   };
+
+   const formattedDate = currentDate.toLocaleString("en-US", options);
+ 
+   DATABASE.history.unshift({
+      ...user,
+      date: formattedDate,
+      operation: operation,
+      sessinonName: sectionName,
+   });
+   if (DATABASE.history.length > 1000) {
+      DATABASE.history.pop();
+   }
 }

@@ -4,12 +4,20 @@ const allSec = [];
 function createUser(parent, values, baseIndex, userIndex) {
    const userOuter = CD(parent, "user-outer");
    const userEle = CD(userOuter, "user", "");
-   /**/ CP(userEle, "small-right name", "", getFormatText(values.name, 18, true));
-   /**/ const number = CP(userEle, "number", "", values.number);
+   const oAge = getFormatText(values.age, 2);
+
+   const nm = getFormatText(values.name, 18, true);
+   const nu = values.number;
+   const wk = getFormatText(values.work, 9, true);
+   const ag = !isNaN(oAge[0]) ? oAge + "+" : oAge == "yes" ? "18+" : "18-";
+   const lo = getFormatText(values.location, 9, true);
+
+   /**/ CP(userEle, "small-right name", "", nm);
+   /**/ const number = CP(userEle, "number", "", nu);
    /**/ CP(userEle, "center", "", values.gender);
-   /**/ CP(userEle, "center small", "", getFormatText(values.work, 8, true));
-   /**/ CP(userEle, "center small", "", `${getFormatText(values.age, 2)}+`);
-   /**/ CP(userEle, "center small", "", getFormatText(values.location, 9, true));
+   /**/ CP(userEle, "center small", "", wk);
+   /**/ CP(userEle, "center small", "", ag);
+   /**/ CP(userEle, "center small", "", lo);
 
    const features =
       parent.parentElement.parentElement.querySelectorAll(".feature");
@@ -168,14 +176,37 @@ function createUser(parent, values, baseIndex, userIndex) {
                      (btnName = "Continue")
                   ).then((newValue) => {
                      if (newValue !== null) {
+                        const old = structuredClone(DATA[baseIndex].users[userIndex]);
                         DATA[baseIndex].users[userIndex] = newValue;
-                        saveLocal();
+
+                        if (!objectsAreEqual(old, newValue)) {
+                           const age = old.age != newValue.age ? `'${old.age}' TO '${newValue.age}'` : old.age;
+                           const gender = old.gender != newValue.gender ? `'${old.gender}' TO '${newValue.gender}'` : old.gender;
+                           const location = old.location != newValue.location ? `'${old.location}' TO '${newValue.location}'` : old.location;
+                           const name = old.name != newValue.name ? `'${old.name}' TO '${newValue.name}'` : old.name;
+                           const number = old.number != newValue.number ? `'${old.number}' TO '${newValue.number}'` : old.number;
+                           const work = old.work != newValue.work ? `'${old.work}' TO '${newValue.work}'` : old.age;
+   
+                           const foramatedUser = {
+                              age: age,
+                              gender: gender,
+                              location: location,
+                              name: name,
+                              number: number,
+                              work: work,
+                           }
+                           saveHistoryInDB(foramatedUser, DATA[baseIndex].name, "UPDATE USER VALUE");
+                           saveLocal();
+                        } else {
+                           console.log("same");
+                        }
                      }
                      resetSection();
                   });
                   break;
                case features[3]:
-                  DATA[baseIndex].users.splice(userIndex, 1);
+                  const USER = DATA[baseIndex].users.splice(userIndex, 1);
+                  saveHistoryInDB(USER[0], DATA[baseIndex].name, "DELETE");
                   saveLocal();
                   resetSection();
                   break;
@@ -184,6 +215,7 @@ function createUser(parent, values, baseIndex, userIndex) {
          }
       });
 
+      // change place in all Section
       allSec.forEach((sec, moveIndex) => {
          const nodeIndex = getElementIndex(ele);
 
@@ -195,6 +227,7 @@ function createUser(parent, values, baseIndex, userIndex) {
          } else if (!sec.classList.contains("current") && sec == ele) {
             const user = DATA[baseIndex].users.splice(userIndex, 1);
             DATA[moveIndex].users.unshift(user[0]);
+            saveHistoryInDB(user[0], `${DATA[baseIndex].name} to ${DATA[moveIndex].name}`, "UPDATE USER SECTION");
             saveLocal();
             resetSection();
          } else {
@@ -295,6 +328,7 @@ function createSection(name, active, index, users = []) {
          if (obj !== null) {
             DATA[index].users.push(obj);
             DATA[index].active = true;
+            saveHistoryInDB(obj, DATA[index].name, "ADD USER");
             saveLocal();
             resetSection();
          }
@@ -364,11 +398,13 @@ function createSection(name, active, index, users = []) {
                         structuredClone(user)
                      ),
                   });
+                  addHistoryForRemoveSession(DATA[index], "COPY");
                   saveLocal();
                   resetSection();
                   break;
                case remove:
                   DATA.splice(index, 1);
+                  addHistoryForRemoveSession(DATA[index], "DELETE");
                   saveLocal();
                   resetSection();
                   break;
@@ -378,7 +414,6 @@ function createSection(name, active, index, users = []) {
       });
 
       menu.classList.remove("active");
-      console.log("-----");
    }
 
    function holdingStart() {
