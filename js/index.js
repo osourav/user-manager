@@ -250,7 +250,7 @@ function createUser(parent, values, baseIndex, userIndex) {
             DATA[moveIndex].users.unshift(user[0]);
             saveHistoryInDB(
                user[0],
-               `${DATA[baseIndex].name} to ${DATA[moveIndex].name}`,
+               `${DATA[baseIndex].name} ⇉ ${DATA[moveIndex].name}`,
                "UPDATE USER SECTION"
             );
             saveLocal();
