@@ -101,6 +101,11 @@
    -ms-touch-action: auto;
    -webkit-touch-callout: auto;
 }
+#historyList .h-span * {
+   user-select: all;
+   -ms-user-select: all;
+   -webkit-user-select: all;
+}
 #historyList .h-log {
    position: relative;
    width: 100%;
