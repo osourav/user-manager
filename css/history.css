@@ -101,7 +101,7 @@
    -ms-touch-action: auto;
    -webkit-touch-callout: auto;
 }
-#historyList .h-span * {
+#historyList .h-span .c-cor1 {
    user-select: all;
    -ms-user-select: all;
    -webkit-user-select: all;
