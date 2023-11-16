@@ -40,10 +40,20 @@ window.onload = async () => {
       setHistory();
    });
 
+   function internetProblemError() {
+      dbMessage.innerHTML = `There was a problem with the connection. Please check your internet connection and try again.`;
+      lodingWindow.classList.add("complete");
+   }
+
    uploadData.addEventListener("click", () => {
       createImportExportInput(flotingInput, "Export").then(async (val) => {
          if (val !== null) {
             lodingWindow.classList.add("active");
+            if (!navigator.onLine) {
+               internetProblemError();
+               return;
+            }
+            
             try {
                let usersRef = firebase.database().ref(val.username);
                let dataRef = firebase.database().ref(val.username);
@@ -66,9 +76,7 @@ window.onload = async () => {
                   lodingWindow.classList.add("complete");
                }
             } catch (error) {
-               console.log(error);
-               dbMessage.innerHTML = `There was a problem with the connection. Please check your internet connection and try again.`;
-               lodingWindow.classList.add("complete");
+               internetProblemError();
             }
          }
       });
@@ -78,6 +86,10 @@ window.onload = async () => {
       createImportExportInput(flotingInput, "Import").then(async (val) => {
          if (val !== null) {
             lodingWindow.classList.add("active");
+            if (!navigator.onLine) {
+               internetProblemError();
+               return;
+            }
             try {
                let usersRef = firebase.database().ref(val.username);
                let result = await usersRef.get();
@@ -103,9 +115,7 @@ window.onload = async () => {
                   lodingWindow.classList.add("complete");
                }
             } catch (error) {
-               console.log(error);
-               dbMessage.innerHTML = `There was a problem with the connection. Please check your internet connection and try again.`;
-               lodingWindow.classList.add("complete");
+               internetProblemError();
             }
          }
       });
@@ -115,6 +125,10 @@ window.onload = async () => {
       createChangePasswordInput(flotingInput).then(async (val) => {
          if (val !== null) {
             lodingWindow.classList.add("active");
+            if (!navigator.onLine) {
+               internetProblemError();
+               return;
+            }
             try {
                let usersRef = firebase.database().ref(val.username);
                let result = await usersRef.get();
@@ -138,9 +152,7 @@ window.onload = async () => {
                   lodingWindow.classList.add("complete");
                }
             } catch (error) {
-               console.log(error);
-               dbMessage.innerHTML = `There was a problem with the connection. Please check your internet connection and try again.`;
-               lodingWindow.classList.add("complete");
+               internetProblemError();
             }
          }
       });

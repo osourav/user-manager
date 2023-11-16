@@ -9,12 +9,16 @@ const stringToB64 = (b64) => atob(b64);
 function getFormatInput(text) {
    const values = text.split(" ");
    if (values.length < 6) return null;
-   
+
    try {
       let name = [];
 
       for (let i = 0; i < values.length; i++) {
-         if (!isNaN(values[i + 1][0]) || values[i + 1].toLowerCase() == "yes" || values[i + 1].toLowerCase() == "no") {
+         if (
+            !isNaN(values[i + 1][0]) ||
+            values[i + 1].toLowerCase() == "yes" ||
+            values[i + 1].toLowerCase() == "no"
+         ) {
             name.push(values.shift());
             i--;
             break;
@@ -23,7 +27,7 @@ function getFormatInput(text) {
             i--;
          }
       }
-      
+
       name = name.join(" ");
 
       const age = `${values.shift()}`;
@@ -58,9 +62,9 @@ function getFormatText(text, len = Infinity, end = false) {
 function objectsAreEqual(obj1, obj2) {
    const keys = Object.keys(obj1);
    for (const key of keys) {
-     if (obj1[key] !== obj2[key]) {
-       return false;
-     }
+      if (obj1[key] !== obj2[key]) {
+         return false;
+      }
    }
    return true;
 }

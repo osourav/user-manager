@@ -423,7 +423,7 @@ function createSection(name, active, index, users = []) {
                         structuredClone(user)
                      ),
                   });
-                  addHistoryForRemoveSession(DATA[index], "COPY");
+                  addHistoryForRemoveSession(DATA[index], "COPY USER");
                   saveLocal();
                   resetSection();
                   break;
