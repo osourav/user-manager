@@ -100,11 +100,9 @@
    touch-action: auto;
    -ms-touch-action: auto;
    -webkit-touch-callout: auto;
-}
-#historyList .h-span .c-cor1 {
-   user-select: all;
-   -ms-user-select: all;
-   -webkit-user-select: all;
+   user-select: auto;
+   -ms-user-select: auto;
+   -webkit-user-select: auto;
 }
 #historyList .h-log {
    position: relative;
@@ -123,7 +121,7 @@
    display: flex;
    align-items: center;
    gap: calc(var(--gap) * 2);
-   color: #FFFFFF;
+   color: #ffffff;
    font-family: Google;
    font-size: 0.7rem;
    font-weight: 900;
