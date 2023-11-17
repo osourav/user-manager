@@ -518,7 +518,7 @@ function creatHistoryLog(data) {
          <div class="c-green">${operation}</div>
          <div class="c-red">${sessinonName}</div>NAME ▶ 
          <div class="c-cor1">${name}</div> NUMBER ▶
-         <div class="c-cor1">${number}</div>AGE ▶ 
+         <div class="c-cor1 copy-number">${number}</div>AGE ▶ 
          <div class="c-cor1">${age}</div>GENDER ▶ 
          <div class="c-cor1">${gender}</div>WORK ▶ 
          <div class="c-cor1">${work}</div>LOCATION ▶ 

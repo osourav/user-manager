@@ -88,9 +88,8 @@ function createChangePasswordInput(parent) {
          }
       };
       const keyEnter = (e) => {
-         if (e.keyCode === 13)  sendValue();
+         if (e.keyCode === 13) sendValue();
       };
-
 
       const removeEventListener = () => {
          fw.removeEventListener("keydown", keyEnter);
@@ -191,9 +190,8 @@ function createImportExportInput(parent, operationName = "Export") {
          }
       };
       const keyEnter = (e) => {
-         if (e.keyCode === 13)  sendValue();
+         if (e.keyCode === 13) sendValue();
       };
-
 
       const removeEventListener = () => {
          fw.removeEventListener("keydown", keyEnter);
@@ -295,21 +293,24 @@ function createUserInput(
          if (!isSectionOuter) closeSingle();
          isSectionOuter = false;
       };
-      const pasteInputs = async () => {
-         const text = await navigator.clipboard.readText();
-         const vals = getFormatInput(text)
-         if (vals == null) return;
-
-         const { name, number, genIndx, work, age, location } = vals;
-
-         if (!isNaN(number) && number.length >= 10 && isNaN(location)) {
-            inputs[0].value = name;
-            inputs[1].value = number;
-            inputs[2].selectedIndex = genIndx;
-            inputs[3].value = work;
-            inputs[4].value = age;
-            inputs[5].value = location;
-         }
+      const pasteInputs = () => {
+         navigator.clipboard.readText().then(text => {
+            const vals = getFormatInput(text);
+            if (vals == null) return;
+   
+            const { name, number, genIndx, work, age, location } = vals;
+   
+            if (!isNaN(number) && number.length >= 10 && isNaN(location)) {
+               inputs[0].value = name;
+               inputs[1].value = number;
+               inputs[2].selectedIndex = genIndx;
+               inputs[3].value = work;
+               inputs[4].value = age;
+               inputs[5].value = location;
+            }
+         }).catch(err => {
+            console.log(err);
+         })
       };
       const sendValue = () => {
          const nInputs = [...inputs].map((input) => input.value);
