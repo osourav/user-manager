@@ -56,9 +56,8 @@ window.onload = async () => {
             
             try {
                let usersRef = firebase.database().ref(val.username);
-               let dataRef = firebase.database().ref(val.username);
 
-               let result = await dataRef.once("value");
+               let result = await usersRef.once("value");
                let value = result.val();
 
                if (
@@ -67,6 +66,7 @@ window.onload = async () => {
                ) {
                   await usersRef.update({
                      datas: DATABASE.datas,
+                     history: DATABASE.history
                   });
 
                   dbMessage.innerHTML = `Hi <b>${val.username}</b>! Your data has been successfully exported.`;
@@ -100,6 +100,7 @@ window.onload = async () => {
                   if (value.password == stringToB64(val.password)) {
                      DATABASE.datas = value.datas;
                      DATA = value.datas;
+                     DATABASE.history = value.history;
                      DATABASE.username = value.username;
                      userName.innerText = value.username;
                      dbMessage.innerHTML = `Welcome, <b>${val.username}</b>! Your data has been successfully imported.`;
@@ -134,6 +135,7 @@ window.onload = async () => {
                let result = await usersRef.get();
 
                if (result.exists()) {
+                  console.log("Exists");
                   let value = result.val();
 
                   if (value.password == stringToB64(val.oldPassword)) {

@@ -20,7 +20,7 @@
    top: 0;
    width: var(--mm-w);
    height: 100%;
-   background: #ffffff;
+   background: #1b1e24;
    display: flex;
    flex-direction: column;
    transition: linear 300ms right;
@@ -37,7 +37,11 @@
    align-items: center;
    flex-direction: column;
    margin-bottom: 0.5rem;
-   background: #dddddd;
+   background-image: radial-gradient(
+      circle farthest-corner at 22.4% 21.7%,
+      rgba(4, 189, 228, 1) 0%,
+      rgba(2, 83, 185, 1) 100.2%
+   );
    border-style: solid;
    border-width: 0.2rem;
    border-color: #0002 #fff5 #fff5 #0002;
@@ -50,7 +54,7 @@
    text-shadow: 0 0 1px #000;
 }
 #welcome span {
-   color: #0077ff;
+   color: #ffffff;
    font-family: Righteous;
    font-size: 1rem;
 }
@@ -103,5 +107,5 @@
    font-family: Roboto;
    font-weight: 900;
    font-size: 0.7rem;
-   color: #0006;
+   color: #fff9;
 }

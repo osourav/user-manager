@@ -3,7 +3,6 @@
    width: 100%;
    height: 100%;
    inset: 0;
-   padding: 0.5rem;
    background: #000;
    display: none;
    grid-template-rows: 3rem 3rem auto;
@@ -95,6 +94,7 @@
    display: flex;
    gap: var(--gap);
    flex-direction: column;
+   padding: 0.5rem;
 }
 #historyList * {
    touch-action: auto;
@@ -121,7 +121,7 @@
 }
 #historyList .h-log .h-span {
    position: relative;
-   min-width: 2000px;
+   min-width: max-content;
    height: 100%;
    display: flex;
    align-items: center;
