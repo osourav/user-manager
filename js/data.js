@@ -9,6 +9,7 @@ const localStorageKey = "sb_user_manager";
 const holdDelay = 500;
 const allSec = [];
 const slideSize = 20;
+const MAX_HISTORY = 500;
 let slideCount = 0;
 
 /* ----  local storage set and get ---- */
@@ -50,7 +51,7 @@ function saveHistoryInDB(user, sectionName, operation) {
       operation: operation,
       sessinonName: sectionName,
    });
-   if (DATABASE.history.length > 1000) {
+   if (DATABASE.history.length > MAX_HISTORY) {
       DATABASE.history.pop();
    }
 }

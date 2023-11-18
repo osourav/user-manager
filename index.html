@@ -64,6 +64,10 @@
                      <i class="sbi-key2"></i>
                      <p>Change</p>
                   </div>
+                  <div class="option cursor" id="clearAll">
+                     <i class="sbi-drawer2"></i>
+                     <p>Clear All</p>
+                  </div>
                </div>
 
                <div id="copyright">©SouravBarui2023</div>
@@ -89,7 +93,7 @@
 
          <main id="itsMain"></main>
 
-         <div id="lodingWindow" class="">
+         <div id="waitingWindow" class="">
             <div class="center">
                <div class="wave" style="--delay: 0"></div>
                <div class="wave" style="--delay: 0.1"></div>
@@ -104,7 +108,11 @@
             </div>
             <div id="dbInfo">
                <div id="dbMessage">Message</div>
-               <button id="dbOkBtn" class="cursor">okay</button>
+               <div class="buttons">
+                  <button id="noBtn" class="cursor">NO</button>
+                  <button id="yesBtn" class="cursor">YES</button>
+               </div>
+               <button id="dbOkBtn" class="cursor">OKAY</button>
             </div>
          </div>
 

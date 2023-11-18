@@ -14,6 +14,35 @@ window.onload = async () => {
    }
    resetSection();
 
+   let clickInnerMenu = false;
+
+   openMainMenu.addEventListener("click", () => {
+      mainMenu.classList.add("active");
+   });
+   menuInner.addEventListener("click", () => (clickInnerMenu = true), true);
+   mainMenu.addEventListener("click", () => {
+      if (!clickInnerMenu) mainMenu.classList.remove("active");
+      clickInnerMenu = false;
+   });
+
+   createSectionBtn.addEventListener("click", (e) => {
+      createSectionInput(flotingInput).then((val) => {
+         if (val !== null) {
+            DATA.push({
+               name: val,
+               active: false,
+               users: [],
+            });
+            saveLocal();
+            resetSection();
+         }
+      });
+   });
+
+   dbOkBtn.addEventListener("click", () => {
+      waitingWindow.classList.value = "";
+   });
+
    historyColose.addEventListener("click", () => {
       historyWindow.classList.remove("active");
    });
@@ -35,23 +64,47 @@ window.onload = async () => {
       }
    });
 
+   function showAlertMessage(
+      message = `There was a problem with the connection. Please check your internet connection and try again.`
+   ) {
+      dbMessage.innerHTML = message;
+      waitingWindow.classList.add("complete");
+   }
+
    showHistory.addEventListener("click", () => {
       mainMenu.classList.remove("active");
       historyWindow.classList.add("active");
       setHistory();
    });
 
-   function showAlertMessage(
-      message = `There was a problem with the connection. Please check your internet connection and try again.`
-   ) {
-      dbMessage.innerHTML = message;
-      lodingWindow.classList.add("complete");
-   }
+   clearAll.addEventListener("click", () => {
+      showAlertMessage(
+         `Are you sure you want to <b>Clear all</b> the Data?
+         <br><small>After clear data reomve everything from your device.
+          You con't Export! then lost everything.</small>`
+      );
+      waitingWindow.classList.add("others");
+   });
+
+   noBtn.addEventListener("click", () => {
+      waitingWindow.classList.value = "";
+   });
+
+   yesBtn.addEventListener("click", () => {
+      DATABASE.datas = [];
+      DATABASE.history = [];
+      DATABASE.username = "----";
+      DATA = [];
+      userName.innerText = "----";
+      waitingWindow.classList.value = "";
+      saveLocal();
+      resetSection();
+   });
 
    uploadData.addEventListener("click", () => {
       createImportExportInput(flotingInput, "Export").then(async (val) => {
          if (val !== null) {
-            lodingWindow.classList.add("active");
+            waitingWindow.classList.add("active");
             if (!navigator.onLine) {
                showAlertMessage();
                return;
@@ -102,7 +155,7 @@ window.onload = async () => {
    downloadData.addEventListener("click", () => {
       createImportExportInput(flotingInput, "Import").then(async (val) => {
          if (val !== null) {
-            lodingWindow.classList.add("active");
+            waitingWindow.classList.add("active");
             if (!navigator.onLine) {
                showAlertMessage();
                return;
@@ -122,12 +175,16 @@ window.onload = async () => {
                      userName.innerText = value.username;
                      saveLocal();
                      resetSection();
-                     showAlertMessage(`Welcome, <b>${val.username}</b> Your data has been successfully imported.`);
+                     showAlertMessage(
+                        `Welcome, <b>${val.username}</b> Your data has been successfully imported.`
+                     );
                   } else {
                      showAlertMessage(`Incorrect password. Please try again.`);
                   }
                } else {
-                  showAlertMessage(`The provided username <b>${val.username}</b>! does not exist. Please check and try again.`);
+                  showAlertMessage(
+                     `The provided username <b>${val.username}</b>! does not exist. Please check and try again.`
+                  );
                }
             } catch (error) {
                showAlertMessage();
@@ -139,7 +196,7 @@ window.onload = async () => {
    changePassword.addEventListener("click", () => {
       createChangePasswordInput(flotingInput).then(async (val) => {
          if (val !== null) {
-            lodingWindow.classList.add("active");
+            waitingWindow.classList.add("active");
             if (!navigator.onLine) {
                showAlertMessage();
                return;
@@ -156,12 +213,18 @@ window.onload = async () => {
                         password: stringToB64(val.newPassword),
                      });
                      saveLocal();
-                     showAlertMessage(`Hello <b>${val.username}</b>! Your password has been changed successfully!`);
+                     showAlertMessage(
+                        `Hello <b>${val.username}</b>! Your password has been changed successfully!`
+                     );
                   } else {
-                     showAlertMessage(`Incorrect current password. Please try again.`);
+                     showAlertMessage(
+                        `Incorrect current password. Please try again.`
+                     );
                   }
                } else {
-                  showAlertMessage(`The provided username <b>${val.username}</b> does not exist. Please check and try again.`);
+                  showAlertMessage(
+                     `The provided username <b>${val.username}</b> does not exist. Please check and try again.`
+                  );
                }
             } catch (error) {
                showAlertMessage();
@@ -169,33 +232,5 @@ window.onload = async () => {
          }
       });
    });
+
 };
-
-let clickInnerMenu = false;
-
-openMainMenu.addEventListener("click", () => {
-   mainMenu.classList.add("active");
-});
-menuInner.addEventListener("click", () => (clickInnerMenu = true), true);
-mainMenu.addEventListener("click", () => {
-   if (!clickInnerMenu) mainMenu.classList.remove("active");
-   clickInnerMenu = false;
-});
-
-createSectionBtn.addEventListener("click", (e) => {
-   createSectionInput(flotingInput).then((val) => {
-      if (val !== null) {
-         DATA.push({
-            name: val,
-            active: false,
-            users: [],
-         });
-         saveLocal();
-         resetSection();
-      }
-   });
-});
-
-dbOkBtn.addEventListener("click", () => {
-   lodingWindow.classList.value = "";
-});

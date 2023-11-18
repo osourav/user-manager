@@ -35,7 +35,7 @@
       background: #fff;
       border: solid 1px #000;
    }
-   #lodingWindow #dbInfo #dbOkBtn:hover {
+   #dbInfo button:hover {
       background-position: right center;
    }
    #historyWindow #historyTitle i:hover {
@@ -82,7 +82,7 @@
       background: #fff;
       border: solid 1px #000;
    }
-   #lodingWindow #dbInfo #dbOkBtn:active {
+   #dbInfo button:active {
       background-position: right center;
    }
    #historyWindow #historyTitle i:active {
