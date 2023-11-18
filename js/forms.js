@@ -12,7 +12,7 @@ function createChangePasswordInput(parent) {
       </div>
       <div class="input-password">
          <i class="sbi-key2"></i>
-         <input type="password" class="inputs${id}" placeholder="Enter ond Password">
+         <input type="password" class="inputs${id}" placeholder="Enter Current Password">
          <div class="pass-show-hide-btn cursor" id="sh${id}">
             <i class="sbi-eye1"></i>
             <i class="sbi-eye-slash"></i>
@@ -20,7 +20,7 @@ function createChangePasswordInput(parent) {
       </div>
       <div class="input-password">
          <i class="sbi-key2"></i>
-         <input type="password" class="inputs${id}" placeholder="Enter new Password">
+         <input type="password" class="inputs${id}" placeholder="Enter New Password">
          <div class="pass-show-hide-btn cursor" id="nsh${id}">
             <i class="sbi-eye1"></i>
             <i class="sbi-eye-slash"></i>

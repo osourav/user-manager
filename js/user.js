@@ -156,15 +156,12 @@ window.onload = async () => {
                         password: stringToB64(val.newPassword),
                      });
                      saveLocal();
-                     dbMessage.innerHTML = `Hello <b>${val.username}</b>! Your password has been changed successfully!`;
-                     lodingWindow.classList.add("complete");
+                     showAlertMessage(`Hello <b>${val.username}</b>! Your password has been changed successfully!`);
                   } else {
-                     dbMessage.innerHTML = `Incorrect current password. Please try again.`;
-                     lodingWindow.classList.add("complete");
+                     showAlertMessage(`Incorrect current password. Please try again.`);
                   }
                } else {
-                  dbMessage.innerHTML = `The provided username <b>${val.username}</b> does not exist. Please check and try again.`;
-                  lodingWindow.classList.add("complete");
+                  showAlertMessage(`The provided username <b>${val.username}</b> does not exist. Please check and try again.`);
                }
             } catch (error) {
                showAlertMessage();
