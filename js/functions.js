@@ -6,7 +6,7 @@ function createUser(parent, values, baseIndex, userIndex) {
    const nm = getFormatText(values.name, 18, true);
    const nu = values.number;
    const wk = getFormatText(values.work, 9, true);
-   const ag = !isNaN(oAge[0]) ? oAge + "+" : oAge == "yes" ? "18+" : "18-";
+   const ag = !isNaN(oAge[0]) ? oAge + "+" : oAge == "no" ? "18-" : "18+";
    const lo = getFormatText(values.location, 9, true);
 
    /**/ CP(userEle, "small-right name", "", nm);

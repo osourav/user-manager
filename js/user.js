@@ -79,7 +79,7 @@ window.onload = async () => {
 
    clearAll.addEventListener("click", () => {
       showAlertMessage(
-         `Are you sure you want to <b>Clear all</b> the Data?
+         `<b>Are you sure you want to <u>Clear all</u> the Data?</b>
          <br><small>After clear data reomve everything from your device.
           You con't Export! then lost everything.</small>`
       );
