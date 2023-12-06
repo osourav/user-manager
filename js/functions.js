@@ -9,7 +9,7 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
    /**/ CP(userEle, "name", "", nm);
    /**/ const number = CP(userEle, "number copy", "", nu);
    /**/ CP(userEle, "center small", "", values.gender);
-   /**/ CP(userEle, "center small", "", values.age);
+   /**/ CP(userEle, "center small", "", getFormatText(values.age, 3));
 
    const features =
       parent.parentElement.parentElement.querySelectorAll(".feature");
@@ -318,6 +318,8 @@ function createSection(name, active, index, users = []) {
    /*            */ const fEditI = CI(fEdit, "sbi-pencil1");
    /*        */ const fDelete = CD(features, "feature delete cursor");
    /*            */ const fDeleteI = CI(fDelete, "sbi-delete");
+   /*        */ const cMulUsrBtn = CD(basic, "s-btn cursor");
+   /*            */ const cMulUsrBtnI = CI(cMulUsrBtn, "sbi-group_add");
    /*        */ const cUsrBtn = CD(basic, "s-btn cursor");
    /*            */ const cUsrBtnI = CI(cUsrBtn, "icon add mid sbi-person_add");
    /*        */ const tglBtn = CD(basic, "toggle-btn s-btn cursor");
@@ -473,6 +475,7 @@ function createSection(name, active, index, users = []) {
    window.addEventListener("mouseup", holdingEnd);
    window.addEventListener("touchend", holdingEnd);
 }
+
 function resetSection() {
    allSec.length = 0;
    itsMain.innerHTML = "";

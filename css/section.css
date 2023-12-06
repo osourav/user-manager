@@ -31,7 +31,7 @@ main .sec {
    height: 2.5rem;
    display: grid;
    padding: var(--gap);
-   grid-template-columns: var(--cs) auto var(--cs) var(--cs);
+   grid-template-columns: var(--cs) auto var(--cs) var(--cs) var(--cs);
    gap: var(--gap);
    place-items: center;
    border-radius: 0.5rem;

@@ -10,6 +10,7 @@ let p_card,
 
 (() => {
    const id = Date.now();
+
    profileView.innerHTML = `
    <div class="card" id="card${id}">
       <div class="card-content">
@@ -43,6 +44,14 @@ let p_card,
             <i class="sbi-location1"></i>
             <p class="copy" id="location${id}">Kolkata</p>
          </div>
+         <div id="footer">
+            <div class="feature f${id} cursor">
+               <i class="sbi-phone"></i>
+            </div>
+            <div class="feature f${id} cursor">
+               <i class="sbi-whatsapp"></i>
+            </div>
+         </div>
       </div>
    </div>`;
 
@@ -55,6 +64,17 @@ let p_card,
    p_work = document.getElementById(`work${id}`);
    p_age = document.getElementById(`age${id}`);
    p_location = document.getElementById(`location${id}`);
+   const features = document.querySelectorAll(`.f${id}`);
+
+   const start = (e) => {
+      features.forEach((feature) => {
+         if (e.target == feature) feature.classList.add("hover");
+      });
+   };
+
+   const end = () => {
+      features.forEach((feature) => feature.classList.remove("hover"));
+   }
 
    let isSectionOuter = false;
    p_card.addEventListener("click", () => (isSectionOuter = true), true);
@@ -66,6 +86,23 @@ let p_card,
    p_name.addEventListener("click", () => copyText(p_name.innerText));
    p_number.addEventListener("click", () => copyText(p_number.innerText));
    p_location.addEventListener("click", () => copyText(p_location.innerText));
+
+   features[0].addEventListener("click", () => {
+      call(p_number.innerText);
+   });
+   features[1].addEventListener("click", () => {
+      openInWhatsapp(p_number.innerText);
+   });
+
+   features.forEach((feature) => {
+      feature.addEventListener("mousemove", start);
+      feature.addEventListener("touchstart", start);
+   });
+   features.forEach((feature) => {
+      feature.addEventListener("mouseleave", end);
+      feature.addEventListener("touchend", end);
+   });
+
 })();
 
 function showProfile(sectionName, userDetails, index) {
