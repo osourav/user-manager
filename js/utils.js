@@ -28,9 +28,16 @@ function getFormatInput(text) {
          }
       }
 
+      // format name
+      name = name.map(n => {
+         if (n.length <= 2) return n.toUpperCase();
+         return n[0].toUpperCase() + n.substring(1, n.length).toLowerCase();
+      })
+
       name = name.join(" ");
 
-      const age = `${values.shift()}`;
+      let age = `${values.shift()}`;
+      age = !isNaN(age[0]) ? age + "+" : age == "no" ? "18-" : "18+";
       const gender = `${values.shift().toLowerCase()}`;
       const work = `${values.shift()} ${
          isNaN(values[0][0]) ? values.shift() : ""
@@ -43,13 +50,28 @@ function getFormatInput(text) {
          number: number,
          genIndx: gender[0] == "m" ? 0 : gender[0] == "f" ? 1 : 2,
          work: work,
-         age: age.length > 1 ? age.slice(0, 5) : age,
+         age: age,
          location: location,
       };
    } catch (error) {
       console.log(error);
       return null;
    }
+}
+
+function copyText(text) {
+   if (!navigator.clipboard) {
+      fallbackCopyTextToClipboard(text);
+      return;
+   }
+   navigator.clipboard.writeText(text).then(
+      () => {
+         console.log("Copying to clipboard");
+      },
+      (err) => {
+         console.error("Could not copy text: ", err);
+      }
+   );
 }
 
 function getFormatText(text, len = Infinity, end = false) {

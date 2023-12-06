@@ -2,6 +2,9 @@
    .cursor {
       cursor: pointer;
    }
+   .copy:hover {
+      cursor: grab;
+   }
    .s-btn:hover {
       background: #fff7;
       color: #000000;
@@ -57,8 +60,8 @@
    }
 
    .features .feature.hover {
-      -webkit-box-reflect: below 2rem;
-      transform: scaleY(-1);
+      -webkit-box-reflect: right 2rem;
+      transform: scaleX(-1);
    }
    .top .menu-options .option.hover {
       -webkit-box-reflect: below 2rem;

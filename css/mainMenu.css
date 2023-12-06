@@ -9,6 +9,7 @@
    opacity: 0;
    pointer-events: none;
    transition: linear 300ms opacity;
+   overflow-y: scroll;
 }
 #mainMenu.active {
    opacity: 1;

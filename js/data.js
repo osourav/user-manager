@@ -11,6 +11,7 @@ const allSec = [];
 const slideSize = 20;
 const MAX_HISTORY = 500;
 let slideCount = 0;
+let lastScroll = window.scrollY;
 
 /* ----  local storage set and get ---- */
 function setDataFromLocalStorage(key, object) {

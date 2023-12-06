@@ -1,4 +1,3 @@
-
 main {
    position: relative;
    width: 100%;
@@ -42,21 +41,24 @@ main .sec {
 }
 
 .top .features {
-   position: absolute;
+   --height: 12rem;
+   position: fixed;
    width: min-content;
-   height: calc(100% - 0.4rem);
+   height: var(--height);
    margin: 0.2rem;
+   right: 0;
+   top: calc(50% - var(--height) / 2);
    gap: calc(var(--gap) / 2);
    padding: calc(var(--gap) / 2);
    display: none;
-   grid-template-columns: repeat(4, 1fr);
+   grid-template-rows: repeat(4, 1fr);
    background: #0009;
    backdrop-filter: blur(3px);
    border-radius: 4px;
    margin-right: calc(var(--cs) / 2);
    box-shadow: 0 0 1px #000;
    place-items: center;
-   z-index: 2;
+   z-index: 3;
 }
 .sec.current .features {
    display: grid;
@@ -223,7 +225,7 @@ main .sec {
    width: 100%;
    display: grid;
    padding: 0 calc(var(--margin) / 2);
-   grid-template-columns: 22fr 12fr 3fr 10fr 6fr 12fr;
+   grid-template-columns: 7fr 30fr 15fr 4fr 6fr;
    background: transparent;
 }
 .tags * {
@@ -289,9 +291,9 @@ main .sec {
    padding: 2px;
    pointer-events: none;
    outline: none;
-   grid-template-columns: 22fr 12fr 3fr 10fr 6fr 12fr;
+   grid-template-columns: 7fr 30fr 15fr 4fr 6fr;
    z-index: 2;
-   transform: scale(1) translateY(0px);
+   transform: scale(1) translateY(0px) translateX(0px);
    opacity: 1;
    transition: linear 200ms background, linear 300ms transform,
       linear 300ms opacity;
@@ -308,14 +310,14 @@ main .sec {
 .sec .user-outer.active .user {
    --color0: #fff;
    --color: #fff;
-   transform: scale(0.9);
+   transform: scale(0.9) translateY(0px) translateX(0px);
    opacity: 0.8;
    z-index: 3;
    outline: solid 0.2rem #00000077;
 }
 .sec .user-outer .user.inFeature {
    opacity: 0.2;
-   transform: scale(0.4);
+   transform: scale(0.4) translateX(50%);
 }
 .sec .user-outer.active .user * {
    pointer-events: none;
@@ -327,15 +329,24 @@ main .sec {
 .sec .user > p {
    font-family: Oswald;
    font-weight: 600;
-   font-size: 0.8rem;
+}
+.sec .user > p.no {
+   position: relative;
+   width: 80%;
+   height: 90%;
+   color: #ffffff;
+   border-radius: 5px;
+   background: rgba(0, 0, 0, 0.4);
+   display: grid;
+   place-items: center;
 }
 .sec .user > p.name {
    font-family: Google;
 }
 .sec .user > p.number {
    color: #0033ff;
-   font-weight: 900;
-   font-size: 0.7rem;
+   font-weight: 700;
+   font-size: 0.8rem;
    text-shadow: 0 0 1px #0004;
 }
 .sec .user p.small-right {
@@ -345,7 +356,7 @@ main .sec {
    text-align: center;
 }
 .sec .user .small {
-   font-size: 0.7rem;
+   font-size: 0.9rem;
 }
 
 .sec .user-outer.up .user {

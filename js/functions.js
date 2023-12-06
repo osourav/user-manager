@@ -1,24 +1,20 @@
-function createUser(parent, values, baseIndex, userIndex) {
-   const userOuter = CD(parent, "user-outer");
+function createUser(parent, values, baseIndex, userIndex, sectionName) {
+   const userOuter = CD(parent, "user-outer cursor");
    const userEle = CD(userOuter, "user", "");
-   const oAge = getFormatText(values.age, 2);
 
-   const nm = getFormatText(values.name, 18, true);
+   const nm = getFormatText(values.name, 25, true);
    const nu = values.number;
-   const wk = getFormatText(values.work, 9, true);
-   const ag = !isNaN(oAge[0]) ? oAge + "+" : oAge == "no" ? "18-" : "18+";
-   const lo = getFormatText(values.location, 9, true);
 
-   /**/ CP(userEle, "small-right name", "", nm);
-   /**/ const number = CP(userEle, "number", "", nu);
-   /**/ CP(userEle, "center", "", values.gender);
-   /**/ CP(userEle, "center small", "", wk);
-   /**/ CP(userEle, "center small", "", ag);
-   /**/ CP(userEle, "center small", "", lo);
+   /**/ CP(userEle, "center no", "", userIndex + 1);
+   /**/ CP(userEle, "name", "", nm);
+   /**/ const number = CP(userEle, "number copy", "", nu);
+   /**/ CP(userEle, "center small", "", values.gender);
+   /**/ CP(userEle, "center small", "", values.age);
 
    const features =
       parent.parentElement.parentElement.querySelectorAll(".feature");
    let isHold = false;
+   let isHolding = false;
    let holdTimerId;
 
    function resetStyle() {
@@ -52,7 +48,7 @@ function createUser(parent, values, baseIndex, userIndex) {
    }
 
    function move(E) {
-      if (!isHold) return;
+      if (!isHolding) return;
 
       let e = E,
          ele = E.target;
@@ -122,6 +118,7 @@ function createUser(parent, values, baseIndex, userIndex) {
       allSec.some((sec) => {
          if (!sec.classList.contains("current") && sec == ele) {
             sec.classList.add("preview");
+            allSec.forEach((sec) => sec.classList.remove("active"));
             return true;
          } else {
             sec.classList.remove("preview");
@@ -132,12 +129,14 @@ function createUser(parent, values, baseIndex, userIndex) {
    function holdingStart() {
       isHold = true;
       holdTimerId = setTimeout(() => {
-         if (isHold) holdingContinue();
-      }, holdDelay / 2);
+         lastScroll = window.scrollY;
+         isHolding = true;
+         document.body.classList.add("removeScroll");
+         holdingContinue();
+      }, holdDelay);
    }
 
    function holdingContinue() {
-      isHold = true;
       parent.parentElement.parentElement.classList.add("current");
       allSec.forEach((sec) => {
          sec.classList.add("focus");
@@ -146,7 +145,7 @@ function createUser(parent, values, baseIndex, userIndex) {
 
    function holdingEnd(E) {
       if (!isHold) return;
-
+      document.body.classList.remove("removeScroll");
       let e = E,
          ele = E.target;
       if (e.type == "touchend") {
@@ -259,9 +258,15 @@ function createUser(parent, values, baseIndex, userIndex) {
             userEle.style.top = `${0}px`;
          }
          sec.classList.remove("focus");
+         sec.classList.toggle("active", DATA[moveIndex].active);
       });
 
+      if (isHolding) {
+         window.scroll(0, lastScroll);
+      }
+
       isHold = false;
+      isHolding = false;
       clearTimeout(holdTimerId);
       userOuter.classList.remove("active");
       parent.parentElement.parentElement.classList.remove("current");
@@ -269,21 +274,13 @@ function createUser(parent, values, baseIndex, userIndex) {
 
    function copyNumber() {
       const num = number.innerText;
-      if (!navigator.clipboard) {
-         fallbackCopyTextToClipboard(num);
-         return;
-      }
-      navigator.clipboard.writeText(num).then(
-         function () {
-            console.log("Copying to clipboard was successful!");
-         },
-         function (err) {
-            console.error("Could not copy text: ", err);
-         }
-      );
+      copyText(num);
    }
 
    number.addEventListener("click", copyNumber);
+   userOuter.addEventListener("click", () => {
+      showProfile(sectionName, values, userIndex + 1);
+   })
 
    userOuter.addEventListener("mousedown", holdingStart);
    window.addEventListener("mousemove", move);
@@ -328,18 +325,17 @@ function createSection(name, active, index, users = []) {
    /*            */ const sow = CI(tglBtn, "icon big sbi-keyboard_arrow_down");
    /**/ const inner = CD(sec, "inner-sec");
    /*    */ const tags = CD(inner, "tags");
+   /*        */ const tNo = CD(tags, "nmae", "", "No");
    /*        */ const tNmae = CD(tags, "nmae", "", "Name");
    /*        */ const tPhone = CD(tags, "phone", "", "Mobile No");
    /*        */ const tGender = CD(tags, "center gender", "", "Gn");
-   /*        */ const tWork = CD(tags, "center work", "", "Work");
    /*        */ const tAge = CD(tags, "center age", "", "Age");
-   /*        */ const tLoction = CD(tags, "center location", "", "Location");
    /*    */ const userList = CD(inner, "user-list");
 
    allSec.push(sec);
 
    users.forEach((user, i) => {
-      createUser(userList, user, index, i);
+      createUser(userList, user, index, i, name);
    });
 
    tglBtn.addEventListener("click", () => {
@@ -403,6 +399,7 @@ function createSection(name, active, index, users = []) {
                case rename:
                   createSectionInput(
                      flotingInput,
+                     name,
                      "Rename Section",
                      "New Name",
                      "Rename"
@@ -438,12 +435,14 @@ function createSection(name, active, index, users = []) {
          }
       });
 
+      document.body.classList.remove("removeScroll");
       menu.classList.remove("active");
    }
 
    function holdingStart() {
       isHold = true;
       holdTimerId = setTimeout(() => {
+         document.body.classList.add("removeScroll");
          if (isHold) holdingContinue();
       }, holdDelay);
    }
@@ -474,7 +473,6 @@ function createSection(name, active, index, users = []) {
    window.addEventListener("mouseup", holdingEnd);
    window.addEventListener("touchend", holdingEnd);
 }
-
 function resetSection() {
    allSec.length = 0;
    itsMain.innerHTML = "";

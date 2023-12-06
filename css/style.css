@@ -11,11 +11,11 @@
 
    /* outline: solid 1px #f00; */
 }
-body * {
+/* body * {
    touch-action: none;
    -ms-touch-action: none;
    -webkit-touch-callout: none;
-}
+} */
 *::-webkit-scrollbar {
    display: none;
 }
@@ -40,8 +40,17 @@ body {
    background-position-y: 0;
    background-size: cover;
    background-attachment: fixed;
-   overflow: hidden;
+   overflow-x: hidden;
    overflow-y: scroll;
+   touch-action: auto;
+   -ms-touch-action: auto;
+   -webkit-touch-callout: auto;
+}
+body {
+   overflow-y: scroll;
+}
+body.removeScroll {
+   overflow-y: hidden;
 }
 #responsive {
    position: relative;

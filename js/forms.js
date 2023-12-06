@@ -293,24 +293,35 @@ function createUserInput(
          if (!isSectionOuter) closeSingle();
          isSectionOuter = false;
       };
+      const pasetHelpFun = (vals) => {
+         const { name, number, genIndx, work, age, location } = vals;
+      
+         if (!isNaN(number) && number.length >= 10 && isNaN(location)) {
+            inputs[0].value = name;
+            inputs[1].value = number;
+            inputs[2].selectedIndex = genIndx;
+            inputs[3].value = work;
+            inputs[4].value = age;
+            inputs[5].value = location;
+         }
+      }
       const pasteInputs = () => {
-         navigator.clipboard.readText().then(text => {
+         try {
+            const text = Android.getClipboardTextFromJava();
             const vals = getFormatInput(text);
             if (vals == null) return;
-   
-            const { name, number, genIndx, work, age, location } = vals;
-   
-            if (!isNaN(number) && number.length >= 10 && isNaN(location)) {
-               inputs[0].value = name;
-               inputs[1].value = number;
-               inputs[2].selectedIndex = genIndx;
-               inputs[3].value = work;
-               inputs[4].value = age;
-               inputs[5].value = location;
-            }
-         }).catch(err => {
-            console.log(err);
-         })
+            pasetHelpFun(vals);
+         } catch (error) {
+            console.log("Web App");
+         } finally {
+            navigator.clipboard.readText().then(text => {
+               const vals = getFormatInput(text);
+               if (vals == null) return;
+               pasetHelpFun(vals);
+            }).catch(err => {
+               console.log(err);
+            })
+         }
       };
       const sendValue = () => {
          const nInputs = [...inputs].map((input) => input.value);
@@ -374,6 +385,7 @@ function createUserInput(
 
 function createSectionInput(
    parent,
+   name = "",
    title = "Add Section",
    placeholder = "Enter Name",
    buttonName = "Create"
@@ -387,7 +399,7 @@ function createSectionInput(
       <button class="close cnacle-for-all" id="c${id}"><i class="sbi-close"></i></button>
       <div class="input-name">
          <i class="sbi-text_fields"></i>
-         <input type="text" id="in${id}" placeholder="${placeholder}" >
+         <input type="text" id="in${id}" placeholder="${placeholder}" value="${name}">
       </div>
       <div class="buttons">
          <button id="con${id}"><i class="sbi-check2"></i>${buttonName}</button>
