@@ -24,7 +24,7 @@
 }
 
 .card-content {
-   background: rgb(5, 6, 45);
+   background: #05062d;
    border-radius: 17px;
    width: 100%;
    height: 100%;
@@ -53,7 +53,7 @@
    position: relative;
    display: grid;
    place-items: center;
-   color: #070840;
+   color: #0507b4;
    font-size: 1.5rem;
    font-weight: 900;
    font-family: Righteous;
@@ -103,12 +103,12 @@
 }
 .card-content #footer { 
    position: relative;
-   width: 7rem;
-   height: 2.2rem;
+   width: 8rem;
+   height: 2rem;
    padding: calc(var(--gap) / 2);
    display: grid;
    grid-template-columns: repeat(2, 1fr);
-   background: rgba(255, 255, 255, 0.01);
+   background: transparent;
    border-radius: 4px;
    box-shadow: 0 0 1px #000;
    place-items: center;
@@ -117,13 +117,13 @@
 #footer .feature {
    --color: #04bc8c;
    position: relative;
-   width: 90%;
-   height: 100%;
+   width: 3rem;
+   height: 1.8rem;
    border-radius: 5px;
-   background: #0004;
+   background: #fff2;
    display: grid;
    place-items: center;
-   outline: solid 1px transparent;
+   outline: solid 1px #000;
    transition: linear 200ms background, linear 200ms outline;
 }
 #footer .feature:nth-child(2) {

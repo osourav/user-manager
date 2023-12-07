@@ -47,15 +47,19 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
       });
    }
 
-   function move(E) {
-      if (!isHolding) return;
+   let isY = 0;
+   let isOY = 0;
 
+   function move(E) {
+      
       let e = E,
-         ele = E.target;
+      ele = E.target;
       if (e.type == "touchmove") {
          e = e.touches[0];
          ele = document.elementFromPoint(e.clientX, e.clientY);
       }
+      isY = e.clientY;
+      if (!isHolding) return;
 
       const eInfo = userEle.parentElement.getBoundingClientRect();
       const userTop = e.clientY - eInfo.top;
@@ -126,13 +130,20 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
       });
    }
 
-   function holdingStart() {
+   function holdingStart(E) {
+      let e = E;
+      if (e.type == "touchstart")e = e.touches[0];
+      isOY = isY = e.clientY;
       isHold = true;
+
       holdTimerId = setTimeout(() => {
          lastScroll = window.scrollY;
-         isHolding = true;
          document.body.classList.add("removeScroll");
-         holdingContinue();
+         const size = 5;
+         if (isOY < isY + size && isOY > isY - size) {
+            isHolding = true;
+            holdingContinue();
+         }
       }, holdDelay);
    }
 
@@ -165,7 +176,7 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
                   resetStyle();
                   break;
                case features[2]:
-                  createUserInput(
+                  createAddUserInput(
                      flotingInput,
                      values,
                      (title = "Modify User"),
@@ -280,7 +291,7 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
    number.addEventListener("click", copyNumber);
    userOuter.addEventListener("click", () => {
       showProfile(sectionName, values, userIndex + 1);
-   })
+   });
 
    userOuter.addEventListener("mousedown", holdingStart);
    window.addEventListener("mousemove", move);
@@ -297,41 +308,41 @@ function createSection(name, active, index, users = []) {
    /*    */ const basic = CD(top, "basic");
    /*    */ const menu = CD(top, "menu-options");
    /*        */ const goUp = CD(menu, "option cursor");
-   /*            */ const goUpI = CI(goUp, `sbi-arrow-up1`);
+   /*            */ CI(goUp, `sbi-arrow-up1`);
    /*        */ const goDown = CD(menu, "option cursor");
-   /*            */ const goDownI = CI(goDown, `sbi-arrow-down1`);
+   /*            */ CI(goDown, `sbi-arrow-down1`);
    /*        */ const rename = CD(menu, "option cursor");
-   /*            */ const renameI = CI(rename, `sbi-pencil1`);
+   /*            */ CI(rename, `sbi-pencil1`);
    /*        */ const duplicate = CD(menu, "option cursor");
-   /*            */ const duplicateI = CI(duplicate, `sbi-documents`);
+   /*            */ CI(duplicate, `sbi-documents`);
    /*        */ const remove = CD(menu, "option cursor");
-   /*            */ const removeI = CI(remove, `sbi-delete_forever`);
+   /*            */ CI(remove, `sbi-delete_forever`);
    /*        */ const menuBtn = CD(basic, "s-btn cursor");
-   /*            */ const menuBtnI = CI(menuBtn, "icon sbi-scatter_plot");
+   /*            */ CI(menuBtn, "icon sbi-scatter_plot");
    /*        */ const nm = CD(basic, "name", "", name);
    /*    */ const features = CD(top, "features");
    /*        */ const fCall = CD(features, "feature call cursor");
-   /*            */ const fCallI = CI(fCall, "sbi-phone");
+   /*            */ CI(fCall, "sbi-phone");
    /*        */ const fWP = CD(features, "feature whatsapp cursor");
-   /*            */ const fWPI = CI(fWP, "sbi-whatsapp");
+   /*            */ CI(fWP, "sbi-whatsapp");
    /*        */ const fEdit = CD(features, "feature edit cursor");
-   /*            */ const fEditI = CI(fEdit, "sbi-pencil1");
+   /*            */ CI(fEdit, "sbi-pencil1");
    /*        */ const fDelete = CD(features, "feature delete cursor");
-   /*            */ const fDeleteI = CI(fDelete, "sbi-delete");
+   /*            */ CI(fDelete, "sbi-delete");
    /*        */ const cMulUsrBtn = CD(basic, "s-btn cursor");
-   /*            */ const cMulUsrBtnI = CI(cMulUsrBtn, "sbi-group_add");
+   /*            */ CI(cMulUsrBtn, "sbi-group_add");
    /*        */ const cUsrBtn = CD(basic, "s-btn cursor");
-   /*            */ const cUsrBtnI = CI(cUsrBtn, "icon add mid sbi-person_add");
+   /*            */ CI(cUsrBtn, "icon add mid sbi-person_add");
    /*        */ const tglBtn = CD(basic, "toggle-btn s-btn cursor");
-   /*            */ const hid = CI(tglBtn, "icon big sbi-remove1");
-   /*            */ const sow = CI(tglBtn, "icon big sbi-keyboard_arrow_down");
+   /*            */ CI(tglBtn, "icon big sbi-remove1");
+   /*            */ CI(tglBtn, "icon big sbi-keyboard_arrow_down");
    /**/ const inner = CD(sec, "inner-sec");
    /*    */ const tags = CD(inner, "tags");
-   /*        */ const tNo = CD(tags, "nmae", "", "No");
-   /*        */ const tNmae = CD(tags, "nmae", "", "Name");
-   /*        */ const tPhone = CD(tags, "phone", "", "Mobile No");
-   /*        */ const tGender = CD(tags, "center gender", "", "Gn");
-   /*        */ const tAge = CD(tags, "center age", "", "Age");
+   /*        */ CD(tags, "nmae", "", "No");
+   /*        */ CD(tags, "nmae", "", "Name");
+   /*        */ CD(tags, "phone", "", "Mobile No");
+   /*        */ CD(tags, "center gender", "", "Gn");
+   /*        */ CD(tags, "center age", "", "Age");
    /*    */ const userList = CD(inner, "user-list");
 
    allSec.push(sec);
@@ -347,11 +358,34 @@ function createSection(name, active, index, users = []) {
    });
 
    cUsrBtn.addEventListener("click", async () => {
-      createUserInput(flotingInput).then((obj) => {
+      createAddUserInput(flotingInput).then((obj) => {
          if (obj !== null) {
             DATA[index].users.push(obj);
             DATA[index].active = true;
             saveHistoryInDB(obj, DATA[index].name, "ADD USER");
+            saveLocal();
+            resetSection();
+         }
+      });
+   });
+
+   cMulUsrBtn.addEventListener("click", () => {
+      createMultiAddUserInput(flotingInput).then((obj) => {
+         if (obj !== null) {
+            DATA[index].active = true;
+            obj.users.forEach((user) => {
+               const { age, genIndx, location, name, number, work } = user;
+               const nObj = {
+                  age: age,
+                  gender: genIndx,
+                  location: location,
+                  name: name,
+                  number: number,
+                  work: work
+               }
+               DATA[index].users.push(nObj);
+               saveHistoryInDB(nObj, DATA[index].name, "ADD USER");
+            });
             saveLocal();
             resetSection();
          }

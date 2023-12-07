@@ -25,6 +25,7 @@ function deleteDataFromLocalStorage(key) {
    return localStorage.removeItem(key);
 }
 function saveLocal() {
+   DATABASE.datas = DATA;
    setDataFromLocalStorage(localStorageKey, DATABASE);
 }
 function addHistoryForRemoveSession(section, operation = "DELETE") {

@@ -66,7 +66,7 @@ function createChangePasswordInput(parent) {
       const closeSingle = (is = true) => {
          parent.classList.remove("active");
          parent.innerHTML = "";
-         removeEventListener();
+         removeAllEventListener();
          if (is) resolve(null);
       };
       const closeAll = () => {
@@ -77,7 +77,7 @@ function createChangePasswordInput(parent) {
          const nInputs = [...inputs].map((input) => input.value);
          if (nInputs.every((input) => input.length > 0)) {
             closeSingle(false);
-            removeEventListener();
+            removeAllEventListener();
             resolve({
                username: inputs[0].value.toLowerCase(),
                oldPassword: inputs[1].value,
@@ -91,7 +91,7 @@ function createChangePasswordInput(parent) {
          if (e.keyCode === 13) sendValue();
       };
 
-      const removeEventListener = () => {
+      const removeAllEventListener = () => {
          fw.removeEventListener("keydown", keyEnter);
          parent.removeEventListener("click", closeAll);
          fw.removeEventListener("click", setIsSectionTrue, true);
@@ -169,7 +169,7 @@ function createImportExportInput(parent, operationName = "Export") {
       const closeSingle = (is = true) => {
          parent.classList.remove("active");
          parent.innerHTML = "";
-         removeEventListener();
+         removeAllEventListener();
          if (is) resolve(null);
       };
       const closeAll = () => {
@@ -180,7 +180,7 @@ function createImportExportInput(parent, operationName = "Export") {
          const nInputs = [...inputs].map((input) => input.value);
          if (nInputs.every((input) => input.length > 0)) {
             closeSingle(false);
-            removeEventListener();
+            removeAllEventListener();
             resolve({
                username: inputs[0].value.toLowerCase(),
                password: inputs[1].value,
@@ -193,7 +193,7 @@ function createImportExportInput(parent, operationName = "Export") {
          if (e.keyCode === 13) sendValue();
       };
 
-      const removeEventListener = () => {
+      const removeAllEventListener = () => {
          fw.removeEventListener("keydown", keyEnter);
          parent.removeEventListener("click", closeAll);
          fw.removeEventListener("click", setIsSectionTrue, true);
@@ -217,7 +217,7 @@ function createImportExportInput(parent, operationName = "Export") {
    });
 }
 
-function createUserInput(
+function createAddUserInput(
    parent,
    value,
    title = "Add User",
@@ -286,7 +286,7 @@ function createUserInput(
       const closeSingle = (is = true) => {
          parent.classList.remove("active");
          parent.innerHTML = "";
-         removeEventListener();
+         removeAllEventListener();
          if (is) resolve(null);
       };
       const closeAll = () => {
@@ -295,7 +295,7 @@ function createUserInput(
       };
       const pasetHelpFun = (vals) => {
          const { name, number, genIndx, work, age, location } = vals;
-      
+
          if (!isNaN(number) && number.length >= 10 && isNaN(location)) {
             inputs[0].value = name;
             inputs[1].value = number;
@@ -304,7 +304,7 @@ function createUserInput(
             inputs[4].value = age;
             inputs[5].value = location;
          }
-      }
+      };
       const pasteInputs = () => {
          try {
             const text = Android.getClipboardTextFromJava();
@@ -314,13 +314,16 @@ function createUserInput(
          } catch (error) {
             console.log("Web App");
          } finally {
-            navigator.clipboard.readText().then(text => {
-               const vals = getFormatInput(text);
-               if (vals == null) return;
-               pasetHelpFun(vals);
-            }).catch(err => {
-               console.log(err);
-            })
+            navigator.clipboard
+               .readText()
+               .then((text) => {
+                  const vals = getFormatInput(text);
+                  if (vals == null) return;
+                  pasetHelpFun(vals);
+               })
+               .catch((err) => {
+                  console.log(err);
+               });
          }
       };
       const sendValue = () => {
@@ -334,7 +337,7 @@ function createUserInput(
                age: nInputs[4],
                location: nInputs[5],
             };
-            removeEventListener();
+            removeAllEventListener();
             closeSingle(false);
             resolve(obj);
          } else {
@@ -358,7 +361,7 @@ function createUserInput(
          pasteInputs();
       }
 
-      const removeEventListener = () => {
+      const removeAllEventListener = () => {
          fw.removeEventListener("keydown", keyEnter);
          inputs.forEach((inp) => {
             inp.removeEventListener("input", () => resetBorder(inp));
@@ -375,6 +378,127 @@ function createUserInput(
       });
 
       fw.addEventListener("keydown", keyEnter);
+      parent.addEventListener("click", closeAll);
+      fw.addEventListener("click", setIsSectionTrue, true);
+      paste.addEventListener("click", pasteInputs);
+      cancle.addEventListener("click", closeSingle);
+      create.addEventListener("click", sendValue);
+   });
+}
+
+function createMultiAddUserInput(parent) {
+   return new Promise((resolve) => {
+      parent.classList.add("active");
+
+      const id = Date.now();
+
+      const fWindow = `
+      <div class="floting-window" id="fw${id}">
+         <p>Add Multi User</p>
+         <button id="c${id}" class="close"><i class="sbi-close"></i></button>
+         
+         <div class="input-text single" id="io${id}">
+            <textarea rows="8" cols="100" id="w${id}" type="text" placeholder="Paset Text"></textarea>
+         </div>
+
+         <div class="find-user">
+            <p>Results Found</p>
+            <span id="fr${id}">0</span>
+         </div>
+
+         <div class="buttons">
+            <button id="paset${id}"><i class="sbi-content_paste"></i>Paste</button>
+            <button id="n${id}"><i class="sbi-check2"></i>Create</button>
+         </div>
+      </div>
+   `;
+
+      parent.innerHTML = fWindow;
+
+      let users = [];
+
+      const inputOuter = parent.querySelector(`#io${id}`);
+      const input = parent.querySelector(`#w${id}`);
+      const cancle = parent.querySelector(`#c${id}`);
+      const fw = parent.querySelector(`#fw${id}`);
+      const paste = parent.querySelector(`#paset${id}`);
+      const create = parent.querySelector(`#n${id}`);
+      const resultFound = parent.querySelector(`#fr${id}`);
+      let isSectionOuter = false;
+
+      const setIsSectionTrue = () => (isSectionOuter = true);
+      const resetBorder = () => (inputOuter.style.outline = "none");
+      const setBorder = () => (inputOuter.style.outline = "3px solid #f00");
+
+      const closeSingle = (is = true) => {
+         parent.classList.remove("active");
+         parent.innerHTML = "";
+         removeAllEventListener();
+         if (is) resolve(null);
+      };
+
+      const closeAll = () => {
+         if (!isSectionOuter) closeSingle();
+         isSectionOuter = false;
+      };
+
+      const getUsersFromMixText = () => {
+         if (input.value != "") {
+            users = getFormatInputForMultiUser(input.value);
+         } else {
+            users = [];
+         }
+         resultFound.innerText = users.length;
+      };
+
+      const pasteInputs = () => {
+         try {
+            const text = Android.getClipboardTextFromJava();
+            if (text == null) return;
+            input.value = text;
+            getUsersFromMixText();
+         } catch (error) {
+            console.log("Web App");
+         } finally {
+            navigator.clipboard
+               .readText()
+               .then((text) => {
+                  if (text == null) return;
+                  input.value = text;
+                  getUsersFromMixText();
+               })
+               .catch((err) => {
+                  getUsersFromMixText();
+                  console.log(err);
+               });
+         }
+      };
+
+      const sendValue = () => {
+         if (users.length > 0) {
+            removeAllEventListener();
+            closeSingle(false);
+            resolve({ users: users });
+         } else {
+            setBorder();
+         }
+      };
+
+      pasteInputs();
+
+      const removeAllEventListener = () => {
+         input.removeEventListener("input", resetBorder);
+         input.removeEventListener("input", debounce(getUsersFromMixText, 2000));
+
+         parent.removeEventListener("click", closeAll);
+         fw.removeEventListener("click", setIsSectionTrue, true);
+         paste.removeEventListener("click", pasteInputs);
+         cancle.removeEventListener("click", closeSingle);
+         create.removeEventListener("click", sendValue);
+      };
+
+      input.addEventListener("input", resetBorder);
+      input.addEventListener("input", debounce(getUsersFromMixText, 2000));
       parent.addEventListener("click", closeAll);
       fw.addEventListener("click", setIsSectionTrue, true);
       paste.addEventListener("click", pasteInputs);
@@ -420,7 +544,7 @@ function createSectionInput(
       const closeSingle = (is = true) => {
          parent.classList.remove("active");
          parent.innerHTML = "";
-         removeEventListener();
+         removeAllEventListener();
          if (is) resolve(null);
       };
       const closeAll = () => {
@@ -434,14 +558,14 @@ function createSectionInput(
             return;
          }
          closeSingle(false);
-         removeEventListener();
+         removeAllEventListener();
          resolve(name);
       };
       const keyEnter = (e) => {
          if (e.keyCode === 13) sendValue();
       };
 
-      const removeEventListener = () => {
+      const removeAllEventListener = () => {
          fw.removeEventListener("keydown", keyEnter);
          parent.removeEventListener("click", closeAll);
          fw.removeEventListener("click", setIsSectionTrue, true);

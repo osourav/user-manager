@@ -6,7 +6,37 @@ Array.prototype.insert = function (index, ...items) {
 const b64toString = (b64) => btoa(b64);
 const stringToB64 = (b64) => atob(b64);
 
-function getFormatInput(text) {
+function upperLoserMixText(text) {
+   return text.map((n) => {
+      if (n.length <= 2) return n.toUpperCase();
+      return n[0].toUpperCase() + n.substring(1, n.length).toLowerCase();
+   });
+}
+function getFormatInputForMultiUser(text) {
+   const ary = [];
+   try {
+      const regex = /\d{1,6} \d{1,2}\/\d{1,2}\/\d{2,4} /;
+      const findIndex = text.search(regex);
+      if (findIndex !== -1) {
+         const str = text.slice(findIndex, text.length);
+         const result = str.split(regex);
+
+         result.forEach((e) => {
+            const r = getFormatInput(e, false);
+            if (r != null) {
+               ary.push(r);
+            }
+         });
+         return ary;
+      }
+      console.log(ary);
+      return ary;
+   } catch (error) {
+      console.log(error);
+      return [];
+   }
+}
+function getFormatInput(text, isOnlyIndex = true) {
    const values = text.split(" ");
    if (values.length < 6) return null;
 
@@ -29,16 +59,25 @@ function getFormatInput(text) {
       }
 
       // format name
-      name = name.map(n => {
-         if (n.length <= 2) return n.toUpperCase();
-         return n[0].toUpperCase() + n.substring(1, n.length).toLowerCase();
-      })
+      name = upperLoserMixText(name);
 
       name = name.join(" ");
 
       let age = `${values.shift()}`;
-      age = !isNaN(age[0]) ? age + "+" : age == "no" ? "18-" : "18+";
-      const gender = `${values.shift().toLowerCase()}`;
+      age = !isNaN(age[0]) && age.length > 2 ? `${age[0]}${age[1]}` : age;
+      age = !isNaN(age[0])
+         ? `${age}+`
+         : age.toLowerCase() == "yes"
+         ? "18+"
+         : "18-";
+      let gender = `${values.shift().toLowerCase()}`;
+      gender = !isOnlyIndex
+         ? gender[0].toUpperCase()
+         : gender[0].toLowerCase() == "m"
+         ? 0
+         : gender[0].toLowerCase() == "f"
+         ? 1
+         : 2;
       const work = `${values.shift()} ${
          isNaN(values[0][0]) ? values.shift() : ""
       }`;
@@ -48,7 +87,7 @@ function getFormatInput(text) {
       return {
          name: name,
          number: number,
-         genIndx: gender[0] == "m" ? 0 : gender[0] == "f" ? 1 : 2,
+         genIndx: gender,
          work: work,
          age: age,
          location: location,
@@ -180,6 +219,14 @@ function CIN(parent, classes = "", id = "", innerHTML = "") {
    return ele;
 }
 
+// delay input run function
+function debounce(callback, delay = 1000) {
+   let timeout;
+   return function () {
+      clearTimeout(timeout);
+      timeout = setTimeout(callback, delay);
+   };
+}
 function call(number) {
    window.location.href = `tel:${number}`;
 }
