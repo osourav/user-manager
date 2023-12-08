@@ -326,7 +326,7 @@ main .sec {
    --color0: #eee;
    --color: #eee;
 }
-.sec .user > p {
+.sec .user > p, .sec .user .name-date {
    font-family: Oswald;
    font-weight: 600;
 }
@@ -340,8 +340,10 @@ main .sec {
    display: grid;
    place-items: center;
 }
-.sec .user > p.name {
-   font-family: Google;
+.sec .user .name-date > p:last-child {
+   height: 3px;
+   transform: translateY(-1px);
+   font-size: 7px;
 }
 .sec .user > p.number {
    color: #0033ff;

@@ -6,7 +6,9 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
    const nu = values.number;
 
    /**/ CP(userEle, "center no", "", userIndex + 1);
-   /**/ CP(userEle, "name", "", nm);
+   /**/ const nmdt = CD(userEle, "name-date");
+   /*   */ CP(nmdt, "name", "", nm);
+   /*   */ CP(nmdt, "date", "", values.date || "");
    /**/ const number = CP(userEle, "number copy", "", nu);
    /**/ CP(userEle, "center small", "", values.gender);
    /**/ CP(userEle, "center small", "", getFormatText(values.age, 3));
@@ -46,9 +48,10 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
          ele.classList.remove("preview");
       });
    }
-
+   
    let isY = 0;
    let isOY = 0;
+   const thresHold = 5;
 
    function move(E) {
       
@@ -137,12 +140,13 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
       isHold = true;
 
       holdTimerId = setTimeout(() => {
-         lastScroll = window.scrollY;
-         document.body.classList.add("removeScroll");
-         const size = 5;
-         if (isOY < isY + size && isOY > isY - size) {
+         if (isOY < isY + thresHold && isOY > isY - thresHold) {
+            lastScroll = window.scrollY;
+            document.body.classList.add("removeScroll");
             isHolding = true;
             holdingContinue();
+         } else {
+            isHold = false;
          }
       }, holdDelay);
    }
@@ -374,9 +378,10 @@ function createSection(name, active, index, users = []) {
          if (obj !== null) {
             DATA[index].active = true;
             obj.users.forEach((user) => {
-               const { age, genIndx, location, name, number, work } = user;
+               const { age, date, genIndx, location, name, number, work } = user;
                const nObj = {
                   age: age,
+                  date: date,
                   gender: genIndx,
                   location: location,
                   name: name,

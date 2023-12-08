@@ -83,14 +83,19 @@ function getFormatInput(text, isOnlyIndex = true) {
       }`;
       const number = `${values.shift()}`;
       const location = `${values.join(" ")}`;
+      const today = new Date();
+
+      const options = { day: "numeric", month: "short", year: "numeric" };
+      const formattedDate = today.toLocaleDateString("en-US", options);
 
       return {
+         age: age,
+         date: formattedDate,
+         genIndx: gender,
+         location: location,
          name: name,
          number: number,
-         genIndx: gender,
          work: work,
-         age: age,
-         location: location,
       };
    } catch (error) {
       console.log(error);
