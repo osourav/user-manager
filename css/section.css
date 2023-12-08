@@ -344,7 +344,7 @@ main .sec {
    height: 3px;
    transform: translateY(-1px);
    font-size: 7px;
-}
+} 
 .sec .user > p.number {
    color: #0033ff;
    font-weight: 700;
