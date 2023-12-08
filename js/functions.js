@@ -89,7 +89,7 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
       });
       if (!is) resetStyle();
 
-      const scrollDistance = 50;
+      const scrollDistance = 20;
       const scrollOffset =
          document.documentElement.scrollHeight - window.innerHeight;
       const _d = 5;
@@ -125,7 +125,14 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
       allSec.some((sec) => {
          if (!sec.classList.contains("current") && sec == ele) {
             sec.classList.add("preview");
-            allSec.forEach((sec) => sec.classList.remove("active"));
+            allSec.forEach((sec) => {
+               if (sec.classList.contains("current")) {
+                  sec.classList.add("active");
+                  sec.classList.add("gone");
+               } else {
+                  sec.classList.remove("active");
+               }
+            });
             return true;
          } else {
             sec.classList.remove("preview");
@@ -167,6 +174,8 @@ function createUser(parent, values, baseIndex, userIndex, sectionName) {
          e = e.changedTouches[0];
          ele = document.elementFromPoint(e.clientX, e.clientY);
       }
+
+      allSec.forEach((sec) => sec.classList.remove("gone"));
 
       [...features].some((feature) => {
          if (feature == ele) {

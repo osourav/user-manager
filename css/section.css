@@ -180,9 +180,16 @@ main .sec {
    width: 100%;
    height: auto;
    display: none;
+   top: 0;
    flex-direction: column;
 }
-
+.sec.gone .inner-sec {
+   position: absolute;
+   width: 100%;
+   height: auto;
+   top: -200vh;
+   display: flex;
+}
 .sec:not(.focus) * {
    pointer-events: all;
 }

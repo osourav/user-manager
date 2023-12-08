@@ -1,4 +1,78 @@
 window.onload = async () => {
+   const username = "osourav";
+   const repoName = "user-manager";
+
+   fetchDataFromGithub(username, repoName, "", ".json").then(async (d) => {
+      try {
+         const { name, path, data } = d[0];
+         console.log(JSON.parse(data).version, DATABASE.version);
+         if (JSON.parse(data).version != DATABASE.version) {
+            const files = [];
+
+            try {
+               if (Android) {
+                  const html = await fetchDataFromGithub(
+                     username,
+                     repoName,
+                     "",
+                     ".html"
+                  );
+                  files.push(html[0]); // add hrml file
+
+                  const jss = await fetchDataFromGithub(
+                     username,
+                     repoName,
+                     "js",
+                     ".js"
+                  );
+                  jss.forEach((js) => {
+                     files.push(js); // add js file
+                  });
+
+                  const csss = await fetchDataFromGithub(
+                     username,
+                     repoName,
+                     "css",
+                     ".css"
+                  );
+                  csss.forEach((css) => {
+                     files.push(css); // add css file
+                  });
+
+                  const filesLen = files.length;
+                  for (let i = 0; i < filesLen; i++) {
+                     const file = files.shift();
+                     for (strFile in file) {
+                        files.push(file[strFile]);
+                     }
+                  }
+
+                  let runOnes = true;
+                  showAlertMessage(
+                     "This App need Update Please <b>Restart</b> the App",
+                     () => {
+                        waitingWindow.classList.add("complete");
+                        if (runOnes) {
+                           runOnes = false;
+                           Android.updateFiles(files);
+                           DATABASE.version = JSON.parse(data).version;
+                           saveLocal();
+                        }
+                     }
+                  );
+               }
+            } catch (error) {
+               console.log(error);
+            } finally {
+               DATABASE.version = JSON.parse(data).version;
+               saveLocal();
+            }
+         }
+      } catch (error) {
+         console.log(error);
+      }
+   });
+
    // Initialize Firebase
 
    firebase.initializeApp(firebaseConfig);
@@ -65,10 +139,14 @@ window.onload = async () => {
    });
 
    function showAlertMessage(
-      message = `There was a problem with the connection. Please check your internet connection and try again.`
+      message = `There was a problem with the connection. Please check your internet connection and try again.`,
+      fun
    ) {
       dbMessage.innerHTML = message;
       waitingWindow.classList.add("complete");
+      if (fun) {
+         dbOkBtn.addEventListener("click", () => fun());
+      }
    }
 
    showHistory.addEventListener("click", () => {
@@ -232,5 +310,4 @@ window.onload = async () => {
          }
       });
    });
-
 };

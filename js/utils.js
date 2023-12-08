@@ -15,11 +15,18 @@ function upperLoserMixText(text) {
 function getFormatInputForMultiUser(text) {
    const ary = [];
    try {
-      const regex = /\d{1,6} \d{1,2}\/\d{1,2}\/\d{2,4} /;
+      // \d{1,2}\/\d{1,2}\/\d{2,4} --
+      // \d{1,2}\/\d{1,2}\/\d{2,4}--
+      // \d{1,6} \d{1,2}\/\d{1,2}\/\d{2,4} --
+      // \d{1,6} \d{1,2}\/\d{1,2}\/\d{2,4}--
+
+      const regex = /\d{1,2}\/\d{1,2}\/\d{2,4} |\d{1,2}\/\d{1,2}\/\d{2,4}|\d{1,6} \d{1,2}\/\d{1,2}\/\d{2,4} |\d{1,6} \d{1,2}\/\d{1,2}\/\d{2,4}/;
       const findIndex = text.search(regex);
       if (findIndex !== -1) {
          const str = text.slice(findIndex, text.length);
          const result = str.split(regex);
+
+         console.log(result);
 
          result.forEach((e) => {
             const r = getFormatInput(e, false);
@@ -27,6 +34,7 @@ function getFormatInputForMultiUser(text) {
                ary.push(r);
             }
          });
+         console.log(ary);
          return ary;
       }
       console.log(ary);
@@ -102,7 +110,6 @@ function getFormatInput(text, isOnlyIndex = true) {
       return null;
    }
 }
-
 function copyText(text) {
    if (!navigator.clipboard) {
       fallbackCopyTextToClipboard(text);
@@ -231,6 +238,43 @@ function debounce(callback, delay = 1000) {
       clearTimeout(timeout);
       timeout = setTimeout(callback, delay);
    };
+}
+function fetchDataFromGithub(username, repoName, filePath, extension = ".js") {
+   const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents/${filePath}`;
+   return new Promise(async (resolve) => {
+      try {
+         const files = [];
+         const response = await fetch(apiUrl);
+
+         if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+         }
+
+         const data = await response.json();
+
+         for (const file of data) {
+            if (file.type === "file" && file.name.endsWith(extension)) {
+
+               const fileUrl = file.url;
+               const fileResponse = await fetch(fileUrl);
+
+               if (!fileResponse.ok) {
+                  throw new Error(`HTTP error! Status: ${fileResponse.status}`);
+               }
+               const f = {
+                  name: file.name,
+                  path: filePath,
+                  data: atob((await fileResponse.json()).content),
+               };
+               files.push(f);
+            }
+         }
+         resolve(files);
+      } catch (error) {
+         console.error("Error fetching and executing scripts:", error);
+         resolve(null)
+      }
+   });
 }
 function call(number) {
    window.location.href = `tel:${number}`;
