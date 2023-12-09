@@ -263,7 +263,7 @@ function fetchDataFromGithub(username, repoName, filePath, extension = ".js") {
                }
                const f = {
                   name: file.name,
-                  path: filePath,
+                  path: filePath == "" ? "" : "/" + filePath,
                   data: atob((await fileResponse.json()).content),
                };
                files.push(f);

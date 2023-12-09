@@ -5,12 +5,12 @@ window.onload = async () => {
    fetchDataFromGithub(username, repoName, "", ".json").then(async (d) => {
       try {
          const { name, path, data } = d[0];
-         console.log(JSON.parse(data).version, DATABASE.version);
+
          if (JSON.parse(data).version != DATABASE.version) {
             const files = [];
 
             try {
-               if (Android) {
+               if (Android.test()) {
                   const html = await fetchDataFromGithub(
                      username,
                      repoName,
@@ -41,10 +41,9 @@ window.onload = async () => {
 
                   const filesLen = files.length;
                   for (let i = 0; i < filesLen; i++) {
-                     const file = files.shift();
-                     for (strFile in file) {
-                        files.push(file[strFile]);
-                     }
+                     const { name, path, data } = files.shift();
+                     files.push(`${path}/${name}`);
+                     files.push(data);
                   }
 
                   let runOnes = true;
