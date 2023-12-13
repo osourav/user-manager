@@ -65,58 +65,6 @@ ${htmlStyle}
       console.log("WEB APP RUNNING");
    }
 
-   fetchDataFromGithub(username, repoName, "", ".json").then(async (d) => {
-      try {
-         const { name, path, data } = d[0];
-
-         if (JSON.parse(data).version != DATABASE.version) {
-            const files = [];
-
-            try {
-               if (Android.test()) {
-                  const html = await fetchDataFromGithub(username, repoName, "", ".html");
-                  files.push(html[0]); // add hrml file
-
-                  const jss = await fetchDataFromGithub(username, repoName, "js", ".js");
-                  jss.forEach((js) => {
-                     files.push(js); // add js file
-                  });
-
-                  const csss = await fetchDataFromGithub(username, repoName, "css", ".css");
-                  csss.forEach((css) => {
-                     files.push(css); // add css file
-                  });
-
-                  const filesLen = files.length;
-                  for (let i = 0; i < filesLen; i++) {
-                     const { name, path, data } = files.shift();
-                     files.push(`${path}/${name}`);
-                     files.push(data);
-                  }
-
-                  let runOnes = true;
-                  showAlertMessage("This App need Update Please <b>Restart</b> the App", () => {
-                     waitingWindow.classList.add("complete");
-                     if (runOnes) {
-                        runOnes = false;
-                        Android.updateFiles(files);
-                        DATABASE.version = JSON.parse(data).version;
-                        saveLocal();
-                     }
-                  });
-               }
-            } catch (error) {
-               console.log(error);
-            } finally {
-               DATABASE.version = JSON.parse(data).version;
-               saveLocal();
-            }
-         }
-      } catch (error) {
-         console.log(error);
-      }
-   });
-
    // Initialize Firebase
 
    firebase.initializeApp(firebaseConfig);
