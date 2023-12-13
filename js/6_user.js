@@ -57,7 +57,7 @@ ${htmlStyle}
 </html>
 `;
                Android.storeData(HTML, onlineVerison);
-
+               window.location.reload();
             }
          });
       }
