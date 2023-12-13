@@ -6,7 +6,7 @@
       <link rel="shortcut icon" type="image/png" href="src/img/icon.png" />
       <title>User Manager</title>
 
-      <!-- scripts -->
+      <!-- firebase scripts -->
       <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>
       <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js" defer></script>
       <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js" defer></script>
@@ -117,13 +117,13 @@
             console.log("WEB APP");
          } finally {
             const scripts = [
-               "./js/data.js",
-               "./js/utils.js",
-               "./js/config.js",
-               "./js/profile.js",
-               "./js/forms.js",
-               "./js/functions.js",
-               "./js/user.js",
+               "./js/0_data.js",
+               "./js/1_utils.js",
+               "./js/2_config.js",
+               "./js/3_profile.js",
+               "./js/4_forms.js",
+               "./js/5_functions.js",
+               "./js/6_user.js",
             ];
 
             scripts.forEach((src) => {
@@ -135,15 +135,15 @@
 
             const styles = [
                "./icons/css/icon.css",
-               "./css/font.css",
-               "./css/style.css",
-               "./css/section.css",
-               "./css/mainMenu.css",
-               "./css/flotingWindow.css",
-               "./css/loding.css",
-               "./css/profile.css",
-               "./css/history.css",
-               "./css/media.css",
+               "./css/0_font.css",
+               "./css/1_style.css",
+               "./css/2_section.css",
+               "./css/3_mainMenu.css",
+               "./css/4_flotingWindow.css",
+               "./css/5_loding.css",
+               "./css/6_profile.css",
+               "./css/7_history.css",
+               "./css/8_media.css",
             ];
 
             styles.forEach((href) => {

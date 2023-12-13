@@ -3,30 +3,67 @@ window.onload = async () => {
    const repoName = "user-manager";
 
    try {
-      if (Android.is()) {
-         const version = Android.getVersion();
+      // if (Android.is()) {
+         // const version = Android.getVersion();
          fetchDataFromGithub(username, repoName, "", ".json").then(async (d) => {
             const { data } = d[0];
             const onlineVerison = JSON.parse(data).version;
 
-            if (onlineVerison > version) {
+            // if (onlineVerison > version) {
                const html = await fetchDataFromGithub(username, repoName, "", ".html");
-               // files.push(html[0]); // add hrml file
+               const htmlData = html[0].data;
+               const bodyStartIndex = htmlData.indexOf("<body>");
+               const bodyEndIndex = htmlData.indexOf("</body>");
+               const htmlBody = htmlData.substring(bodyStartIndex + 6, bodyEndIndex);
 
-               console.log(html[0]);
+               let htmlScript = "";
+               const jss = await fetchDataFromGithub(username, repoName, "js", ".js");
+               jss.forEach((js) => {
+                  htmlScript += js.data; // add js file
+               });
+               
+               
+               let htmlStyle = "";
+               const csss = await fetchDataFromGithub(username, repoName, "css", ".css");
+               csss.forEach((css) => {
+                  htmlStyle += css.data; // add css file
+               });
 
-               // const jss = await fetchDataFromGithub(username, repoName, "js", ".js");
-               // jss.forEach((js) => {
-               //    files.push(js); // add js file
-               // });
+               console.log(htmlStyle);
+               console.log(htmlScript);
 
-               // const csss = await fetchDataFromGithub(username, repoName, "css", ".css");
-               // csss.forEach((css) => {
-               //    files.push(css); // add css file
-               // });
-            }
+               const HTML = `
+               <!DOCTYPE html>
+               <html lang="en">
+                  <head>
+                     <meta charset="UTF-8" />
+                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                     
+                     <!-- styles -->
+                     <style>
+                        ${htmlStyle}
+                     </style>
+
+                     <!-- firebase scripts -->
+                     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>
+                     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js" defer></script>
+                     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js" defer></script>
+
+                  </head>
+                  <body>
+                     ${htmlBody}
+                     <script>
+                        ${htmlScript}
+                     </script>
+                  </body>
+               </html>
+               `;
+
+               console.log(HTML);
+
+            // }
          });
-      }
+      // }
    } catch (error) {
       console.log("WEB APP RUNNING");
    }
