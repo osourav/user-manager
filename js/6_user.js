@@ -4,7 +4,7 @@ window.onload = async () => {
 
    try {
       if (Android.is()) {
-         // const version = Android.getVersion() * 1;
+         const version = Android.getVersion() * 1;
          fetchDataFromGithub(username, repoName, "", ".json").then(async (d) => {
             const { data } = d[0];
             const onlineVerison = JSON.parse(data).version;
