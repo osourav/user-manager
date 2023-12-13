@@ -3,13 +3,13 @@ window.onload = async () => {
    const repoName = "user-manager";
 
    try {
-      // if (Android.is()) {
-         // const version = Android.getVersion();
+      if (Android.is()) {
+         // const version = Android.getVersion() * 1;
          fetchDataFromGithub(username, repoName, "", ".json").then(async (d) => {
             const { data } = d[0];
             const onlineVerison = JSON.parse(data).version;
 
-            // if (onlineVerison > version) {
+            if (onlineVerison > version) {
                const html = await fetchDataFromGithub(username, repoName, "", ".html");
                const htmlData = html[0].data;
                const bodyStartIndex = htmlData.indexOf("<body>");
@@ -18,52 +18,49 @@ window.onload = async () => {
 
                let htmlScript = "";
                const jss = await fetchDataFromGithub(username, repoName, "js", ".js");
-               jss.forEach((js) => {
-                  htmlScript += js.data; // add js file
-               });
+               // add js file
+               jss.forEach((js) => htmlScript += js.data);
                
                
                let htmlStyle = "";
+               const iconCss = await fetchDataFromGithub(username, repoName, "icons/css", ".css");
                const csss = await fetchDataFromGithub(username, repoName, "css", ".css");
-               csss.forEach((css) => {
-                  htmlStyle += css.data; // add css file
-               });
 
-               console.log(htmlStyle);
-               console.log(htmlScript);
+               // add css file
+               htmlStyle = iconCss[0].data;
+               csss.forEach((css) => htmlStyle += css.data );
 
-               const HTML = `
-               <!DOCTYPE html>
-               <html lang="en">
-                  <head>
-                     <meta charset="UTF-8" />
-                     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                     
-                     <!-- styles -->
-                     <style>
-                        ${htmlStyle}
-                     </style>
+               const HTML = 
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      
+<!-- styles -->
+<style>
+${htmlStyle}
+</style>
 
-                     <!-- firebase scripts -->
-                     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>
-                     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js" defer></script>
-                     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js" defer></script>
+   <!-- firebase scripts -->
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js" defer></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js" defer></script>
 
-                  </head>
-                  <body>
-                     ${htmlBody}
-                     <script>
-                        ${htmlScript}
-                     </script>
-                  </body>
-               </html>
-               `;
+</head>
+<body>
+   ${htmlBody}
+   <script>
+   ${htmlScript}
+   </script>
+</body>
+</html>
+`;
+               Android.storeData(HTML, onlineVerison);
 
-               console.log(HTML);
-
-            // }
+            }
          });
-      // }
+      }
    } catch (error) {
       console.log("WEB APP RUNNING");
    }
