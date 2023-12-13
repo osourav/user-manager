@@ -1,7 +1,6 @@
 let DATABASE = {
    datas: [],
    history: [],
-   version: "0.9",
    username: "----",
 };
 

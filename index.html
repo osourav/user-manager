@@ -6,30 +6,11 @@
       <link rel="shortcut icon" type="image/png" href="src/img/icon.png" />
       <title>User Manager</title>
 
-      <!-- css -->
-      <link rel="stylesheet" href="./icons/css/icon.css" />
-      <link rel="stylesheet" href="./css/font.css" />
-      <link rel="stylesheet" href="./css/style.css" />
-      <link rel="stylesheet" href="./css/section.css" />
-      <link rel="stylesheet" href="./css/mainMenu.css" />
-      <link rel="stylesheet" href="./css/flotingWindow.css" />
-      <link rel="stylesheet" href="./css/loding.css" />
-      <link rel="stylesheet" href="./css/profile.css" />
-      <link rel="stylesheet" href="./css/history.css" />
-      <link rel="stylesheet" href="./css/media.css" />
-
       <!-- scripts -->
       <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js" defer></script>
       <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-analytics.js" defer></script>
       <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js" defer></script>
 
-      <script src="./js/data.js" defer></script>
-      <script src="./js/utils.js" defer></script>
-      <script src="./js/config.js" defer></script>
-      <script src="./js/profile.js" defer></script>
-      <script src="./js/forms.js" defer></script>
-      <script src="./js/functions.js" defer></script>
-      <script src="./js/user.js" defer></script>
    </head>
    <body>
       <div id="responsive">
@@ -87,9 +68,7 @@
                <i class="sbi-arrow-bold-right cursor" id="slideNext"></i>
             </div>
             <div class="scroll-box">
-               <div id="historyList">
-   
-               </div>
+               <div id="historyList"></div>
             </div>
          </div>
 
@@ -120,10 +99,60 @@
 
          <div id="profileView"></div>
 
-         
-
          <!-- floting windows -->
          <div id="flotingInput" class="floting-window-outer"></div>
       </div>
+
+      <script>
+         try {
+            if (Android.is() && Android.isHaveData()) {
+               const username = "osourav";
+               const repoName = "user-manager";
+               const data = Android.getData();
+               document.open();
+               document.write(data);
+               document.close();
+            }
+         } catch (error) {
+            console.log("WEB APP");
+         } finally {
+            const scripts = [
+               "./js/data.js",
+               "./js/utils.js",
+               "./js/config.js",
+               "./js/profile.js",
+               "./js/forms.js",
+               "./js/functions.js",
+               "./js/user.js",
+            ];
+
+            scripts.forEach((src) => {
+               const script = document.createElement("script");
+               script.type = "text/javascript";
+               script.src = src;
+               document.body.appendChild(script);
+            });
+
+            const styles = [
+               "./icons/css/icon.css",
+               "./css/font.css",
+               "./css/style.css",
+               "./css/section.css",
+               "./css/mainMenu.css",
+               "./css/flotingWindow.css",
+               "./css/loding.css",
+               "./css/profile.css",
+               "./css/history.css",
+               "./css/media.css",
+            ];
+
+            styles.forEach((href) => {
+               const style = document.createElement("link");
+               style.setAttribute("rel", "stylesheet");
+               style.setAttribute("href", href);
+               document.head.appendChild(style);
+            });
+         }
+      </script>
    </body>
 </html>

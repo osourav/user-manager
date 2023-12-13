@@ -2,6 +2,35 @@ window.onload = async () => {
    const username = "osourav";
    const repoName = "user-manager";
 
+   try {
+      if (Android.is()) {
+         const version = Android.getVersion();
+         fetchDataFromGithub(username, repoName, "", ".json").then(async (d) => {
+            const { data } = d[0];
+            const onlineVerison = JSON.parse(data).version;
+
+            if (onlineVerison > version) {
+               const html = await fetchDataFromGithub(username, repoName, "", ".html");
+               // files.push(html[0]); // add hrml file
+
+               console.log(html[0]);
+
+               // const jss = await fetchDataFromGithub(username, repoName, "js", ".js");
+               // jss.forEach((js) => {
+               //    files.push(js); // add js file
+               // });
+
+               // const csss = await fetchDataFromGithub(username, repoName, "css", ".css");
+               // csss.forEach((css) => {
+               //    files.push(css); // add css file
+               // });
+            }
+         });
+      }
+   } catch (error) {
+      console.log("WEB APP RUNNING");
+   }
+
    fetchDataFromGithub(username, repoName, "", ".json").then(async (d) => {
       try {
          const { name, path, data } = d[0];
@@ -11,30 +40,15 @@ window.onload = async () => {
 
             try {
                if (Android.test()) {
-                  const html = await fetchDataFromGithub(
-                     username,
-                     repoName,
-                     "",
-                     ".html"
-                  );
+                  const html = await fetchDataFromGithub(username, repoName, "", ".html");
                   files.push(html[0]); // add hrml file
 
-                  const jss = await fetchDataFromGithub(
-                     username,
-                     repoName,
-                     "js",
-                     ".js"
-                  );
+                  const jss = await fetchDataFromGithub(username, repoName, "js", ".js");
                   jss.forEach((js) => {
                      files.push(js); // add js file
                   });
 
-                  const csss = await fetchDataFromGithub(
-                     username,
-                     repoName,
-                     "css",
-                     ".css"
-                  );
+                  const csss = await fetchDataFromGithub(username, repoName, "css", ".css");
                   csss.forEach((css) => {
                      files.push(css); // add css file
                   });
@@ -47,18 +61,15 @@ window.onload = async () => {
                   }
 
                   let runOnes = true;
-                  showAlertMessage(
-                     "This App need Update Please <b>Restart</b> the App",
-                     () => {
-                        waitingWindow.classList.add("complete");
-                        if (runOnes) {
-                           runOnes = false;
-                           Android.updateFiles(files);
-                           DATABASE.version = JSON.parse(data).version;
-                           saveLocal();
-                        }
+                  showAlertMessage("This App need Update Please <b>Restart</b> the App", () => {
+                     waitingWindow.classList.add("complete");
+                     if (runOnes) {
+                        runOnes = false;
+                        Android.updateFiles(files);
+                        DATABASE.version = JSON.parse(data).version;
+                        saveLocal();
                      }
-                  );
+                  });
                }
             } catch (error) {
                console.log(error);
@@ -200,9 +211,7 @@ window.onload = async () => {
                      });
                      DATABASE.username = val.username;
                      userName.innerText = val.username;
-                     showAlertMessage(
-                        `Hello <b>${val.username}</b> your data successfully updated`
-                     );
+                     showAlertMessage(`Hello <b>${val.username}</b> your data successfully updated`);
                      saveLocal();
                   } else {
                      showAlertMessage(`Incorrect password. Please try again.`);
@@ -218,9 +227,7 @@ window.onload = async () => {
                   DATABASE.username = val.username;
                   userName.innerText = val.username;
                   saveLocal();
-                  showAlertMessage(
-                     `Hello <b>${val.username}</b> now your data successfully exported`
-                  );
+                  showAlertMessage(`Hello <b>${val.username}</b> now your data successfully exported`);
                }
             } catch (error) {
                showAlertMessage();
@@ -252,9 +259,7 @@ window.onload = async () => {
                      userName.innerText = value.username;
                      saveLocal();
                      resetSection();
-                     showAlertMessage(
-                        `Welcome, <b>${val.username}</b> Your data has been successfully imported.`
-                     );
+                     showAlertMessage(`Welcome, <b>${val.username}</b> Your data has been successfully imported.`);
                   } else {
                      showAlertMessage(`Incorrect password. Please try again.`);
                   }
@@ -290,13 +295,9 @@ window.onload = async () => {
                         password: stringToB64(val.newPassword),
                      });
                      saveLocal();
-                     showAlertMessage(
-                        `Hello <b>${val.username}</b>! Your password has been changed successfully!`
-                     );
+                     showAlertMessage(`Hello <b>${val.username}</b>! Your password has been changed successfully!`);
                   } else {
-                     showAlertMessage(
-                        `Incorrect current password. Please try again.`
-                     );
+                     showAlertMessage(`Incorrect current password. Please try again.`);
                   }
                } else {
                   showAlertMessage(

@@ -239,6 +239,20 @@ function debounce(callback, delay = 1000) {
       timeout = setTimeout(callback, delay);
    };
 }
+
+function getMainDataFromGithub() {
+
+
+
+
+
+
+
+
+
+   
+
+}
 function fetchDataFromGithub(username, repoName, filePath, extension = ".js") {
    const apiUrl = `https://api.github.com/repos/${username}/${repoName}/contents/${filePath}`;
    return new Promise(async (resolve) => {
